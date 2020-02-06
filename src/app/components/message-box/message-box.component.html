@@ -1,0 +1,12 @@
+<mat-card class="message-card" [ngClass]="type" *ngIf="title != undefined">
+  <mat-card-header>
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-subtitle [ngClass]="type">{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="message-card-content-pd">{{content}}</p>
+  </mat-card-content>
+  <mat-card-actions class="message-card-content-pd">
+    <button mat-button>Fermer</button>
+  </mat-card-actions>
+</mat-card>
