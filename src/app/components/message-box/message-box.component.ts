@@ -15,9 +15,13 @@ export class MessageBoxComponent implements OnInit {
   private content: string;
   @Input()
   private type = 'info';
+  private isVisible = true;
   constructor() { }
 
   ngOnInit() {
+  }
+  onClose() {
+   this.isVisible = false;
   }
 
 }

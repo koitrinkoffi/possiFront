@@ -1,4 +1,4 @@
-<mat-card class="message-card" [ngClass]="type" *ngIf="title != undefined">
+<mat-card class="message-card" [ngClass]="type" *ngIf="title != undefined && isVisible">
   <mat-card-header>
     <mat-card-title>{{title}}</mat-card-title>
     <mat-card-subtitle [ngClass]="type">{{subtitle}}</mat-card-subtitle>
@@ -7,6 +7,6 @@
     <p class="message-card-content-pd">{{content}}</p>
   </mat-card-content>
   <mat-card-actions class="message-card-content-pd">
-    <button mat-button>Fermer</button>
+    <button mat-button (click)="onClose()">Fermer</button>
   </mat-card-actions>
 </mat-card>
