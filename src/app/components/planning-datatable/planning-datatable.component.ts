@@ -4,6 +4,14 @@ import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
 import {User} from '../../model/user';
 
+export interface PlanningElement {
+  id: string;
+  planning: string;
+  creator: string;
+  startDate: string;
+  endDate: string;
+}
+
 @Component({
   selector: 'app-planning-datatable',
   templateUrl: './planning-datatable.component.html',
@@ -11,30 +19,43 @@ import {User} from '../../model/user';
 })
 export class PlanningDatatableComponent implements OnInit {
   private planningService: PlanningService;
+  private planningElement: PlanningElement[];
   private displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
-  private user: User;
-  private dataSource: MatTableDataSource<Planning>;
+  private dataSource: MatTableDataSource<PlanningElement>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(planning: PlanningService) {
-    this.user = new User('Oclean', 'Master', 'Super codeur');
     this.planningService = planning;
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource<Planning>([
-      new Planning('Test 1', this.user, '03/02/2020', '03/02/2020'),
-      new Planning('Bof', this.user, '03/02/2020', '03/02/2020')
-    ]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource<PlanningElement>();
     this.dataSource.sort = this.sort;
-    this.planningService.getPlanningByUser().subscribe(data => {
-      console.log(data);
-    });
+    this.dataSource.paginator = this.paginator;
+    const user: User = new User('Oclean', 'Master', 'Super codeur');
+    this.parseData([ new Planning('Test 1', user, '03/02/2020', '03/02/2020'),
+      new Planning('Bof', user, '03/02/2020', '03/02/2020')]);
+    // this.planningService.getPlanningByUser().subscribe(data => {
+    //   console.log(data);
+    // });
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  private parseData(plannings: Planning[]) {
+    this.planningElement = [];
+    plannings.forEach(p => {
+      this.planningElement.push({
+        id: p.id,
+        planning: p.title,
+        creator: p.admin.firstName + p.admin.lastName,
+        startDate: p.startDate,
+        endDate: p.endDate
+      });
+    });
+    this.dataSource.data = this.planningElement;
   }
 }
