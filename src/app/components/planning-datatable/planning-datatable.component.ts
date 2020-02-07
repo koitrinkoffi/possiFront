@@ -34,8 +34,8 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     const user: User = new User('Oclean', 'Master', 'Super codeur');
-    this.parseData([ new Planning('Test 1', user, '03/02/2020', '03/02/2020'),
-      new Planning('Bof', user, '03/02/2020', '03/02/2020')]);
+    this.parseData([ new Planning('1', 'Test 1', user, '03/02/2020', '03/02/2020'),
+      new Planning('2', 'Bof', user, '03/02/2020', '03/02/2020')]);
     // this.planningService.getPlanningByUser().subscribe(data => {
     //   console.log(data);
     // });
@@ -57,5 +57,8 @@ export class PlanningDatatableComponent implements OnInit {
       });
     });
     this.dataSource.data = this.planningElement;
+  }
+  private delete(id: string) {
+    this.dataSource.data = this.planningElement.filter(p => p.id !== id);
   }
 }

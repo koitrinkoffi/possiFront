@@ -8,11 +8,12 @@ export class Planning {
   private _id: string;
 
 
-  constructor(title: string, admin: User, startDate: string, endDate: string) {
+  constructor(id: string, title: string, admin: User, startDate: string, endDate: string) {
     this._title = title;
     this._admin = admin;
     this._startDate = startDate;
     this._endDate = endDate;
+    this._id = id;
   }
 
   get title(): string {

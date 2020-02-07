@@ -29,7 +29,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell  *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="primary" class="item-left-spacing btn">Indisponibilités</button>
+        <button mat-raised-button color="primary" class="item-left-spacing btn" routerLink="{{element.planning}}/unavailability">Indisponibilités</button>
         <button mat-raised-button color="primary" class="item-left-spacing btn">Gérer le planning</button>
         <button mat-mini-fab class="item-left-spacing btn" color="primary">
           <mat-icon>calendar_today</mat-icon>
@@ -37,7 +37,7 @@
         <button mat-mini-fab class="item-left-spacing btn" color="warn">
           <mat-icon>file_copy</mat-icon>
         </button>
-        <button mat-mini-fab class="item-left-spacing btn">
+        <button mat-mini-fab class="item-left-spacing btn" (click)="delete(element.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
