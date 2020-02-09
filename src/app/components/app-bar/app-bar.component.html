@@ -1,8 +1,8 @@
 <mat-toolbar>
-  <span>{{appName}}</span>
+  <span routerLink="/">{{appName}}</span>
   <span class="app-bar-fill-remaining-space-left"></span>
 
-  <span class="item-left-spacing">Accueil</span>
+  <span class="item-left-spacing" routerLink="/"> Accueil </span>
   <span class="item-left-spacing">Bienvenue {{userService.user.firstName}} {{userService.user.lastName}}</span>
 
   <span class="app-bar-fill-remaining-space-right"></span>

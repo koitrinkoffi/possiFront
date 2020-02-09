@@ -1,0 +1,19 @@
+<div class='app-calendar' *ngIf="calendarVisible">
+  <full-calendar
+    #calendar
+    defaultView="dayGridMonth"
+    selectable="true"
+    editable="true"
+    [header]="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+    [plugins]="calendarPlugins"
+    [weekends]="calendarWeekends"
+    [events]="calendarEvents"
+    (eventRender)="render($event)"
+    (eventMouseEnter)="onMouseEnter($event)"
+    (eventMouseLeave)="onMouseLeave($event)"
+  ></full-calendar>
+</div>

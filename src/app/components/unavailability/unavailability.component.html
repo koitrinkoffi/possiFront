@@ -1,14 +1,19 @@
 <div class="main">
   <div class="header">
-  <span class="title">{{planningName}}</span><br>
-  <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
+    <span class="title">{{planningName}}</span><br>
+    <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
   </div>
   <mat-tab-group class="tabs" mat-align-tabs="center">
     <mat-tab label="Tableau">
-
+      <ng-template matTabContent>
+        non
+        <span class="remove-btn">Oui</span>
+      </ng-template>
     </mat-tab>
     <mat-tab label="Calendrier">
-
+      <ng-template matTabContent>
+        <app-calendar></app-calendar>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 
