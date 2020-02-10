@@ -5,6 +5,38 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-top: 45px;
 }
 
+.calendar-icon {
+  width: 2em;
+  position: absolute;
+  top: 50%;
+  margin-top: -1em;
+  margin-left: -1em;
+}
+
+.calendar-icon-container {
+  text-align: center;
+}
+
+.calendar-remove-btn {
+  display: none;
+  color:black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width:13px;
+  height: 13px;
+  text-align:center;
+  border-radius:50%;
+  font-size: 10px;
+  cursor: pointer;
+  background-color: #FFF;
+  z-index: 2
+}
+
+.calendar-remove-btn-display {
+  display: block !important;
+}
+
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 @import '~@fullcalendar/timegrid/main.css';

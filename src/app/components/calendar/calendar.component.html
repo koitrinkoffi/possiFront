@@ -2,8 +2,8 @@
   <full-calendar
     #calendar
     defaultView="dayGridMonth"
-    selectable="true"
-    editable="true"
+    [editable]="edit"
+    [selectable]="edit"
     [header]="{
         left: 'prev,next today',
         center: 'title',
@@ -15,5 +15,6 @@
     (eventRender)="render($event)"
     (eventMouseEnter)="onMouseEnter($event)"
     (eventMouseLeave)="onMouseLeave($event)"
+    (eventClick)="onEventClick($event)"
   ></full-calendar>
 </div>
