@@ -1,13 +1,26 @@
 <div class='app-calendar' *ngIf="calendarVisible">
   <full-calendar
     #calendar
-    defaultView="dayGridMonth"
+    themeSystem="bootstrap"
+    [allDaySlot]="false"
+    [minTime]="minTime"
+    [maxTime]="maxTime"
+    [defaultView]="edit ? 'dayGridMonth' : 'timeGridWeek'"
+    locale="fr"
+    weekNumberCalculation="ISO"
     [editable]="edit"
     [selectable]="edit"
+    [buttonText]="{
+        today: 'aujourd\'hui',
+        month: 'mois',
+        week: 'semaine',
+        day: 'jour',
+        list: 'liste'
+       }"
     [header]="{
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        right: edit ? 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' : 'timeGridWeek,timeGridDay,listWeek'
       }"
     [plugins]="calendarPlugins"
     [weekends]="calendarWeekends"

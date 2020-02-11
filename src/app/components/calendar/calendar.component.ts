@@ -1,9 +1,10 @@
-import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
-import timeGrigPlugin from '@fullcalendar/timegrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
 
 const removeBackgroundColor = '#ffe6e2';
 const validateBackgroundColor = '#fff9dd';
@@ -18,11 +19,14 @@ export class CalendarComponent implements OnInit {
 
   @ViewChild('calendar', {read: undefined, static: false}) calendarComponent: FullCalendarComponent;
 
-  private calendarPlugins = [interactionPlugin, timeGrigPlugin];
+  private minTime = '07:00:00';
+  private maxTime = '22:00:00';
   private calendarVisible = true;
   private calendarWeekends = true;
   private edit = false;
   private calendarEvents: EventInput[];
+
+  private calendarPlugins = [dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin];
 
   constructor() {
     this.calendarEvents = [
@@ -38,7 +42,7 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
   }
 
-  addRemoveBtn(info) {
+  private addRemoveBtn(info) {
     const spanElement = document.createElement('span');
     spanElement.innerHTML = 'X';
     spanElement.classList.add('calendar-remove-btn');
@@ -46,22 +50,25 @@ export class CalendarComponent implements OnInit {
     info.el.appendChild(spanElement);
   }
 
-  render(info) {
+  private render(info) {
     if (this.edit) {
       this.addRemoveBtn(info);
     } else {
       info.el.classList.add('calendar-icon-container');
-      info.el.innerHTML = '<img src="' + (info.event.backgroundColor === removeBackgroundColor ? removeIcon : validIcon) + '" alt="icon" class="calendar-icon"/>';
+      info.el.innerHTML = '<img src="' +
+        (info.event.backgroundColor === removeBackgroundColor ? removeIcon : validIcon)
+        + '" alt="icon" class="calendar-icon"/>';
     }
   }
-  onMouseEnter(info) {
+
+  private onMouseEnter(info) {
     if (this.edit) {
       const spanElement = info.el.lastChild as HTMLElement;
       spanElement.classList.add('calendar-remove-btn-display');
     }
   }
 
-  onEventClick(info) {
+  private onEventClick(info) {
     if (!this.edit) {
       if (info.event.backgroundColor === removeBackgroundColor) {
         this.calendarEvents.find(e => e.id == info.event.id).backgroundColor = validateBackgroundColor;
@@ -73,7 +80,7 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  onMouseLeave(info) {
+  private onMouseLeave(info) {
     if (this.edit) {
       const spanElement = info.el.lastChild as HTMLElement;
       spanElement.classList.remove('calendar-remove-btn-display');
