@@ -96,7 +96,7 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  private eventDrop(eventDropInfo) {
+  private eventUpdate(eventDropInfo) {
     const event = this.calendarEvents.find(e => e.id == eventDropInfo.event.id);
     event.start = moment(eventDropInfo.event.start).format();
     event.end = moment(eventDropInfo.event.end).format();
