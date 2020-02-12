@@ -2,6 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
+import {MatDialog} from '@angular/material/dialog';
+import {EventDialogComponent} from '../event-dialog/event-dialog.component';
+
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -29,7 +32,7 @@ export class CalendarComponent implements OnInit {
 
   private calendarPlugins = [dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin];
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.calendarEvents = [{
       id: 1,
       resourceId: 1,
@@ -85,17 +88,6 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  handleDateClick(arg) {
-    if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-      this.calendarEvents = this.calendarEvents.concat({ // add new event data. must create new array
-        id: this.calendarEvents.length + 1,
-        title: 'New Event',
-        start: arg.date,
-        allDay: arg.allDay
-      });
-    }
-  }
-
   private eventUpdate(eventDropInfo) {
     const event = this.calendarEvents.find(e => e.id == eventDropInfo.event.id);
     event.start = moment(eventDropInfo.event.start).format();
@@ -107,4 +99,69 @@ export class CalendarComponent implements OnInit {
     this.calendarComponent.getApi().removeAllEventSources();
     this.calendarComponent.getApi().addEventSource(this.calendarEvents);
   }
+
+  private handleDateClick(arg) {
+    this.openNewEventDialog(arg, false);
+  }
+
+  private handleDateSelection(arg) {
+          // Todo supprimer le mode selection
+    this.openNewEventDialog(arg, true);
+  }
+
+  private openNewEventDialog(arg, selection: boolean): void {
+    let date: Date;
+    if (!selection) {
+      date = arg.date;
+      date.setHours(7, 0, 0, 0);
+    }
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      data: {isSelection: selection, date}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        if (!result.isSelection) {
+          this.addEvent(date);
+        } else {
+          // Todo supprimer le mode selection
+          // console.log(this.generateDatesFromRange(arg.start, arg.end));
+        }
+      }
+    });
+  }
+
+  private addEvent(date) {
+    this.calendarEvents = this.calendarEvents.concat({ // add new event data. must create new array
+      id: this.calendarEvents.length + 1,
+      title: 'Créneau',
+      start: date,
+    });
+  }
+
+  // private generateDatesFromRange(startDate: Date, endDate: Date, startDay: number, endDay: number, startBreak: number, endBreak: number, duration: number): Date[] {
+  //   const diffMonth = startDate.getMonth() !== endDate.getMonth();
+  //   const dateList: Date[] = [];
+  //   const firstMonthDaySelected = +moment(startDate).endOf('month').format('DD') - startDate.getDate();
+  //   let i = 0;
+  //
+  //   if (diffMonth) {
+  //     const firstDayOfSecondMonth = +moment(startDate).startOf('month').format('DD');
+  //     const secondMonthDaySelected = endDate.getDate() - firstDayOfSecondMonth;
+  //     while (i < secondMonthDaySelected) {
+  //       const newDate = new Date();
+  //       newDate.setFullYear(endDate.getFullYear(), endDate.getMonth(), firstDayOfSecondMonth + i);
+  //       newDate.setHours(7, 0, 0, 0);
+  //       dateList.push(newDate);
+  //       i++;
+  //     }
+  //   }
+  //   i = 0;
+  //   while (i <= firstMonthDaySelected) {
+  //     const newDate = new Date();
+  //     newDate.setFullYear(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+  //     dateList.push(newDate);
+  //     i++;
+  //   }
+  //   return dateList;
+  // }
 }

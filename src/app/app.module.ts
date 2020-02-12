@@ -8,13 +8,13 @@ import { DatatableComponent } from './components/datatable/datatable.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppBarComponent } from './components/app-bar/app-bar.component';
 import {
-  MatButtonModule,
-  MatCardModule,
-  MatPaginatorModule,
-  MatTableModule,
-  MatToolbarModule,
-  MatPaginatorIntl,
-  MatSortModule, MatInputModule, MatIconModule, MatTabsModule
+    MatButtonModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorIntl,
+    MatSortModule, MatInputModule, MatIconModule, MatTabsModule, MatDialogModule
 } from '@angular/material';
 import { MessageBoxComponent } from './components/message-box/message-box.component';
 import { HomeComponent } from './components/home/home.component';
@@ -23,6 +23,8 @@ import { PlanningDatatableComponent } from './components/planning-datatable/plan
 import {getFrenchPaginatorIntl} from './frenchPaginatorintl';
 import { UnavailabilityComponent } from './components/unavailability/unavailability.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
+import {FormsModule} from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,6 +41,7 @@ const appRoutes: Routes = [
     PlanningDatatableComponent,
     UnavailabilityComponent,
     CalendarComponent,
+    EventDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -57,9 +60,16 @@ const appRoutes: Routes = [
     MatInputModule,
     MatIconModule,
     MatTabsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatDialogModule,
+    FormsModule
+  ],
+  entryComponents: [
+    EventDialogComponent
   ],
   providers: [{provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

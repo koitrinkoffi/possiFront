@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../services/user.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-app-bar',
@@ -13,6 +14,7 @@ export class AppBarComponent implements OnInit {
 
   constructor(userService: UserService) {
     this.userService = userService;
+    moment.locale('fr');
   }
 
   ngOnInit() {
