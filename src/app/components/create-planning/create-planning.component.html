@@ -61,51 +61,7 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Salles de soutenance</ng-template>
-    <mat-form-field class="full-width" appearance="outline">
-      <mat-chip-list #chipList aria-label="Classroom selection">
-        <mat-chip
-          color="success"
-          *ngFor="let classroom of classrooms"
-          [selectable]="selectableChips"
-          [removable]="removableChips"
-          (removed)="removeClassroom(classroom)">
-          {{classroom}}
-          <mat-icon matChipRemove *ngIf="removableChips">cancel</mat-icon>
-        </mat-chip>
-        <input
-          placeholder="Nouvelle salle..."
-          #classroomInput
-          [formControl]="classroomCtrl"
-          [matAutocomplete]="auto"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="addClassroomByInput($event)">
-      </mat-chip-list>
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="classroomSelected($event)">
-        <mat-option *ngFor="let classroom of filteredClassroom | async" [value]="classroom">
-          {{classroom}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <div>
-      <mat-card class="">
-        <mat-card-header>
-          <mat-card-title>Salles suggérées</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p class="">
-            <mat-chip-list aria-label="Classroom selection">
-              <mat-chip
-                *ngFor="let classroom of suggestedClassroom"
-                [selectable]="selectableChips"
-                (click)="addClassroom(classroom)">
-                {{classroom}}
-              </mat-chip>
-            </mat-chip-list>
-          </p>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <app-classroom-selector></app-classroom-selector>
     <br>
     <div>
       <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
@@ -114,7 +70,7 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Professeurs assignés</ng-template>
-    <p>You are now done.</p>
+    <app-person-datatable></app-person-datatable>
     <div>
       <button mat-raised-button matStepperPrevious>Back</button>
       <button mat-raised-button (click)="stepper.reset()">Reset</button>

@@ -31,6 +31,8 @@ import {getFrenchPaginatorIntl} from './frenchPaginatorintl';
 import { UnavailabilityComponent } from './components/unavailability/unavailability.component';
 import { CreatePlanningComponent } from './components/create-planning/create-planning.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ClassroomSelectorComponent } from './components/classroom-selector/classroom-selector.component';
+import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -48,6 +50,8 @@ const appRoutes: Routes = [
     PlanningDatatableComponent,
     UnavailabilityComponent,
     CreatePlanningComponent,
+    ClassroomSelectorComponent,
+    PersonDatatableComponent,
   ],
   imports: [
     HttpClientModule,
