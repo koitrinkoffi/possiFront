@@ -1,0 +1,123 @@
+<mat-horizontal-stepper linear #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup" class="custom-form">
+      <ng-template matStepLabel>Informations générales</ng-template>
+      <mat-form-field appearance="outline" class="width-45">
+        <mat-label>Titre</mat-label>
+        <input matInput placeholder="Titre du planning" formControlName="firstCtrl" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="width-45">
+        <mat-label>Note</mat-label>
+        <textarea matInput placeholder="Informations complémentaires"></textarea>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
+    <form [formGroup]="secondFormGroup" class="custom-form">
+      <ng-template matStepLabel>Période de la soutenance</ng-template>
+      <div>
+        <mat-form-field appearance="outline" class="width-45">
+          <mat-label>Choisir le début de période</mat-label>
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="item-left-spacing width-45">
+          <mat-label>Choisir la fin de période</mat-label>
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker2" required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="width-45">
+          <mat-label>Heure de début de journée</mat-label>
+          <input matInput placeholder="08:00" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="item-left-spacing width-45">
+          <mat-label>Heure de fin de journée</mat-label>
+          <input matInput placeholder="18:00" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="width-45">
+          <mat-label>Heure de début de pause</mat-label>
+          <input matInput placeholder="12:00" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="item-left-spacing width-45">
+          <mat-label>Heure de fin de pause</mat-label>
+          <input matInput placeholder="14:00" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+        <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Salles de soutenance</ng-template>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-chip-list #chipList aria-label="Classroom selection">
+        <mat-chip
+          color="success"
+          *ngFor="let classroom of classrooms"
+          [selectable]="selectableChips"
+          [removable]="removableChips"
+          (removed)="removeClassroom(classroom)">
+          {{classroom}}
+          <mat-icon matChipRemove *ngIf="removableChips">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Nouvelle salle..."
+          #classroomInput
+          [formControl]="classroomCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addClassroomByInput($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="classroomSelected($event)">
+        <mat-option *ngFor="let classroom of filteredClassroom | async" [value]="classroom">
+          {{classroom}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div>
+      <mat-card class="">
+        <mat-card-header>
+          <mat-card-title>Salles suggérées</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="">
+            <mat-chip-list aria-label="Classroom selection">
+              <mat-chip
+                *ngFor="let classroom of suggestedClassroom"
+                [selectable]="selectableChips"
+                (click)="addClassroom(classroom)">
+                {{classroom}}
+              </mat-chip>
+            </mat-chip-list>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+      <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Professeurs assignés</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-raised-button matStepperPrevious>Back</button>
+      <button mat-raised-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
