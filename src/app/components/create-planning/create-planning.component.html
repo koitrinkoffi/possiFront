@@ -70,10 +70,13 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Professeurs assignés</ng-template>
-    <app-person-datatable></app-person-datatable>
+    <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
+    <br>
     <div>
-      <button mat-raised-button matStepperPrevious>Back</button>
-      <button mat-raised-button (click)="stepper.reset()">Reset</button>
+      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
+        Créer
+      </button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

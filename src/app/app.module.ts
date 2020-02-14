@@ -21,7 +21,7 @@ import {
   MatDatepickerModule,
   MAT_DATE_LOCALE,
   MatNativeDateModule,
-  MatChipsModule, MatAutocompleteModule
+  MatChipsModule, MatAutocompleteModule, MatCheckboxModule
 } from '@angular/material';
 import { MessageBoxComponent } from './components/message-box/message-box.component';
 import { HomeComponent } from './components/home/home.component';
@@ -76,6 +76,7 @@ const appRoutes: Routes = [
     MatNativeDateModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
