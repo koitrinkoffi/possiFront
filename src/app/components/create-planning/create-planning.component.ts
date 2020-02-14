@@ -1,9 +1,5 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Observable} from 'rxjs';
-import {MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {map, startWith} from 'rxjs/operators';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PersonDatatableComponent} from '../person-datatable/person-datatable.component';
 import {User} from '../../model/user';
 
@@ -16,7 +12,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
-  private isOptional = false;
 
   constructor(private _formBuilder: FormBuilder) {}
 
@@ -28,10 +23,15 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      title: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ''
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      startDay: ['', Validators.required],
+      endDay: ['', Validators.required],
+      startBreak: ['', Validators.required],
+      endBreak: ['', Validators.required],
     });
   }
 
