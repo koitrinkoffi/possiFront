@@ -8,7 +8,7 @@ export class UserService {
 
   private _user: User;
   constructor() {
-    this._user = new User('Koitrin', 'KOFFI', 'professeur');
+    this._user = new User('Koitrin', 'KOFFI', 'professeur', 'uid', 'lol');
   }
 
 

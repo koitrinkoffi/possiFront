@@ -1,7 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-column-select {
+  overflow: initial;
+}
 .main {
   margin-top: 45px;
 }
+.datatable-container {
+  padding-top: 25px;
+}
+.clickable-item {
+  cursor: pointer;
+}
+.center {
+  text-align: center;
+}
+.custom-form {
+  min-width: 150px;
+  max-width: 100%;
+  width: 100%;
+}
+.full-width {
+  width: 100%;
+}
+.width-34 {
+  width: 34%;
+}
+.width-70 {
+  width: 70%;
+}
+.width-45 {
+  width: 45%;
+}
+table, mat-form-field{
+  width: 100%;
+}
+th.mat-sort-header-sorted {
+  color: black;
+}
 
+.filter-container {
+  padding: 0 35px;
+}
+
+.mat-column-select {
+  overflow: initial;
+}
+
+.item-left-spacing {
+  margin-left: 24px!important;
+}
