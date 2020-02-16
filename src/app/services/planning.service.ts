@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {baseUrl} from '../app.component';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,6 @@ export class PlanningService {
   }
 
   getPlanningByUser(): any {
-    return this.httpClient.get(baseUrl + 'planning/list');
+    return this.httpClient.get(environment.apiUrl + 'planning/list');
   }
 }

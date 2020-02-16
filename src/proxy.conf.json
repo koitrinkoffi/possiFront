@@ -1,5 +1,5 @@
 {
-  "/api": {
+  "/person/list": {
     "target": "http://possi2019.univ-rennes1.fr:8080",
     "secure": false
   }

@@ -5,6 +5,7 @@ import {User} from '../../model/user';
 import {SelectionModel} from '@angular/cdk/collections';
 
 export interface PersonElement {
+  id: number;
   uid: string;
   firstName: string;
   lastName: string;
@@ -64,6 +65,7 @@ export class PersonDatatableComponent implements OnInit {
     this.personElements = [];
     users.forEach(u => {
       this.personElements.push({
+        id: u.id,
         uid: u.uid,
         firstName: u.firstName,
         lastName: u.lastName,

@@ -33,7 +33,7 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource = new MatTableDataSource<PlanningElement>();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    const user: User = new User('Oclean', 'Master', 'Super codeur', 'ok', 'email');
+    const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
     this.parseData([ new Planning('1', 'Test 1', user, '03/02/2020', '03/02/2020'),
       new Planning('2', 'Bof', user, '03/02/2020', '03/02/2020')]);
     // this.planningService.getPlanningByUser().subscribe(data => {

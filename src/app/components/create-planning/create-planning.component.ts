@@ -4,6 +4,7 @@ import {PersonDatatableComponent} from '../person-datatable/person-datatable.com
 import {User} from '../../model/user';
 import * as moment from 'moment';
 import {error} from 'util';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-create-planning',
@@ -14,8 +15,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
+  private teachers: User[] = [];
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder, private userService: UserService) {}
 
   @ViewChild('datatable', {static: false})
   private personDatatable: PersonDatatableComponent;
@@ -42,7 +44,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.personDatatable.parseData([new User('Oclean', 'Master', 'Super codeur', 'ok', 'email')]);
+    this.fetchTeacher();
   }
 
   private validateDateRange(from: string, to: string): ValidatorFn {
@@ -70,6 +72,23 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     return (control: AbstractControl): {[key: string]: any} | null => {
       return !moment(control.value, 'HH:mm').isValid() ? {invalidHour: {value: control.value}} : null;
     };
+
+  }
+  private fetchTeacher() {
+    this.userService.getUsers().subscribe(data => {
+      data.forEach(u => {
+        this.teachers.push(new User(
+          u.id,
+          u.firstName,
+          u.lastName,
+          u.role,
+          u.uid,
+          u.email
+        ));
+      });
+      // debugger;
+    this.personDatatable.parseData(this.teachers);
+    });
   }
 
   get startDate() { return this.secondFormGroup.get('startDate'); }

@@ -1,11 +1,13 @@
 export class User {
+  private _id: number;
   private _firstName: string;
   private _lastName: string;
   private _role: string;
   private _uid: string;
   private _email: string;
 
-  constructor(firstName: string, lastName: string, role: string, uid: string, email: string) {
+  constructor(id: number, firstName: string, lastName: string, role: string, uid: string, email: string) {
+    this._id = id;
     this._firstName = firstName;
     this._lastName = lastName;
     this._role = role;
@@ -52,5 +54,13 @@ export class User {
 
   set email(value: string) {
     this._email = value;
+  }
+
+  get id(): number {
+    return this._id;
+  }
+
+  set id(value: number) {
+    this._id = value;
   }
 }
