@@ -5,6 +5,9 @@ import {User} from '../../model/user';
 import * as moment from 'moment';
 import {error} from 'util';
 import {UserService} from '../../services/user.service';
+import {ClassroomService} from '../../services/classroom.service';
+import {Classroom} from '../../model/classroom';
+import {ClassroomSelectorComponent} from '../classroom-selector/classroom-selector.component';
 
 @Component({
   selector: 'app-create-planning',
@@ -16,11 +19,14 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
   private teachers: User[] = [];
+  private classrooms: Classroom[] = [];
 
-  constructor(private _formBuilder: FormBuilder, private userService: UserService) {}
+  constructor(private _formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {}
 
   @ViewChild('datatable', {static: false})
   private personDatatable: PersonDatatableComponent;
+  @ViewChild('classroomSelector', {static: false})
+  private classroomSelector: ClassroomSelectorComponent;
 
   private dateFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -28,6 +34,8 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.fetchClassroom();
+
     this.firstFormGroup = this._formBuilder.group({
       title: ['', Validators.required]
     });
@@ -74,6 +82,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     };
 
   }
+
   private fetchTeacher() {
     this.userService.getUsers().subscribe(data => {
       data.forEach(u => {
@@ -87,10 +96,17 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
         ));
       });
       // debugger;
-    this.personDatatable.parseData(this.teachers);
+      this.personDatatable.parseData(this.teachers);
     });
   }
-
+  private fetchClassroom() {
+    this.classroomService.getAll().subscribe(data => {
+      data.forEach(c => {
+        this.classrooms.push(new Classroom(c.name, c.id));
+      });
+        this.classroomSelector.parseData(this.classrooms);
+    });
+  }
   get startDate() { return this.secondFormGroup.get('startDate'); }
   get endDate() { return this.secondFormGroup.get('endDate'); }
 }

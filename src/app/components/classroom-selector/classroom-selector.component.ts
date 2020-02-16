@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -21,6 +21,7 @@ export class ClassroomSelectorComponent implements OnInit {
   private suggestedClassroom: Classroom[];
   private lemon: Classroom = new Classroom( 'Lemon', 1);
   private classrooms: Classroom[] = [this.lemon];
+  @Input()
   private allClassrooms: Classroom[] = [
     new Classroom('Apple', 2),
     this.lemon,
@@ -41,7 +42,12 @@ export class ClassroomSelectorComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    this.addClassroom(new Classroom(value));
+    const classroom = this.allClassrooms.find(c => c.label == value);
+    if (classroom == undefined) {
+      this.addClassroom(new Classroom(value));
+    } else {
+      this.addClassroom(classroom);
+    }
 
     if (input) {
       input.value = '';
@@ -52,8 +58,7 @@ export class ClassroomSelectorComponent implements OnInit {
 
   private addClassroom(classroom: Classroom): void {
     const label = classroom.label.toLowerCase().trim();
-    if ((this.classrooms.filter(c => c.label.toLowerCase().trim() === label).length === 0) &&
-      (this.allClassrooms.filter(c => c.label === label).length === 0)) {
+    if ((this.classrooms.filter(c => c.label.toLowerCase().trim() === label).length === 0)) {
       this.classrooms.push(classroom);
       this.filterSuggestedClassroom();
     }
@@ -76,5 +81,10 @@ export class ClassroomSelectorComponent implements OnInit {
 
   private filterSuggestedClassroom() {
     this.suggestedClassroom = this.allClassrooms.filter(c => !this.classrooms.includes(c));
+  }
+
+  public parseData(classrooms: Classroom[]) {
+    this.allClassrooms = classrooms;
+    this.filterSuggestedClassroom();
   }
 }

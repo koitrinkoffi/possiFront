@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://possi2019.univ-rennes1.fr:8080/',
+  apiUrl: 'http://192.168.43.85:8080',
 };
 
 /*

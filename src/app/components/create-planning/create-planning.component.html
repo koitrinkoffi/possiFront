@@ -1,7 +1,19 @@
 <mat-horizontal-stepper linear #stepper>
   <mat-step>
+    <ng-template matStepLabel>Professeurs assignés</ng-template>
+    <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
+        Créer
+      </button>
+    </div>
+  </mat-step>
+  <mat-step>
     <ng-template matStepLabel>Salles de soutenance</ng-template>
-    <app-classroom-selector></app-classroom-selector>
+    <app-classroom-selector
+      #classroomSelector></app-classroom-selector>
     <br>
     <div>
       <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
@@ -70,17 +82,5 @@
         <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
       </div>
     </form>
-  </mat-step>
-
-  <mat-step>
-    <ng-template matStepLabel>Professeurs assignés</ng-template>
-    <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
-    <br>
-    <div>
-      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
-        Créer
-      </button>
-    </div>
   </mat-step>
 </mat-horizontal-stepper>
