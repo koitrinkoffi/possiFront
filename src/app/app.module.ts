@@ -30,9 +30,10 @@ import { PlanningDatatableComponent } from './components/planning-datatable/plan
 import {getFrenchPaginatorIntl} from './frenchPaginatorintl';
 import { UnavailabilityComponent } from './components/unavailability/unavailability.component';
 import { CreatePlanningComponent } from './components/create-planning/create-planning.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ClassroomSelectorComponent } from './components/classroom-selector/classroom-selector.component';
 import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
+import { ClassroomPipe } from './filters/classroom.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -52,32 +53,34 @@ const appRoutes: Routes = [
     CreatePlanningComponent,
     ClassroomSelectorComponent,
     PersonDatatableComponent,
+    ClassroomPipe,
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    RouterModule.forRoot(
-      appRoutes,
-      // { enableTracing: true }
-    ),
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatIconModule,
-    MatTabsModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        RouterModule.forRoot(
+            appRoutes,
+            // { enableTracing: true }
+        ),
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatButtonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatInputModule,
+        MatIconModule,
+        MatTabsModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatChipsModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        FormsModule,
+    ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},

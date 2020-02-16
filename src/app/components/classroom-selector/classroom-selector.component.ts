@@ -4,6 +4,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
 import {map, startWith} from 'rxjs/operators';
+import {Classroom} from '../../model/classroom';
 
 @Component({
   selector: 'app-classroom-selector',
@@ -11,25 +12,26 @@ import {map, startWith} from 'rxjs/operators';
   styleUrls: ['./classroom-selector.component.scss']
 })
 export class ClassroomSelectorComponent implements OnInit {
-
-
+  private searchInput = '';
   private selectableChips = true;
   private removableChips = true;
   private separatorKeysCodes: number[] = [ENTER, COMMA];
-  private classroomCtrl = new FormControl();
-  private filteredClassroom: Observable<string[]>;
-  private suggestedClassroom: string[];
-  private classrooms: string[] = ['Lemon'];
-  private allClassrooms: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  // private classroomCtrl = new FormControl();
+  // private filteredClassroom: Observable<string[]>;
+  private suggestedClassroom: Classroom[];
+  private lemon: Classroom = new Classroom( 'Lemon', 1);
+  private classrooms: Classroom[] = [this.lemon];
+  private allClassrooms: Classroom[] = [
+    new Classroom('Apple', 2),
+    this.lemon,
+    new Classroom('Line', 4),
+    new Classroom('Orange', 5),
+    new Classroom('Strawberry', 6)];
 
-  @ViewChild('classroomInput', {static: false}) classroomInput: ElementRef<HTMLInputElement>;
+  // @ViewChild('classroomInput', {static: false}) classroomInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
-  constructor() {
-    this.filteredClassroom = this.classroomCtrl.valueChanges.pipe(
-      startWith(null),
-      map((classroom: string | null) => classroom ? this._filter(classroom) : this.allClassrooms.slice()));
-  }
+  constructor() {}
 
   ngOnInit() {
     this.filterSuggestedClassroom();
@@ -39,24 +41,26 @@ export class ClassroomSelectorComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    this.addClassroom(value);
+    this.addClassroom(new Classroom(value));
 
     if (input) {
       input.value = '';
     }
-
-    this.classroomCtrl.setValue(null);
+    this.searchInput = '';
+    // this.classroomCtrl.setValue('');
   }
 
-  private addClassroom(value: string): void {
-    if ((value || '').trim()) {
-      this.classrooms.push(value.trim());
+  private addClassroom(classroom: Classroom): void {
+    const label = classroom.label.toLowerCase().trim();
+    if ((this.classrooms.filter(c => c.label.toLowerCase().trim() === label).length === 0) &&
+      (this.allClassrooms.filter(c => c.label === label).length === 0)) {
+      this.classrooms.push(classroom);
       this.filterSuggestedClassroom();
     }
   }
 
-  private removeClassroom(fruit: string): void {
-    const index = this.classrooms.indexOf(fruit);
+  private removeClassroom(classroom: Classroom): void {
+    const index = this.classrooms.indexOf(classroom);
 
     if (index >= 0) {
       this.classrooms.splice(index, 1);
@@ -65,15 +69,9 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   private classroomSelected(event: MatAutocompleteSelectedEvent): void {
-    this.classrooms.push(event.option.viewValue);
-    this.classroomInput.nativeElement.value = '';
-    this.classroomCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allClassrooms.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+    this.classrooms.push(this.allClassrooms.find(c => c.label === event.option.viewValue));
+    this.filterSuggestedClassroom();
+    this.searchInput = '';
   }
 
   private filterSuggestedClassroom() {
