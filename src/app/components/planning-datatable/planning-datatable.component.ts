@@ -23,8 +23,8 @@ export class PlanningDatatableComponent implements OnInit {
   private displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
   private dataSource: MatTableDataSource<PlanningElement>;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) private sort: MatSort;
   constructor(planning: PlanningService) {
     this.planningService = planning;
   }
@@ -41,17 +41,17 @@ export class PlanningDatatableComponent implements OnInit {
     // });
   }
 
-  applyFilter(filterValue: string) {
+  private applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  private parseData(plannings: Planning[]) {
+  parseData(plannings: Planning[]) {
     this.planningElement = [];
     plannings.forEach(p => {
       this.planningElement.push({
         id: p.id,
         planning: p.title,
-        creator: p.admin.firstName + p.admin.lastName,
+        creator: p.admin.firstName + ' ' + p.admin.lastName,
         startDate: p.startDate,
         endDate: p.endDate
       });

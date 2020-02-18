@@ -20,7 +20,7 @@ export class ClassroomSelectorComponent implements OnInit {
   // private filteredClassroom: Observable<string[]>;
   private suggestedClassroom: Classroom[];
   private lemon: Classroom = new Classroom( 'Lemon', 1);
-  private classrooms: Classroom[] = [this.lemon];
+  private classrooms: Classroom[] = [];
   @Input()
   private allClassrooms: Classroom[] = [
     new Classroom('Apple', 2),
@@ -87,4 +87,5 @@ export class ClassroomSelectorComponent implements OnInit {
     this.allClassrooms = classrooms;
     this.filterSuggestedClassroom();
   }
+
 }

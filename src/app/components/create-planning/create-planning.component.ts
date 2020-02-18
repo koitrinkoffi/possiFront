@@ -21,7 +21,8 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private teachers: User[] = [];
   private classrooms: Classroom[] = [];
 
-  constructor(private _formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {}
+  constructor(private _formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {
+  }
 
   @ViewChild('datatable', {static: false})
   private personDatatable: PersonDatatableComponent;
@@ -56,7 +57,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private validateDateRange(from: string, to: string): ValidatorFn {
-    return (group: FormGroup): {[key: string]: any} => {
+    return (group: FormGroup): { [key: string]: any } => {
       const f = group.controls[from];
       const t = group.controls[to];
       if (f.value > t.value) {
@@ -71,13 +72,13 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private isValidDate(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       return !moment(control.value).isValid() ? {invalidDate: {value: control.value}} : null;
     };
   }
 
   private isValidHour(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       return !moment(control.value, 'HH:mm').isValid() ? {invalidHour: {value: control.value}} : null;
     };
 
@@ -99,14 +100,21 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       this.personDatatable.parseData(this.teachers);
     });
   }
+
   private fetchClassroom() {
     this.classroomService.getAll().subscribe(data => {
       data.forEach(c => {
         this.classrooms.push(new Classroom(c.name, c.id));
       });
-        this.classroomSelector.parseData(this.classrooms);
+      this.classroomSelector.parseData(this.classrooms);
     });
   }
-  get startDate() { return this.secondFormGroup.get('startDate'); }
-  get endDate() { return this.secondFormGroup.get('endDate'); }
+
+  get startDate() {
+    return this.secondFormGroup.get('startDate');
+  }
+
+  get endDate() {
+    return this.secondFormGroup.get('endDate');
+  }
 }

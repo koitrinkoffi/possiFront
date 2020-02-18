@@ -15,4 +15,8 @@ export class PlanningService {
   getPlanningByUser(): any {
     return this.httpClient.get(environment.apiUrl + 'planning/list');
   }
+
+  getPublicPlanning(): any {
+    return this.httpClient.get(environment.apiUrl + '/planning/list/public');
+  }
 }
