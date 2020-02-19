@@ -1,36 +1,20 @@
 <mat-horizontal-stepper linear #stepper>
-  <mat-step>
-    <ng-template matStepLabel>Professeurs assignés</ng-template>
-    <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
-    <br>
-    <div>
-      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
-        Créer
-      </button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Salles de soutenance</ng-template>
-    <app-classroom-selector
-      #classroomSelector></app-classroom-selector>
-    <br>
-    <div>
-      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-      <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
-    </div>
-  </mat-step>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup" class="custom-form">
       <ng-template matStepLabel>Informations générales</ng-template>
       <mat-form-field appearance="outline" class="width-45">
         <mat-label>Titre</mat-label>
-        <input matInput placeholder="Titre du planning" formControlName="title" required>
+        <input matInput placeholder="Titre du planning" formControlName="title" required >
       </mat-form-field>
       <br>
       <mat-form-field appearance="outline" class="width-45">
         <mat-label>Note</mat-label>
         <textarea matInput placeholder="Informations complémentaires"></textarea>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="width-45">
+        <mat-label>Durée des soutenances</mat-label>
+        <input type="number" matInput placeholder="40 minutes" formControlName="oralDefenseDuration" required>
       </mat-form-field>
       <div>
         <button mat-raised-button color="primary" matStepperNext>Suivant</button>
@@ -43,13 +27,13 @@
       <div>
         <mat-form-field appearance="outline" class="width-45">
           <mat-label>Choisir le début de période</mat-label>
-          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" formControlName="startDate">
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="jj/mm/aaa" formControlName="startDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline" class="item-left-spacing width-45">
           <mat-label>Choisir la fin de période</mat-label>
-          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker2" formControlName="endDate" required>
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker2" placeholder="jj/mm/aaa" formControlName="endDate" required >
           <mat-error *ngIf="endDate.errors !== null && endDate.errors.dateRange">
             Choisissez une date postérieure à la date de début
           </mat-error>
@@ -82,5 +66,26 @@
         <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
       </div>
     </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Salles de soutenance</ng-template>
+    <app-classroom-selector
+      #classroomSelector></app-classroom-selector>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+      <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Professeurs assignés</ng-template>
+    <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
+    <br>
+    <div>
+      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
+        Créer
+      </button>
+    </div>
   </mat-step>
 </mat-horizontal-stepper>

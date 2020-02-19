@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {PersonDatatableComponent} from '../person-datatable/person-datatable.component';
 import {User} from '../../model/user';
 import * as moment from 'moment';
-import {error} from 'util';
 import {UserService} from '../../services/user.service';
 import {ClassroomService} from '../../services/classroom.service';
 import {Classroom} from '../../model/classroom';
 import {ClassroomSelectorComponent} from '../classroom-selector/classroom-selector.component';
+import {Planning} from '../../model/planning';
 
 @Component({
   selector: 'app-create-planning',
@@ -19,10 +19,8 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
   private teachers: User[] = [];
-  private classrooms: Classroom[] = [];
 
-  constructor(private _formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {
-  }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {}
 
   @ViewChild('datatable', {static: false})
   private personDatatable: PersonDatatableComponent;
@@ -36,17 +34,17 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchClassroom();
-
-    this.firstFormGroup = this._formBuilder.group({
-      title: ['', Validators.required]
+    this.firstFormGroup = this.formBuilder.group({
+      title: ['', Validators.required],
+      oralDefenseDuration: ['40', [Validators.required, Validators.min(0)]]
     });
-    this.secondFormGroup = this._formBuilder.group({
-      startDate: ['', [Validators.required, this.isValidDate()]],
-      endDate: ['', [Validators.required, this.isValidDate()]],
-      startDay: ['', [Validators.required, this.isValidHour()]],
-      endDay: ['', [Validators.required, this.isValidHour()]],
-      startBreak: ['', [Validators.required, this.isValidHour()]],
-      endBreak: ['', [Validators.required, this.isValidHour()]],
+    this.secondFormGroup = this.formBuilder.group({
+      startDate: [moment(new Date()).format(), [Validators.required,  this.isValidDate()]],
+      endDate: [moment(new Date()).format(), [Validators.required,  this.isValidDate()]],
+      startDay: ['08:00', [Validators.required,  Validators.pattern('[0-9]{2}:[0-9]{2}'), this.isValidHour()]],
+      endDay: ['18:00', [Validators.required,  Validators.pattern('[0-9]{2}:[0-9]{2}'), this.isValidHour()]],
+      startBreak: ['12:00', [Validators.required,  Validators.pattern('[0-9]{2}:[0-9]{2}'), this.isValidHour()]],
+      endBreak: ['14:00', [Validators.required,  Validators.pattern('[0-9]{2}:[0-9]{2}'), this.isValidHour()]],
     }, {
       validators: [this.validateDateRange('startDate', 'endDate')]
     });
@@ -96,25 +94,32 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
           u.email
         ));
       });
-      // debugger;
       this.personDatatable.parseData(this.teachers);
     });
   }
 
   private fetchClassroom() {
     this.classroomService.getAll().subscribe(data => {
+      const classrooms: Classroom[] = [];
       data.forEach(c => {
-        this.classrooms.push(new Classroom(c.name, c.id));
+        classrooms.push(new Classroom(c.name, c.id));
       });
-      this.classroomSelector.parseData(this.classrooms);
+      this.classroomSelector.parseData(classrooms);
     });
   }
 
-  get startDate() {
+  private get startDate() {
     return this.secondFormGroup.get('startDate');
   }
 
-  get endDate() {
+  private get endDate() {
     return this.secondFormGroup.get('endDate');
+  }
+
+  private validate() {
+    const planning: Planning = new Planning();
+    planning.parse(this.firstFormGroup.value);
+    planning.parse(this.secondFormGroup.value);
+    // this.classroomSelector
   }
 }

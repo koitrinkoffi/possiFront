@@ -1,19 +1,44 @@
 import {User} from './user';
+import {Classroom} from './classroom';
 
 export class Planning {
+
   private _title: string;
-  private _admin: User;
+  private _creator: User;
   private _startDate: string;
   private _endDate: string;
-  private _id: string;
+  private _id: number|string;
+  private _startBreak: string;
+  private _endBreak: string;
+  private _startDay: string;
+  private _endDay: string;
+  private _oralDefenseDuration: string;
+  private oralDefenseInterlude = '10';
+  private _classrooms: Classroom[];
 
-
-  constructor(id: string, title: string, admin: User, startDate: string, endDate: string) {
+  constructor(id?: string, title?: string, startDate?: string, endDate?: string, admin?: User) {
     this._title = title;
-    this._admin = admin;
+    if (admin !== undefined) {
+      this._creator = admin;
+    }
     this._startDate = startDate;
     this._endDate = endDate;
     this._id = id;
+  }
+
+  get endDay(): string {
+    return this._endDay;
+  }
+
+  set endDay(value: string) {
+    this._endDay = value;
+  }
+  get startDay(): string {
+    return this._startDay;
+  }
+
+  set startDay(value: string) {
+    this._startDay = value;
   }
 
   get title(): string {
@@ -24,12 +49,12 @@ export class Planning {
     this._title = value;
   }
 
-  get admin(): User {
-    return this._admin;
+  get creator(): User {
+    return this._creator;
   }
 
-  set admin(value: User) {
-    this._admin = value;
+  set creator(value: User) {
+    this._creator = value;
   }
 
   get startDate(): string {
@@ -48,12 +73,65 @@ export class Planning {
     this._endDate = value;
   }
 
-  get id(): string {
+  get id(): string|number {
     return this._id;
   }
 
-  set id(value: string) {
+  set id(value: string|number) {
     this._id = value;
+  }
+
+  get endBreak(): string {
+    return this._endBreak;
+  }
+
+  set endBreak(value: string) {
+    this._endBreak = value;
+  }
+  get startBreak(): string {
+    return this._startBreak;
+  }
+
+  set startBreak(value: string) {
+    this._startBreak = value;
+  }
+  get oralDefenseDuration(): string {
+    return this._oralDefenseDuration;
+  }
+
+  set oralDefenseDuration(value: string) {
+    this._oralDefenseDuration = value;
+  }
+  get classrooms(): Classroom[] {
+    return this._classrooms;
+  }
+
+  set classrooms(value: Classroom[]) {
+    this._classrooms = value;
+  }
+
+  static dateFormat(): string {
+    return 'DD/MM/YYYY';
+  }
+
+  parse(ob: Partial<Planning>) {
+    Object.assign(this, ob);
+  }
+
+  getRequestData(): any {
+    return {
+      dayPeriodStart: this.startDay,
+      dayPeriodEnd: this.endDay,
+      lunchBreakEnd: this.endBreak,
+      lunchBreakStart: this.startBreak,
+      name: this.title,
+      nbMaxOralDefensePerDay: '',
+      oralDefenseDuration: this.oralDefenseDuration,
+      oralDefenseInterlude: this.oralDefenseInterlude,
+      periodEnd: this.endDate,
+      periodStart: this.startDate,
+      rooms: ''
+    };
   }
 }
 

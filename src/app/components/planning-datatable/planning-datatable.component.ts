@@ -5,7 +5,7 @@ import {PlanningService} from '../../services/planning.service';
 import {User} from '../../model/user';
 
 export interface PlanningElement {
-  id: string;
+  id: string|number;
   planning: string;
   creator: string;
   startDate: string;
@@ -33,9 +33,9 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource = new MatTableDataSource<PlanningElement>();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
-    this.parseData([ new Planning('1', 'Test 1', user, '03/02/2020', '03/02/2020'),
-      new Planning('2', 'Bof', user, '03/02/2020', '03/02/2020')]);
+    // const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
+    // this.parseData([ new Planning('1', 'Test 1', user, '03/02/2020', '03/02/2020'),
+    //   new Planning('2', 'Bof', user, '03/02/2020', '03/02/2020')]);
     // this.planningService.getPlanningByUser().subscribe(data => {
     //   console.log(data);
     // });
@@ -51,7 +51,7 @@ export class PlanningDatatableComponent implements OnInit {
       this.planningElement.push({
         id: p.id,
         planning: p.title,
-        creator: p.admin.firstName + ' ' + p.admin.lastName,
+        creator: p.creator.firstName + ' ' + p.creator.lastName,
         startDate: p.startDate,
         endDate: p.endDate
       });

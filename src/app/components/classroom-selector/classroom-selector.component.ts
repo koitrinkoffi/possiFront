@@ -88,4 +88,12 @@ export class ClassroomSelectorComponent implements OnInit {
     this.filterSuggestedClassroom();
   }
 
+  public getClassroomToCreate(): Classroom[] {
+    return this.classrooms.filter(c => !this.allClassrooms.includes(c));
+  }
+
+  public getClassroomSelected(): Classroom[] {
+    return this.classrooms;
+  }
+
 }
