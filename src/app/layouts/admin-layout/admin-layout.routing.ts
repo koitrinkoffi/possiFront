@@ -1,46 +1,10 @@
 import { Routes } from '@angular/router';
+import {HomeComponent} from '../../components/home/home.component';
+import {UnavailabilityComponent} from '../../components/unavailability/unavailability.component';
+import {CreatePlanningComponent} from '../../components/create-planning/create-planning.component';
 
 export const AdminLayoutRoutes: Routes = [
-    // {
-    //   path: '',
-    //   children: [ {
-    //     path: 'dashboard',
-    //     component: DashboardComponent
-    // }]}, {
-    // path: '',
-    // children: [ {
-    //   path: 'userprofile',
-    //   component: UserProfileComponent
-    // }]
-    // }, {
-    //   path: '',
-    //   children: [ {
-    //     path: 'icons',
-    //     component: IconsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'notifications',
-    //         component: NotificationsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'maps',
-    //         component: MapsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'typography',
-    //         component: TypographyComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'upgrade',
-    //         component: UpgradeComponent
-    //     }]
-    // }
+  { path: '', component: HomeComponent },
+  { path: ':planningName/unavailability', component: UnavailabilityComponent },
+  { path: 'create/planning', component: CreatePlanningComponent },
 ];
