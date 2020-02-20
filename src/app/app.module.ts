@@ -34,6 +34,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ClassroomSelectorComponent } from './components/classroom-selector/classroom-selector.component';
 import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
 import { ClassroomPipe } from './filters/classroom.pipe';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -54,6 +55,7 @@ const appRoutes: Routes = [
     ClassroomSelectorComponent,
     PersonDatatableComponent,
     ClassroomPipe,
+    AdminLayoutComponent,
   ],
     imports: [
         HttpClientModule,
