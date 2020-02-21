@@ -26,6 +26,7 @@ import {getFrenchPaginatorIntl} from '../../frenchPaginatorintl';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {RouterModule} from '@angular/router';
 import {StudentRegisterComponent} from '../../components/student-register/student-register.component';
+import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
 
 
 
@@ -41,7 +42,8 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
     ClassroomSelectorComponent,
     PersonDatatableComponent,
     ClassroomPipe,
-    StudentRegisterComponent
+    StudentRegisterComponent,
+    PrivatePlanningComponent
   ],
   exports: [
     DatatableComponent,

@@ -21,7 +21,6 @@ import { PrivatePlanningComponent } from './components/private-planning/private-
     FooterComponent,
     SidebarComponent,
     NavbarComponent,
-    PrivatePlanningComponent
   ],
   imports: [
     HttpClientModule,
