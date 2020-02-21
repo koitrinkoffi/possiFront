@@ -34,11 +34,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ClassroomSelectorComponent } from './components/classroom-selector/classroom-selector.component';
 import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
 import { ClassroomPipe } from './filters/classroom.pipe';
+import { StudentRegisterComponent } from './components/student-register/student-register.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: ':planningName/unavailability', component: UnavailabilityComponent },
   { path: 'create/planning', component: CreatePlanningComponent },
+  { path: 'student/register', component: StudentRegisterComponent}
 ];
 
 @NgModule({
@@ -54,6 +56,7 @@ const appRoutes: Routes = [
     ClassroomSelectorComponent,
     PersonDatatableComponent,
     ClassroomPipe,
+    StudentRegisterComponent,
   ],
     imports: [
         HttpClientModule,
