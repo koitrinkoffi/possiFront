@@ -4,7 +4,7 @@ import {UnavailabilityComponent} from '../../components/unavailability/unavailab
 import {CreatePlanningComponent} from '../../components/create-planning/create-planning.component';
 
 export const AdminLayoutRoutes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: ':planningName/unavailability', component: UnavailabilityComponent },
   { path: 'create/planning', component: CreatePlanningComponent },
 ];

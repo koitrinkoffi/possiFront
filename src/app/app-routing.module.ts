@@ -6,7 +6,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'create/planning',
+    redirectTo: 'home',
     pathMatch: 'full',
   }, {
     path: '',
