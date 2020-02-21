@@ -22,7 +22,7 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {getFrenchPaginatorIntl} from '../../frenchPaginatorintl';
+import {getFrenchPaginatorIntl} from '../../utils/frenchPaginatorintl';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {RouterModule} from '@angular/router';
 
