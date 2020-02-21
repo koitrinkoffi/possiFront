@@ -16,7 +16,7 @@ import {
   MatButtonModule,
   MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule,
+  MatPaginatorModule, MatSelectModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -74,7 +74,8 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
     MatChipsModule,
     FormsModule,
     MatAutocompleteModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},

@@ -1,36 +1,41 @@
-<h1>Rappel des informations</h1>
-<form >
-  <br>
-  <div>
-    <label>Nom : </label>
-    <input class="form-control" id="nom" value="Rault">
-  </div>
-  <br>
-  <div>
-    <label>Prénom : </label>
-    <input class="form-control" id="prenom" value="Célie">
-  </div>
-  <br>
-  <div class="form-group">
-    <label>Entreprise : </label>
-    <input class="form-control" id="entreprise">
-  </div>
-  <br>
-  <div class="form-group">
-    <label>Tuteur entreprise : </label>
-    <input class="form-control" id="tutEntreprise">
-  </div>
-  <br>
-  <div>
-    <label>Tuteur fac : </label>
-    <select class="form-control" id="tuteurFac">
-      <option>Olivier Barais</option>
-      <option>Charles Queguiner</option>
-      <option>Didier Certain</option>
-      <option>Rumen Andonov</option>
-      <option>Laurence Pasquereau</option>
-    </select>
-  </div>
-  <br>
-  <button type="submit" class="btn btn-default">Valider</button>
-</form>
+<div class="main-content">
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput id="nom" value="Rault" formControlName="lastName" required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input matInput id="prenom" formControlName="firstName" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Entreprise</mat-label>
+          <input matInput id="entreprise" formControlName="company" required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Tuteur entreprise</mat-label>
+          <input matInput id="tutEntreprise" formControlName="tutorC" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Tuteur fac</mat-label>
+        <mat-select formControlName="tutorU" required>
+          <mat-option value="bof" *ngFor="let user of users">{{user.firstName}} {{user.lastName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="voir()">Valider</button>
+  </form>
+</div>
