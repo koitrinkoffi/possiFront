@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 mr-auto ml-auto">
-        <div class="wizard-container">
+        <div class="wizard-container mat-elevation-z8">
           <mat-horizontal-stepper linear #stepper>
             <mat-step [stepControl]="secondFormGroup">
               <div class="card-body">
@@ -68,6 +68,74 @@
                 </form>
               </div>
             </mat-step>
+            <mat-step>
+              <div class="card-body">
+                <ng-template matStepLabel>Salles de soutenance</ng-template>
+                <div class="row mb-md-4">
+                  <app-classroom-selector #classroomSelector class="col-md-12"></app-classroom-selector>
+                </div>
+                <div class="row">
+                  <div class="mr-auto">
+                    <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                  </div>
+                  <div class="ml-auto">
+                    <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                  </div>
+                </div>
+              </div>
+            </mat-step>
+            <mat-step>
+              <div class="card-body">
+                <ng-template matStepLabel>Professeurs assignés</ng-template>
+                <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
+              </div>
+              <div class="row">
+                <div class="mr-auto">
+                  <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                </div>
+                <div class="ml-auto">
+                  <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
+                    Créer
+                  </button>
+                </div>
+              </div>
+            </mat-step>
+            <mat-step [stepControl]="firstFormGroup">
+              <div class="card-body">
+                <form [formGroup]="firstFormGroup" class="custom-form">
+                  <ng-template matStepLabel>Les étudiants de la soutenance</ng-template>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Titre</mat-label>
+                        <input matInput placeholder="Titre du planning" formControlName="title" required >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Note</mat-label>
+                        <textarea matInput placeholder="Informations complémentaires"></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Durée des soutenances</mat-label>
+                        <input type="number" matInput placeholder="40 minutes" formControlName="oralDefenseDuration" required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="ml-auto">
+                      <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </mat-step>
             <mat-step [stepControl]="firstFormGroup">
               <div class="card-body">
                 <form [formGroup]="firstFormGroup" class="custom-form">
@@ -102,28 +170,6 @@
                     </div>
                   </div>
                 </form>
-              </div>
-            </mat-step>
-            <mat-step>
-              <div class="card-body">
-                <ng-template matStepLabel>Salles de soutenance</ng-template>
-                <app-classroom-selector
-                  #classroomSelector></app-classroom-selector>
-                <div>
-                  <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-                  <button mat-raised-button color="primary" matStepperNext class="item-left-spacing">Suivant</button>
-                </div>
-              </div>
-            </mat-step>
-            <mat-step>
-              <ng-template matStepLabel>Professeurs assignés</ng-template>
-              <app-person-datatable #datatable [displayedColumns]="['select', 'firstname', 'lastname', 'email']"></app-person-datatable>
-              <br>
-              <div>
-                <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-                <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
-                  Créer
-                </button>
               </div>
             </mat-step>
           </mat-horizontal-stepper>
