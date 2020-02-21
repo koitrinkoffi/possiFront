@@ -130,7 +130,7 @@ export class Planning {
       oralDefenseInterlude: this.oralDefenseInterlude,
       periodEnd: this.endDate,
       periodStart: this.startDate,
-      rooms: ''
+      rooms: this.classrooms
     };
   }
 }

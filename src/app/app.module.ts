@@ -10,6 +10,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {FooterComponent} from './components/footer/footer.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
+import {MatButtonModule} from '@angular/material';
 
 
 
@@ -26,7 +27,8 @@ import {NavbarComponent} from './components/navbar/navbar.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AdminLayoutModule
+    AdminLayoutModule,
+    MatButtonModule
   ],
   bootstrap: [AppComponent]
 })

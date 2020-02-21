@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {PersonDatatableComponent} from '../person-datatable/person-datatable.component';
 import {User} from '../../model/user';
@@ -8,6 +8,8 @@ import {ClassroomService} from '../../services/classroom.service';
 import {Classroom} from '../../model/classroom';
 import {ClassroomSelectorComponent} from '../classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
+import * as $ from 'jquery';
+import {PlanningService} from '../../services/planning.service';
 
 @Component({
   selector: 'app-create-planning',
@@ -20,12 +22,14 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private secondFormGroup: FormGroup;
   private teachers: User[] = [];
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService) {}
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService, private planningService: PlanningService) {}
 
   @ViewChild('datatable', {static: false})
   private personDatatable: PersonDatatableComponent;
   @ViewChild('classroomSelector', {static: false})
   private classroomSelector: ClassroomSelectorComponent;
+  @ViewChild('inputFile', {static: false})
+  private inputFile: ElementRef;
 
   private dateFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -52,6 +56,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.fetchTeacher();
+    console.log(this.inputFile);
   }
 
   private validateDateRange(from: string, to: string): ValidatorFn {
@@ -120,6 +125,15 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     const planning: Planning = new Planning();
     planning.parse(this.firstFormGroup.value);
     planning.parse(this.secondFormGroup.value);
+    planning.classrooms = this.classroomSelector.getClassroomSelected();
+    this.classroomService.create(this.classroomSelector.getClassroomToCreate()).subscribe( data => {
+      // this.planningService.createPlanning(planning, )
+    });
     // this.classroomSelector
   }
+
+  private isMobileMenu() {
+    return !($(window).width() > 991);
+  }
+
 }
