@@ -40,21 +40,21 @@ export class PersonDatatableComponent implements OnInit {
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
+  private isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
+  private masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PersonElement): string {
+  private checkboxLabel(row?: PersonElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
@@ -74,6 +74,21 @@ export class PersonDatatableComponent implements OnInit {
       });
     });
     this.dataSource.data = this.personElements;
+  }
+
+  getPersonSelected(): User[] {
+    const persons: User[] = [];
+    this.selection.selected.forEach(p => {
+      persons.push(new User(
+        p.id,
+        p.uid,
+        p.firstName,
+        p.lastName,
+        p.email,
+        p.role
+      ));
+    });
+    return persons;
   }
 
 }

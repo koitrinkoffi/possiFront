@@ -20,6 +20,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
+  private thirdFormGroup: FormGroup;
   private teachers: User[] = [];
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService, private planningService: PlanningService) {}
@@ -51,6 +52,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       endBreak: ['14:00', [Validators.required,  Validators.pattern('[0-9]{2}:[0-9]{2}'), this.isValidHour()]],
     }, {
       validators: [this.validateDateRange('startDate', 'endDate')]
+    });
+    this.thirdFormGroup = this.formBuilder.group({
+      file: ['']
     });
   }
 
@@ -125,11 +129,10 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     const planning: Planning = new Planning();
     planning.parse(this.firstFormGroup.value);
     planning.parse(this.secondFormGroup.value);
-    planning.classrooms = this.classroomSelector.getClassroomSelected();
     this.classroomService.create(this.classroomSelector.getClassroomToCreate()).subscribe( data => {
-      // this.planningService.createPlanning(planning, )
+      planning.classrooms = this.classroomSelector.getClassroomSelected();
+      this.planningService.createPlanning(planning, this.personDatatable.getPersonSelected(), this.thirdFormGroup.get('file').value);
     });
-    // this.classroomSelector
   }
 
   private isMobileMenu() {
