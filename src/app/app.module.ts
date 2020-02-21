@@ -10,6 +10,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {FooterComponent} from './components/footer/footer.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
+import { PrivatePlanningComponent } from './components/private-planning/private-planning.component';
 
 
 
@@ -19,7 +20,8 @@ import {NavbarComponent} from './components/navbar/navbar.component';
     AdminLayoutComponent,
     FooterComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    PrivatePlanningComponent
   ],
   imports: [
     HttpClientModule,
