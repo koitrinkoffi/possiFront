@@ -21,6 +21,10 @@ export class PersonDatatableComponent implements OnInit {
 
   private personElements: PersonElement[];
   @Input()
+  private title: string;
+  @Input()
+  private subtitle = '';
+  @Input()
   private displayedColumns: string[] = ['select', 'uid', 'firstname', 'lastname', 'email', 'role'];
   private dataSource: MatTableDataSource<PersonElement>;
   private selection = new SelectionModel<PersonElement>(true, []);

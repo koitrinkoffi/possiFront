@@ -1,11 +1,8 @@
 <div class="main-content">
-<app-message-box
-  type="info"
-  title="Bienvenue sur PossiCat"
-  subtitle="Université de Rennes 1"
-  content="Vous êtes connecté en tant que {{userService.user.firstName}} {{userService.user.lastName}}, {{userService.user.role}} à l'université. PossiCat est un outil permettant de simplifier la planification de soutenances. Accédez aux plannings vous concernant dans le tableau ci-dessous, et saisissez vos indisponibilités."
-></app-message-box>
 <div class="table-spacing">
-  <app-planning-datatable #planningDatatable></app-planning-datatable>
+  <app-planning-datatable
+    #planningDatatable
+    title="Plannings publics">
+  </app-planning-datatable>
 </div>
 </div>

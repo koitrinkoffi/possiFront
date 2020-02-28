@@ -60,7 +60,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.fetchTeacher();
-    console.log(this.inputFile);
   }
 
   private validateDateRange(from: string, to: string): ValidatorFn {

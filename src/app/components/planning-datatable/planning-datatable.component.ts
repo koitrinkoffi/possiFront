@@ -20,6 +20,10 @@ export interface PlanningElement {
 export class PlanningDatatableComponent implements OnInit {
   private planningService: PlanningService;
   private planningElement: PlanningElement[];
+  @Input()
+  private title: string;
+  @Input()
+  private subtitle = '';
   private displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
   private dataSource: MatTableDataSource<PlanningElement>;
 
