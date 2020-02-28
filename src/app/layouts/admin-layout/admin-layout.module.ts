@@ -25,7 +25,9 @@ import {getFrenchPaginatorIntl} from '../../utils/frenchPaginatorintl';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {RouterModule} from '@angular/router';
 import {StudentRegisterComponent} from '../../components/student-register/student-register.component';
-import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import {CalendarComponent} from '../../components/calendar/calendar.component';
+import {FullCalendarModule} from '@fullcalendar/angular';
+import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
 
 
 
@@ -40,7 +42,9 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
     ClassroomSelectorComponent,
     PersonDatatableComponent,
     ClassroomPipe,
-    StudentRegisterComponent
+    StudentRegisterComponent,
+    PrivatePlanningComponent,
+    CalendarComponent,
   ],
   exports: [
     DatatableComponent,
@@ -74,7 +78,7 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatSelectModule,
-    SweetAlert2Module
+    FullCalendarModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
