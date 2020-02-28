@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {DatatableComponent} from '../../components/datatable/datatable.component';
-import {AppBarComponent} from '../../components/app-bar/app-bar.component';
 import {MessageBoxComponent} from '../../components/message-box/message-box.component';
 import {HomeComponent} from '../../components/home/home.component';
 import {PlanningDatatableComponent} from '../../components/planning-datatable/planning-datatable.component';
@@ -31,7 +30,6 @@ import {RouterModule} from '@angular/router';
 @NgModule({
   declarations: [
     DatatableComponent,
-    AppBarComponent,
     MessageBoxComponent,
     HomeComponent,
     PlanningDatatableComponent,
@@ -43,7 +41,6 @@ import {RouterModule} from '@angular/router';
   ],
   exports: [
     DatatableComponent,
-    AppBarComponent,
     MessageBoxComponent,
     HomeComponent,
     PlanningDatatableComponent,

@@ -5,11 +5,6 @@
   subtitle="Université de Rennes 1"
   content="Vous êtes connecté en tant que {{userService.user.firstName}} {{userService.user.lastName}}, {{userService.user.role}} à l'université. PossiCat est un outil permettant de simplifier la planification de soutenances. Accédez aux plannings vous concernant dans le tableau ci-dessous, et saisissez vos indisponibilités."
 ></app-message-box>
-
-<div class="main">
-  <span class="title-size">Mes plannings</span>
-  <button mat-raised-button color="primary" class="item-left-spacing btn" routerLink="create/planning">Créer planning</button>
-</div>
 <div class="table-spacing">
   <app-planning-datatable #planningDatatable></app-planning-datatable>
 </div>
