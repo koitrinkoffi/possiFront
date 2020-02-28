@@ -11,6 +11,8 @@ import {FooterComponent} from './components/footer/footer.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {MatButtonModule} from '@angular/material';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import { FormContainerComponent } from './components/form-container/form-container.component';
 
 
 
@@ -28,7 +30,8 @@ import {MatButtonModule} from '@angular/material';
     AppRoutingModule,
     BrowserAnimationsModule,
     AdminLayoutModule,
-    MatButtonModule
+    MatButtonModule,
+    SweetAlert2Module.forRoot()
   ],
   bootstrap: [AppComponent]
 })

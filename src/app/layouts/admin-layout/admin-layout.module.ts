@@ -24,6 +24,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {getFrenchPaginatorIntl} from '../../utils/frenchPaginatorintl';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {RouterModule} from '@angular/router';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 
@@ -69,7 +70,8 @@ import {RouterModule} from '@angular/router';
     MatChipsModule,
     FormsModule,
     MatAutocompleteModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    SweetAlert2Module
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
