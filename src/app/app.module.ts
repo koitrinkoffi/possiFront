@@ -9,10 +9,8 @@ import {AdminLayoutModule} from './layouts/admin-layout/admin-layout.module';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
-import {NavbarComponent} from './components/navbar/navbar.component';
-import { PrivatePlanningComponent } from './components/private-planning/private-planning.component';
-
-
+import {NavbarComponent} from './components/navbar/navbar.component'
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -20,15 +18,15 @@ import { PrivatePlanningComponent } from './components/private-planning/private-
     AdminLayoutComponent,
     FooterComponent,
     SidebarComponent,
-    NavbarComponent,
-    PrivatePlanningComponent
+    NavbarComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AdminLayoutModule
+    AdminLayoutModule,
+    SweetAlert2Module.forRoot()
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@ import {PlanningService} from '../../services/planning.service';
 import {Planning} from '../../model/planning';
 import {User} from '../../model/user';
 import * as moment from 'moment';
+import {showNotification} from '../../utils/notify';
 
 @Component({
   selector: 'app-home',

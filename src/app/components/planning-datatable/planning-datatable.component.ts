@@ -20,6 +20,10 @@ export interface PlanningElement {
 export class PlanningDatatableComponent implements OnInit {
   private planningService: PlanningService;
   private planningElement: PlanningElement[];
+  @Input()
+  private title: string;
+  @Input()
+  private subtitle = '';
   private displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
   private dataSource: MatTableDataSource<PlanningElement>;
 
@@ -33,12 +37,12 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource = new MatTableDataSource<PlanningElement>();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    // const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
-    // this.parseData([ new Planning('1', 'Test 1', user, '03/02/2020', '03/02/2020'),
-    //   new Planning('2', 'Bof', user, '03/02/2020', '03/02/2020')]);
-    // this.planningService.getPlanningByUser().subscribe(data => {
-    //   console.log(data);
-    // });
+    const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
+    this.parseData([ new Planning('1', 'Test 1', '03/02/2020', '03/02/2020', user),
+      new Planning('2', 'Bof', '03/02/2020', '03/02/2020', user)]);
+    this.planningService.getPlanningByUser().subscribe(data => {
+      console.log(data);
+    });
   }
 
   private applyFilter(filterValue: string) {

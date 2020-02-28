@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {Classroom} from '../model/classroom';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ClassroomService {
     return this.httpClient.get(environment.apiUrl + '/room/list');
   }
 
-  public create(classroom: string[]): any {
+  public create(classroom: Classroom[]): any {
     return this.httpClient.post(environment.apiUrl + '/room/createMany', classroom);
   }
 }

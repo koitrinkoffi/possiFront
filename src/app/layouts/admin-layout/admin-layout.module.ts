@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {DatatableComponent} from '../../components/datatable/datatable.component';
-import {AppBarComponent} from '../../components/app-bar/app-bar.component';
 import {MessageBoxComponent} from '../../components/message-box/message-box.component';
 import {HomeComponent} from '../../components/home/home.component';
 import {PlanningDatatableComponent} from '../../components/planning-datatable/planning-datatable.component';
@@ -22,17 +21,17 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {getFrenchPaginatorIntl} from '../../frenchPaginatorintl';
+import {getFrenchPaginatorIntl} from '../../utils/frenchPaginatorintl';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {RouterModule} from '@angular/router';
 import {StudentRegisterComponent} from '../../components/student-register/student-register.component';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 
 @NgModule({
   declarations: [
     DatatableComponent,
-    AppBarComponent,
     MessageBoxComponent,
     HomeComponent,
     PlanningDatatableComponent,
@@ -45,7 +44,6 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
   ],
   exports: [
     DatatableComponent,
-    AppBarComponent,
     MessageBoxComponent,
     HomeComponent,
     PlanningDatatableComponent,
@@ -75,7 +73,8 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
     FormsModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    SweetAlert2Module
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
