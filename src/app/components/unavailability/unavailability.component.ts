@@ -9,20 +9,23 @@ import {TabHeader} from '../table/table.component';
 export class UnavailabilityComponent implements OnInit {
 
   private planningName = 'Test 1';
-  private tabHeaders: TabHeader[] = [];
+  private testToggle = true;
+  private tabHeaders: TabHeader[] = [{
+    label: 'Tableau',
+    icon: 'table_chart',
+    first: true
+  },
+    {
+      label: 'Calendrier',
+      icon: 'calendar_today',
+      first: false
+    }];
   constructor() { }
 
-  ngOnInit() {
-    this.tabHeaders.push({
-      label: 'Test',
-      icon: 'home',
-      first: true
-    });
-    this.tabHeaders.push({
-      label: 'Drole',
-      icon: 'home',
-      first: false
-    });
+  ngOnInit() {}
+
+  private toggleAvailability() {
+    this.testToggle = !this.testToggle;
   }
 
 }

@@ -13,9 +13,9 @@ import {
   MAT_DATE_LOCALE,
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatIconModule,
+  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDividerModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule, MatSelectModule,
+  MatPaginatorModule, MatSelectModule, MatSlideToggleModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -82,7 +82,9 @@ import {CardComponent} from '../../components/card/card.component';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatSelectModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatSlideToggleModule,
+    MatDividerModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
