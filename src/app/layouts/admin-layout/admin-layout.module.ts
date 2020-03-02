@@ -29,6 +29,7 @@ import {CalendarComponent} from '../../components/calendar/calendar.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
 import {TableComponent} from '../../components/table/table.component';
+import {CardComponent} from '../../components/card/card.component';
 
 
 
@@ -47,6 +48,7 @@ import {TableComponent} from '../../components/table/table.component';
     PrivatePlanningComponent,
     CalendarComponent,
     TableComponent,
+    CardComponent,
   ],
   exports: [
     DatatableComponent,
