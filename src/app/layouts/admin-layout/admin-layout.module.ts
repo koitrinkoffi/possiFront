@@ -28,6 +28,7 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
 import {CalendarComponent} from '../../components/calendar/calendar.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
+import {TableComponent} from '../../components/table/table.component';
 
 
 
@@ -45,6 +46,7 @@ import {PrivatePlanningComponent} from '../../components/private-planning/privat
     StudentRegisterComponent,
     PrivatePlanningComponent,
     CalendarComponent,
+    TableComponent,
   ],
   exports: [
     DatatableComponent,

@@ -1,0 +1,12 @@
+<div class="nav-center">
+  <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+    <li *ngFor="let header of headers" [class.active]="header.first" (click)="toggleActiveHeader(header)" class="nav-item">
+      <a [href]="'#' + header.label.trim()" role="tab" data-toggle="tab" class="nav-link">
+        <i class="material-icons">{{header.icon}}</i> {{header.label}}
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="tab-content">
+  <ng-content></ng-content>
+</div>
