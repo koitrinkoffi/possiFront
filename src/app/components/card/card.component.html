@@ -1,0 +1,22 @@
+<div class="card">
+  <div
+    [ngClass]="{
+    'card-header': true,
+    'card-header-icon': (icon !== undefined),
+    'card-header-primary': (color === 'primary'),
+    'card-header-danger': (color === 'danger'),
+    'card-header-success': (color === 'success'),
+    'card-header-warning': (color === 'warning'),
+    'card-header-info': (color === 'info'),
+    'card-header-rose': (color === 'rose')
+  }">
+    <div class="card-icon" *ngIf="icon !== undefined">
+      <mat-icon>{{icon}}</mat-icon>
+    </div>
+    <h4 class="card-title ">{{title}}</h4>
+    <p class="card-category">{{subtitle}}</p>
+  </div>
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+</div>

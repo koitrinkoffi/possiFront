@@ -1,20 +1,18 @@
-<div class="main">
-  <div class="header">
+<div class="main-content">
+  <div class="text-center">
     <span class="title">{{planningName}}</span><br>
     <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
   </div>
-  <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="Tableau">
-      <ng-template matTabContent>
-        non
-        <span class="remove-btn">Oui</span>
-      </ng-template>
-    </mat-tab>
-    <mat-tab label="Calendrier">
-      <ng-template matTabContent>
+  <app-table [headers]="tabHeaders">
+    <div class="tab-pane active" [id]="tabHeaders[0].label.trim()">
+      <app-card>
+        <app-unavailability-chooser></app-unavailability-chooser>
+      </app-card>
+    </div>
+    <div class="tab-pane" [id]="tabHeaders[1].label.trim()">
+      <app-card>
         <app-calendar></app-calendar>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-
+      </app-card>
+    </div>
+  </app-table>
 </div>

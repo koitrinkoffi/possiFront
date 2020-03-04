@@ -13,9 +13,9 @@ import {
   MAT_DATE_LOCALE,
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatIconModule,
+  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDividerModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule, MatSelectModule,
+  MatPaginatorModule, MatSelectModule, MatSlideToggleModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -28,24 +28,30 @@ import {StudentRegisterComponent} from '../../components/student-register/studen
 import {CalendarComponent} from '../../components/calendar/calendar.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
+import {TableComponent} from '../../components/table/table.component';
+import {CardComponent} from '../../components/card/card.component';
+import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
 
 
 
 @NgModule({
-  declarations: [
-    DatatableComponent,
-    MessageBoxComponent,
-    HomeComponent,
-    PlanningDatatableComponent,
-    UnavailabilityComponent,
-    CreatePlanningComponent,
-    ClassroomSelectorComponent,
-    PersonDatatableComponent,
-    ClassroomPipe,
-    StudentRegisterComponent,
-    PrivatePlanningComponent,
-    CalendarComponent,
-  ],
+    declarations: [
+        DatatableComponent,
+        MessageBoxComponent,
+        HomeComponent,
+        PlanningDatatableComponent,
+        UnavailabilityComponent,
+        CreatePlanningComponent,
+        ClassroomSelectorComponent,
+        PersonDatatableComponent,
+        ClassroomPipe,
+        StudentRegisterComponent,
+        PrivatePlanningComponent,
+        CalendarComponent,
+        TableComponent,
+        CardComponent,
+        UnavailabilityChooserComponent,
+    ],
   exports: [
     DatatableComponent,
     MessageBoxComponent,
@@ -78,7 +84,9 @@ import {PrivatePlanningComponent} from '../../components/private-planning/privat
     MatAutocompleteModule,
     MatCheckboxModule,
     MatSelectModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatSlideToggleModule,
+    MatDividerModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},

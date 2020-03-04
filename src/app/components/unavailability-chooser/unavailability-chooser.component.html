@@ -1,0 +1,56 @@
+<div class="d-flex flex-row">
+  <div class="border py-md-2 w-25">
+    <div class="row text-center">
+      <div class="col-md-12 mb-md-4 mt-md-5">
+        <h3 class="mt-md-2 mx-md-2 font-weight-bold">Créneaux</h3>
+      </div>
+      <div class="col-md-12 mt-md-3">
+        <mat-divider style="margin-top: -1px;"></mat-divider>
+      </div>
+      <div class="col-md-12 pt-md-4 ">
+        <h4 class="mx-md-2 font-weight-bold">Êtes vous disponible à cette date ?</h4>
+      </div>
+    </div>
+  </div>
+  <ul class="options horizontal-scroll-view d-flex flex-row">
+    <li class="border py-md-2 w-20" *ngFor="let unvailability of unvailabilities" >
+      <div class="row text-center">
+        <div class="col-md-12">
+          <div class="row">
+            <h4 class="col-12 font-weight-normal">
+              <div class="col-12">{{unvailability.getPeriodFromFormated('MMM')}}</div>
+              <div class="col-12 font-weight-bold">{{unvailability.getPeriodFromFormated('DD')}}</div>
+              <div class="col-12">{{unvailability.getPeriodFromFormated('ddd')}}</div>
+            </h4>
+          </div>
+        </div>
+        <div class="col-md-12 mt-md-2">
+          <div class="row font-weight-normal">
+            <div class="col-md-12">{{unvailability.getPeriodFromFormated('HH:mm')}}</div>
+            <div class="col-md-12">{{unvailability.getPeriodToFormated('HH:mm')}}</div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+        <div class="col-md-12 pt-md-3">
+          <div class="row">
+            <div class="col-md-12">
+              <button mat-raised-button
+                      [ngClass]="{
+                            'btn': true,
+                            'btn-success': unvailability.available,
+                            'btn-danger': !unvailability.available,
+                            'btn-round': true
+                            }"
+                      (click)="toggleAvailability(unvailability)">
+                <span class="mat-button-wrapper" *ngIf="unvailability.available">Oui</span>
+                <span class="mat-button-wrapper" *ngIf="!unvailability.available">Non</span>
+                <div matripple class="mat-ripple mat-button-ripple"></div>
+                <div class="mat-button-focus-overlay"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
