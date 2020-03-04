@@ -30,26 +30,28 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 import {PrivatePlanningComponent} from '../../components/private-planning/private-planning.component';
 import {TableComponent} from '../../components/table/table.component';
 import {CardComponent} from '../../components/card/card.component';
+import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
 
 
 
 @NgModule({
-  declarations: [
-    DatatableComponent,
-    MessageBoxComponent,
-    HomeComponent,
-    PlanningDatatableComponent,
-    UnavailabilityComponent,
-    CreatePlanningComponent,
-    ClassroomSelectorComponent,
-    PersonDatatableComponent,
-    ClassroomPipe,
-    StudentRegisterComponent,
-    PrivatePlanningComponent,
-    CalendarComponent,
-    TableComponent,
-    CardComponent,
-  ],
+    declarations: [
+        DatatableComponent,
+        MessageBoxComponent,
+        HomeComponent,
+        PlanningDatatableComponent,
+        UnavailabilityComponent,
+        CreatePlanningComponent,
+        ClassroomSelectorComponent,
+        PersonDatatableComponent,
+        ClassroomPipe,
+        StudentRegisterComponent,
+        PrivatePlanningComponent,
+        CalendarComponent,
+        TableComponent,
+        CardComponent,
+        UnavailabilityChooserComponent,
+    ],
   exports: [
     DatatableComponent,
     MessageBoxComponent,
