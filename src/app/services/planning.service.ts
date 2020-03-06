@@ -23,10 +23,8 @@ export class PlanningService {
     return this.httpClient.get(environment.apiUrl + '/planning/list/public');
   }
 
-  createPlanning(planning: Planning, teachers?, students?) {
+  createPlanning(planning: Planning) {
     const formData: FormData = new FormData();
-    formData.append('studentCsv', students);
-    formData.append('teachers', teachers);
     formData.append('planning', planning.getRequestData());
     return this.httpClient.post(environment + '/planning/create', { params: formData});
   }

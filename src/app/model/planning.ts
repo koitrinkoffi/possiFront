@@ -14,6 +14,7 @@ export class Planning {
   private _endDay: string;
   private _oralDefenseDuration: string;
   private oralDefenseInterlude = '10';
+  private state: string;
   private _classrooms: Classroom[];
 
   constructor(id?: string, title?: string, startDate?: string, endDate?: string, admin?: User) {
@@ -130,7 +131,8 @@ export class Planning {
       oralDefenseInterlude: this.oralDefenseInterlude,
       periodEnd: this.endDate,
       periodStart: this.startDate,
-      rooms: this.classrooms
+      rooms: this.classrooms,
+      etat: this.state
     };
   }
 }

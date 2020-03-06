@@ -31,27 +31,29 @@ import {PrivatePlanningComponent} from '../../components/private-planning/privat
 import {TableComponent} from '../../components/table/table.component';
 import {CardComponent} from '../../components/card/card.component';
 import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
+import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
 
 
 
 @NgModule({
-    declarations: [
-        DatatableComponent,
-        MessageBoxComponent,
-        HomeComponent,
-        PlanningDatatableComponent,
-        UnavailabilityComponent,
-        CreatePlanningComponent,
-        ClassroomSelectorComponent,
-        PersonDatatableComponent,
-        ClassroomPipe,
-        StudentRegisterComponent,
-        PrivatePlanningComponent,
-        CalendarComponent,
-        TableComponent,
-        CardComponent,
-        UnavailabilityChooserComponent,
-    ],
+  declarations: [
+    DatatableComponent,
+    MessageBoxComponent,
+    HomeComponent,
+    PlanningDatatableComponent,
+    UnavailabilityComponent,
+    CreatePlanningComponent,
+    ClassroomSelectorComponent,
+    PersonDatatableComponent,
+    ClassroomPipe,
+    StudentRegisterComponent,
+    PrivatePlanningComponent,
+    CalendarComponent,
+    TableComponent,
+    CardComponent,
+    UnavailabilityChooserComponent,
+    ParticipantDatatableComponent,
+  ],
   exports: [
     DatatableComponent,
     MessageBoxComponent,

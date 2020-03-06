@@ -10,7 +10,7 @@
               </h3>
               <h5>{{title}}</h5>
             </div>
-            <mat-horizontal-stepper linear #stepper *ngIf="!isMobileMenu()">
+            <mat-horizontal-stepper linear *ngIf="!isMobileMenu()">
               <mat-step [stepControl]="firstFormGroup">
                 <div class="card-body">
                   <form [formGroup]="firstFormGroup" class="custom-form">
@@ -140,29 +140,31 @@
                       <input type="file" accept="text/csv" formControlName="file" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
                       <div class="row">
                         <div class="mx-auto">
-                          <!--                          <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>-->
+                          <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>
                           <p *ngIf="inputFile.value == ''">Aucun fichier selectionné</p>
                         </div>
                       </div>
                       <div class="row">
                         <div class="mx-auto">
-                          <!--                          <mat-progress-spinner-->
-                          <!--                            cl-->
-                          <!--                            color="primary"-->
-                          <!--                            mode="indeterminate">-->
-                          <!--                          </mat-progress-spinner>-->
                           <button mat-raised-button color="primary" (click)="this.inputFile.click()">
                             <mat-icon>attachment</mat-icon>
                           </button>
-
                         </div>
                       </div>
-                      <div class="row" *ngIf="onLoading">
+                      <div class="row mt-4" *ngIf="onLoading">
                         <div class="mx-auto">
                           <mat-progress-spinner
                             color="primary"
                             mode="indeterminate">
                           </mat-progress-spinner>
+                        </div>
+                      </div>
+                      <div class="row mt-4" *ngIf="participants.length != 0 && !onLoading">
+                        <div class="col-md-12 text-left">
+                          <app-participant-datatable #participantDatatableComponent
+                                                     title="Liste des soutenances"
+                                                     [participants]="participants">
+                          </app-participant-datatable>
                         </div>
                       </div>
                     </div>
