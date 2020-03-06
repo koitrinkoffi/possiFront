@@ -24,12 +24,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const plannings: Planning[] = [];
     this.planningService.getPublicPlanning().subscribe(data => {
-      data.forEach(p => {
-        plannings.push(new Planning(p.id, p.name, moment(p.period.from).format(Planning.dateFormat()), moment(p.period.to).format(Planning.dateFormat()), new User(p.admin.id, p.admin.firstName, p.admin.lastName, p.admin.role, p.admin.uid, p.admin.email)));
-      });
-      this.planningDatatable.parseData(plannings);
+      this.planningDatatable.parseData(data);
     });
   }
 

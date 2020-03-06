@@ -42,7 +42,7 @@ export class ClassroomSelectorComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    const classroom = this.allClassrooms.find(c => c.label == value);
+    const classroom = this.allClassrooms.find(c => c.name == value);
     if (classroom == undefined) {
       this.addClassroom(new Classroom(value));
     } else {
@@ -57,8 +57,8 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   private addClassroom(classroom: Classroom): void {
-    const label = classroom.label.toLowerCase().trim();
-    if ((this.classrooms.filter(c => c.label.toLowerCase().trim() === label).length === 0)) {
+    const label = classroom.name.toLowerCase().trim();
+    if ((this.classrooms.filter(c => c.name.toLowerCase().trim() === label).length === 0)) {
       this.classrooms.push(classroom);
       this.filterSuggestedClassroom();
     }
@@ -74,7 +74,7 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   private classroomSelected(event: MatAutocompleteSelectedEvent): void {
-    this.classrooms.push(this.allClassrooms.find(c => c.label === event.option.viewValue));
+    this.classrooms.push(this.allClassrooms.find(c => c.name === event.option.viewValue));
     this.filterSuggestedClassroom();
     this.searchInput = '';
   }

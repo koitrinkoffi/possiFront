@@ -109,11 +109,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private fetchClassroom() {
     this.classroomService.getAll().subscribe(data => {
-      const classrooms: Classroom[] = [];
-      data.forEach(c => {
-        classrooms.push(new Classroom(c.name, c.id));
-      });
-      this.classroomSelector.parseData(classrooms);
+      this.classroomSelector.parseData(data);
     });
   }
 
@@ -126,19 +122,22 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private validate() {
+    // Planning
     const planning: Planning = new Planning();
-    planning.parse(this.firstFormGroup.value);
-    planning.parse(this.secondFormGroup.value);
+    planning.name = this.firstFormGroup.value.title;
+    planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
+    planning.admin = this.userService.user;
+    planning.parsePeriod(this.secondFormGroup.value);
 
     // Classroom
     const classroomToCreate = this.classroomSelector.getClassroomToCreate();
     if (classroomToCreate.length > 0) {
       this.classroomService.create(classroomToCreate).subscribe( data => {
-        planning.classrooms = this.classroomSelector.getClassroomSelected();
+        planning.rooms = this.classroomSelector.getClassroomSelected();
         this.planningService.createPlanning(planning);
       });
     } else {
-      planning.classrooms = this.classroomSelector.getClassroomSelected();
+      planning.rooms = this.classroomSelector.getClassroomSelected();
       this.planningService.createPlanning(planning).subscribe(data => {
         console.log(data);
       });
