@@ -6,7 +6,10 @@
   <app-table [headers]="tabHeaders">
     <div class="tab-pane active" [id]="tabHeaders[0].label.trim()">
       <app-card>
-        <app-unavailability-chooser></app-unavailability-chooser>
+        <app-unavailability-chooser
+          [unavailabilities]="unavailabilities"
+          (choice)="syncChoice($event)"
+        ></app-unavailability-chooser>
       </app-card>
     </div>
     <div class="tab-pane" [id]="tabHeaders[1].label.trim()">

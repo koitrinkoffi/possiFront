@@ -1,7 +1,7 @@
-import { Unvailability } from './unvailability';
+import { Unavailability } from './unavailability';
 
 describe('Unvailability', () => {
   it('should create an instance', () => {
-    expect(new Unvailability()).toBeTruthy();
+    expect(new Unavailability()).toBeTruthy();
   });
 });

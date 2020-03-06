@@ -8,7 +8,7 @@
               <h3 class="wizard-title">
                 Création d'un planning
               </h3>
-              <h5>Ces informations seront nécéessaire pour génération du planning.</h5>
+              <h5>{{title}}</h5>
             </div>
             <mat-horizontal-stepper linear #stepper *ngIf="!isMobileMenu()">
               <mat-step [stepControl]="firstFormGroup">
@@ -34,8 +34,8 @@
                     <div class="row">
                       <div class="col-md-6">
                         <mat-form-field appearance="outline">
-                          <mat-label>Durée des soutenances</mat-label>
-                          <input type="number" matInput placeholder="40 minutes" formControlName="oralDefenseDuration" required>
+                          <mat-label>Durée des soutenances (Minutes)</mat-label>
+                          <input type="number" matInput placeholder="60 minutes" formControlName="oralDefenseDuration" required>
                         </mat-form-field>
                       </div>
                     </div>
@@ -127,50 +127,42 @@
                   </div>
                 </div>
               </mat-step>
-              <mat-step>
-                <div class="card-body">
-                  <ng-template matStepLabel>Professeurs assignés</ng-template>
-                  <div class="row ">
-                    <div class="col-12">
-                      <app-person-datatable
-                        #datatable
-                        title="Liste des professeurs"
-                        [displayedColumns]="['select', 'firstname', 'lastname', 'email']">
-                      </app-person-datatable>
-                    </div>
-                  </div>
-                  <div class="row mt-md-4">
-                    <div class="mr-auto">
-                      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-                    </div>
-                    <div class="ml-auto">
-                      <button mat-raised-button color="primary" matStepperNext>Suivant</button>
-                    </div>
-                  </div>
-                </div>
-              </mat-step>
               <mat-step [stepControl]="firstFormGroup">
                 <div class="card-body">
                   <form [formGroup]="thirdFormGroup" class="custom-form">
-                    <ng-template matStepLabel>Les étudiants</ng-template>
+                    <ng-template matStepLabel>Soutenances</ng-template>
                     <div class="row">
                       <div class="col-12">
-                        <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des étudiants concernés par ce planning</h3>
+                        <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des soutenances</h3>
                       </div>
                     </div>
                     <div class="text-center">
-                      <input type="file" accept="text/csv" formControlName="file" #inputFile class="cdk-visually-hidden"/>
+                      <input type="file" accept="text/csv" formControlName="file" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
                       <div class="row">
-                        <div class="col-md-4 mx-auto">
-                          <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>
+                        <div class="mx-auto">
+                          <!--                          <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>-->
                           <p *ngIf="inputFile.value == ''">Aucun fichier selectionné</p>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-4 mx-auto">
+                        <div class="mx-auto">
+                          <!--                          <mat-progress-spinner-->
+                          <!--                            cl-->
+                          <!--                            color="primary"-->
+                          <!--                            mode="indeterminate">-->
+                          <!--                          </mat-progress-spinner>-->
                           <button mat-raised-button color="primary" (click)="this.inputFile.click()">
                             <mat-icon>attachment</mat-icon>
                           </button>
+
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="onLoading">
+                        <div class="mx-auto">
+                          <mat-progress-spinner
+                            color="primary"
+                            mode="indeterminate">
+                          </mat-progress-spinner>
                         </div>
                       </div>
                     </div>
@@ -305,35 +297,13 @@
                   </div>
                 </div>
               </mat-step>
-              <mat-step>
-                <div class="card-body">
-                  <ng-template matStepLabel>Professeurs assignés</ng-template>
-                  <div class="row ">
-                    <div class="col-12">
-                      <app-person-datatable
-                        #datatable
-                        title="Liste des professeurs"
-                        [displayedColumns]="['select', 'firstname', 'lastname', 'email']">
-                      </app-person-datatable>
-                    </div>
-                  </div>
-                  <div class="row mt-md-4">
-                    <div class="mr-auto">
-                      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-                    </div>
-                    <div class="ml-auto">
-                      <button mat-raised-button color="primary" matStepperNext>Suivant</button>
-                    </div>
-                  </div>
-                </div>
-              </mat-step>
               <mat-step [stepControl]="firstFormGroup">
                 <div class="card-body">
                   <form [formGroup]="thirdFormGroup" class="custom-form">
-                    <ng-template matStepLabel>Les étudiants</ng-template>
+                    <ng-template matStepLabel>Soutenances</ng-template>
                     <div class="row">
                       <div class="col-12">
-                        <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des étudiants concernés par ce planning</h3>
+                        <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des soutenances</h3>
                       </div>
                     </div>
                     <div class="text-center">

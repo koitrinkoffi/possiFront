@@ -7,16 +7,14 @@ import {Classroom} from '../model/classroom';
   providedIn: 'root'
 })
 export class ClassroomService {
-  private httpClient: HttpClient;
-  constructor(httpClient: HttpClient) {
-    this.httpClient = httpClient;
-  }
+  constructor(private httpClient: HttpClient) {}
 
   public getAll(): any {
     return this.httpClient.get(environment.apiUrl + '/room/list');
   }
 
   public create(classroom: Classroom[]): any {
-    return this.httpClient.post(environment.apiUrl + '/room/createMany', classroom);
+    const names: string[] = classroom.map(c => c.label);
+    return this.httpClient.post(environment.apiUrl + '/room/createMany', names);
   }
 }

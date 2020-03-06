@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
@@ -9,6 +9,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 
 const removeBackgroundColor = '#ffe6e2';
 const validateBackgroundColor = '#fff9dd';
@@ -19,12 +20,13 @@ const removeIcon = '/assets/img/001-remove.svg';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', {read: undefined, static: false}) calendarComponent: FullCalendarComponent;
 
   private minTime = '07:00:00';
   private maxTime = '22:00:00';
+  // private unavailabilities: Unavailability
   private calendarVisible = true;
   private calendarWeekends = true;
   private edit = true;
@@ -33,16 +35,81 @@ export class CalendarComponent implements OnInit {
   private calendarPlugins = [dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin];
 
   constructor(public dialog: MatDialog) {
-    this.calendarEvents = [{
-      id: 1,
-      resourceId: 1,
-      title: 'Mon event',
-      start: moment('2020-02-12 08:00:00').format(),
-      end: moment('2020-02-12 10:00:00').format()
-    }];
+    let today = new Date();
+    let y = today.getFullYear();
+    let m = today.getMonth();
+    let d = today.getDate();
+    this.calendarEvents = [
+      {
+        title: 'All Day Event',
+        start: new Date(y, m, 1),
+        className: 'event-default'
+      },
+      {
+        id: 999,
+        title: 'Repeating Event',
+        start: new Date(y, m, d-4, 6, 0),
+        allDay: false,
+        className: 'event-rose'
+      },
+      {
+        id: 999,
+        title: 'Repeating Event',
+        start: new Date(y, m, d+3, 6, 0),
+        allDay: false,
+        className: 'event-rose'
+      },
+      {
+        title: 'Meeting',
+        start: new Date(y, m, d-1, 10, 30),
+        allDay: false,
+        className: 'event-green'
+      },
+      {
+        title: 'Lunch',
+        start: new Date(y, m, d+7, 12, 0),
+        end: new Date(y, m, d+7, 14, 0),
+        allDay: false,
+        className: 'event-red'
+      },
+      {
+        title: 'Md-pro Launch',
+        start: new Date(y, m, d-2, 12, 0),
+        allDay: true,
+        className: 'event-azure'
+      },
+      {
+        title: 'Birthday Party',
+        start: new Date(y, m, d+1, 19, 0),
+        end: new Date(y, m, d+1, 22, 30),
+        allDay: false,
+        className: 'event-azure'
+      },
+      {
+        title: 'Click for Creative Tim',
+        start: new Date(y, m, 21),
+        end: new Date(y, m, 22),
+        url: 'https://www.creative-tim.com/',
+        className: 'event-orange'
+      },
+      {
+        title: 'Click for Google',
+        start: new Date(y, m, 21),
+        end: new Date(y, m, 22),
+        url: 'https://www.creative-tim.com/',
+        className: 'event-orange'
+      }
+    ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+
+  ngAfterViewInit(): void {
+    $('.fc-today').removeClass('alert alert-info');
+  }
+
 
   private addRemoveBtn(info) {
     const spanElement = document.createElement('span');
@@ -55,12 +122,13 @@ export class CalendarComponent implements OnInit {
   private render(info) {
     if (this.edit) {
       this.addRemoveBtn(info);
-    } else {
-      info.el.classList.add('calendar-icon-container');
-      info.el.innerHTML = '<img src="' +
-        (info.event.backgroundColor === removeBackgroundColor ? removeIcon : validIcon)
-        + '" alt="icon" class="calendar-icon"/>';
     }
+    // else {
+    //   info.el.classList.add('calendar-icon-container');
+    //   info.el.innerHTML = '<img src="' +
+    //     (info.event.backgroundColor === removeBackgroundColor ? removeIcon : validIcon)
+    //     + '" alt="icon" class="calendar-icon"/>';
+    // }
   }
 
   private onMouseEnter(info) {
@@ -101,11 +169,13 @@ export class CalendarComponent implements OnInit {
   }
 
   private handleDateClick(arg) {
-    this.openNewEventDialog(arg, false);
+    if (this.edit) {
+      this.openNewEventDialog(arg, false);
+    }
   }
 
   private handleDateSelection(arg) {
-          // Todo supprimer le mode selection
+    // Todo supprimer le mode selection
     this.openNewEventDialog(arg, true);
   }
 

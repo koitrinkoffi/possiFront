@@ -15,7 +15,7 @@ import {
   MatButtonModule,
   MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDividerModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule, MatSelectModule, MatSlideToggleModule,
+  MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -86,7 +86,8 @@ import {UnavailabilityChooserComponent} from '../../components/unavailability-ch
     MatSelectModule,
     FullCalendarModule,
     MatSlideToggleModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},

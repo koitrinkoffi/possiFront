@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Unvailability} from '../../model/unvailability';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Unavailability} from '../../model/unavailability';
 
 @Component({
   selector: 'app-unavailability-chooser',
@@ -8,37 +8,17 @@ import {Unvailability} from '../../model/unvailability';
 })
 export class UnavailabilityChooserComponent implements OnInit {
 
-  private unvailabilities: Unvailability[] = [];
+  @Input()
+  private unavailabilities: Unavailability[];
+  @Output()
+  private choice = new EventEmitter<Unavailability>();
 
   constructor() { }
 
-  ngOnInit() {
-    this.unvailabilities.push(new Unvailability(
-      1,
-      1,
-      '20200208T0800',
-      '20200208T0900',
-      true
-    ));
+  ngOnInit() { }
 
-    this.unvailabilities.push(new Unvailability(
-      1,
-      1,
-      '20200208T1500',
-      '20200208T1600',
-      true
-    ));
-
-    this.unvailabilities.push(new Unvailability(
-      1,
-      1,
-      '20200216T1000',
-      '20200216T1200',
-      true
-    ));
-  }
-
-  private toggleAvailability(unvailability: Unvailability) {
-    unvailability.available = !unvailability.available;
+  private toggleAvailability(unavailability: Unavailability) {
+    unavailability.available = !unavailability.available;
+    this.choice.emit(unavailability);
   }
 }

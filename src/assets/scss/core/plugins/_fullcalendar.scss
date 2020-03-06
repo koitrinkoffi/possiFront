@@ -50,7 +50,7 @@ body .fc { /* extra precedence to overcome jqui */
 }
 
 .fc-unthemed .fc-today {
-	background: $well-bg;
+	background: $grey-100;
 }
 
 .fc-highlight { /* when user is selecting cells */
@@ -165,8 +165,8 @@ NOTE: use percentage font sizes or else old IE chokes
     letter-spacing: 0;
 
     will-change: box-shadow, transform;
-    transition: box-shadow 0.2s $mdb-animation-curve-fast-out-linear-in,
-    background-color 0.2s $mdb-animation-curve-default;
+    transition: box-shadow 0.2s $bmd-animation-curve-fast-out-linear-in,
+    background-color 0.2s $bmd-animation-curve-default;
 
     &::-moz-focus-inner {
     border: 0;

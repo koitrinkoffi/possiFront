@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-export class Unvailability {
+export class Unavailability {
   private _id: number|string;
   private _userId: number|string;
   private _planningId: number|string;

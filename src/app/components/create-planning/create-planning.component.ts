@@ -10,6 +10,8 @@ import {ClassroomSelectorComponent} from '../classroom-selector/classroom-select
 import {Planning} from '../../model/planning';
 import * as $ from 'jquery';
 import {PlanningService} from '../../services/planning.service';
+import {showNotification} from '../../utils/notify';
+import {ParticipantService} from '../../services/participant.service';
 
 @Component({
   selector: 'app-create-planning',
@@ -22,11 +24,14 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private secondFormGroup: FormGroup;
   private thirdFormGroup: FormGroup;
   private teachers: User[] = [];
+  private onLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private classroomService: ClassroomService, private planningService: PlanningService) {}
+  constructor(private formBuilder: FormBuilder,
+              private userService: UserService,
+              private classroomService: ClassroomService,
+              private planningService: PlanningService,
+              private participantService: ParticipantService) {}
 
-  @ViewChild('datatable', {static: false})
-  private personDatatable: PersonDatatableComponent;
   @ViewChild('classroomSelector', {static: false})
   private classroomSelector: ClassroomSelectorComponent;
   @ViewChild('inputFile', {static: false})
@@ -40,8 +45,8 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.fetchClassroom();
     this.firstFormGroup = this.formBuilder.group({
-      title: ['', Validators.required],
-      oralDefenseDuration: ['40', [Validators.required, Validators.min(0)]]
+      title: ['fuck', Validators.required],
+      oralDefenseDuration: ['60', [Validators.required, Validators.min(0)]]
     });
     this.secondFormGroup = this.formBuilder.group({
       startDate: [moment(new Date()).format(), [Validators.required,  this.isValidDate()]],
@@ -54,25 +59,31 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       validators: [this.validateDateRange('startDate', 'endDate')]
     });
     this.thirdFormGroup = this.formBuilder.group({
-      file: ['']
+      file: ['', [Validators.required]]
     });
   }
 
   ngAfterViewInit(): void {
     this.fetchTeacher();
+    // showNotification('Merde !', 'danger');
+    // showNotification('Coronavirus !!!!!!!!', 'success');
   }
 
   private validateDateRange(from: string, to: string): ValidatorFn {
     return (group: FormGroup): { [key: string]: any } => {
-      const f = group.controls[from];
-      const t = group.controls[to];
-      if (f.value > t.value) {
+      const toInput = group.controls[to];
+
+      const f = moment(group.controls[from].value);
+      const t = moment(toInput.value);
+
+      if (!f.isSameOrBefore(t) || !t.isSameOrAfter(f)) {
         const rangeError = {
           dateRange: 'La date de début peut pas être plus grande que la date de fin'
         };
-        t.setErrors(rangeError);
+        toInput.setErrors(rangeError);
         return rangeError;
       }
+      toInput.setErrors(null);
       return {};
     };
   }
@@ -83,13 +94,17 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     };
   }
 
+  // Todo Ajouter une fonction pour verifier horaire
+
   private isValidHour(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      return !moment(control.value, 'HH:mm').isValid() ? {invalidHour: {value: control.value}} : null;
+      // Todo verifier la validation pour le format H:mm et H:m
+      return !moment(control.value, 'H:m').isValid() ? {invalidHour: {value: control.value}} : null;
     };
 
   }
 
+  // Todo à revoir son utilisation
   private fetchTeacher() {
     this.userService.getUsers().subscribe(data => {
       data.forEach(u => {
@@ -102,7 +117,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
           u.email
         ));
       });
-      this.personDatatable.parseData(this.teachers);
+      // this.personDatatable.parseData(this.teachers);
     });
   }
 
@@ -125,17 +140,38 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private validate() {
-    const planning: Planning = new Planning();
-    planning.parse(this.firstFormGroup.value);
-    planning.parse(this.secondFormGroup.value);
-    this.classroomService.create(this.classroomSelector.getClassroomToCreate()).subscribe( data => {
-      planning.classrooms = this.classroomSelector.getClassroomSelected();
-      this.planningService.createPlanning(planning, this.personDatatable.getPersonSelected(), this.thirdFormGroup.get('file').value);
-    });
+    // const planning: Planning = new Planning();
+    // planning.parse(this.firstFormGroup.value);
+    // planning.parse(this.secondFormGroup.value);
+
+    // Classroom
+    // this.classroomService.create(this.classroomSelector.getClassroomToCreate()).subscribe( data => {
+    // planning.classrooms = this.classroomSelector.getClassroomSelected();
+    // this.planningService.createPlanning(planning, this.personDatatable.getPersonSelected(), this.thirdFormGroup.get('file').value);
+    // });
+    this.participantService.uploadFile(this.thirdFormGroup.value).subscribe(data => console.log(data));
+    // console.log(this.thirdFormGroup.value);
+
+  }
+
+  private onFileSelect(event) {
+    console.log('fichier chargé');
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(file);
+      this.onLoading = true;
+      this.participantService.uploadFile(file).subscribe(data => {
+        console.log(data);
+        this.onLoading = false;
+      });
+    }
   }
 
   private isMobileMenu() {
     return !($(window).width() > 991);
   }
 
+  private get title() {
+    return this.firstFormGroup.get('title').value;
+  }
 }

@@ -19,15 +19,15 @@ export class ClassroomSelectorComponent implements OnInit {
   // private classroomCtrl = new FormControl();
   // private filteredClassroom: Observable<string[]>;
   private suggestedClassroom: Classroom[];
-  private lemon: Classroom = new Classroom( 'Lemon', 1);
+  private lemon: Classroom = new Classroom( 'i50', 1);
   private classrooms: Classroom[] = [];
   @Input()
   private allClassrooms: Classroom[] = [
-    new Classroom('Apple', 2),
+    new Classroom('e210', 2),
     this.lemon,
-    new Classroom('Line', 4),
-    new Classroom('Orange', 5),
-    new Classroom('Strawberry', 6)];
+    new Classroom('i52', 4),
+    new Classroom('i54', 5),
+    new Classroom('i53', 6)];
 
   // @ViewChild('classroomInput', {static: false}) classroomInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;

@@ -24,22 +24,16 @@
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
-<div>
-  <mat-card class="">
-    <mat-card-header>
-      <mat-card-title>Salles suggérées</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p class="">
-        <mat-chip-list aria-label="Classroom selection" [(ngModel)]="classrooms">
-          <mat-chip
-            *ngFor="let classroom of suggestedClassroom"
-            [selectable]="selectableChips"
-            (click)="addClassroom(classroom)">
-            {{classroom.label}}
-          </mat-chip>
-        </mat-chip-list>
-      </p>
-    </mat-card-content>
-  </mat-card>
-</div>
+<app-card
+  title="Salles suggérées">
+  <p class="">
+    <mat-chip-list aria-label="Classroom selection" [(ngModel)]="classrooms">
+      <mat-chip
+        *ngFor="let classroom of suggestedClassroom"
+        [selectable]="selectableChips"
+        (click)="addClassroom(classroom)">
+        {{classroom.label}}
+      </mat-chip>
+    </mat-chip-list>
+  </p>
+</app-card>
