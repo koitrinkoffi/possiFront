@@ -77,12 +77,18 @@
                         <mat-form-field appearance="outline">
                           <mat-label>Heure de début de journée</mat-label>
                           <input matInput placeholder="08:00" formControlName="startDay" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
                         </mat-form-field>
                       </div>
                       <div class="col-md-6">
                         <mat-form-field appearance="outline">
                           <mat-label>Heure de fin de journée</mat-label>
                           <input matInput placeholder="18:00" formControlName="endDay" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
                         </mat-form-field>
                       </div>
                     </div>
@@ -91,12 +97,18 @@
                         <mat-form-field appearance="outline">
                           <mat-label>Heure de début de pause</mat-label>
                           <input matInput placeholder="12:00" formControlName="startBreak" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
                         </mat-form-field>
                       </div>
                       <div class="col-md-6">
                         <mat-form-field appearance="outline">
                           <mat-label>Heure de fin de pause</mat-label>
                           <input matInput placeholder="14:00" formControlName="endBreak" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
                         </mat-form-field>
                       </div>
                     </div>
@@ -163,6 +175,7 @@
                         <div class="col-md-12 text-left">
                           <app-participant-datatable #participantDatatableComponent
                                                      title="Liste des soutenances"
+                                                     (selectionListener)="onParticipantChange($event)"
                                                      [participants]="participants">
                           </app-participant-datatable>
                         </div>
@@ -174,12 +187,13 @@
                       <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
                     </div>
                     <div class="ml-auto">
-                      <button mat-raised-button color="primary" class="item-left-spacing" (click)="validate()">
+                      <button mat-raised-button color="primary" [disabled]="participantsSelected.length == 0" class="item-left-spacing" (click)="validate()">
                         Créer
                       </button>
                     </div>
                   </div>
                 </div>
+                <swal #swalComponent></swal>
               </mat-step>
             </mat-horizontal-stepper>
             <mat-vertical-stepper linear #stepper *ngIf="isMobileMenu()">

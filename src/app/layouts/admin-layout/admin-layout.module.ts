@@ -32,6 +32,7 @@ import {TableComponent} from '../../components/table/table.component';
 import {CardComponent} from '../../components/card/card.component';
 import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
 import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 
@@ -66,6 +67,7 @@ import {ParticipantDatatableComponent} from '../../components/participant-datata
     ClassroomPipe
   ],
   imports: [
+    SweetAlert2Module,
     CommonModule,
     MatToolbarModule,
     MatCardModule,

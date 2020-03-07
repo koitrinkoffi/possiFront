@@ -12,6 +12,9 @@ import {showNotification} from '../../utils/notify';
 import {ParticipantService} from '../../services/participant.service';
 import {Participant} from '../../model/participant';
 import {ParticipantDatatableComponent} from '../participant-datatable/participant-datatable.component';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {hideLoading, showLoading} from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-planning',
@@ -24,14 +27,19 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private secondFormGroup: FormGroup;
   private thirdFormGroup: FormGroup;
   private participants: Participant[] = [];
+  private participantsSelected: Participant[] = [];
   private onLoading = false;
+  private onSubmitting = false;
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
               private classroomService: ClassroomService,
               private planningService: PlanningService,
-              private participantService: ParticipantService) {}
+              private participantService: ParticipantService,
+              private router: Router) {}
 
+  @ViewChild('swalComponent', {static: false})
+  private swal: SwalComponent;
   @ViewChild('participantDatatableComponent', {static: false})
   private participantDatatable: ParticipantDatatableComponent;
 
@@ -66,11 +74,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    // this.fetchTeacher();
-    // showNotification('Merde !', 'danger');
-    // showNotification('Coronavirus !!!!!!!!', 'success');
-  }
+  ngAfterViewInit(): void {}
 
   private validateDateRange(from: string, to: string): ValidatorFn {
     return (group: FormGroup): { [key: string]: any } => {
@@ -122,27 +126,65 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private validate() {
-    // Planning
-    const planning: Planning = new Planning();
-    planning.name = this.firstFormGroup.value.title;
-    planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
-    planning.admin = this.userService.user;
-    planning.parsePeriod(this.secondFormGroup.value);
 
-    // Classroom
-    const classroomToCreate = this.classroomSelector.getClassroomToCreate();
-    if (classroomToCreate.length > 0) {
-      this.classroomService.create(classroomToCreate).subscribe( data => {
-        planning.rooms = this.classroomSelector.getClassroomSelected();
-        this.planningService.createPlanning(planning);
+    this.swal.beforeOpen.subscribe(() => {
+      this.swal.update({
+        text: 'Veuillez patienter quelques instants',
+        allowOutsideClick: false,
+        allowEnterKey: false,
+        allowEscapeKey: false,
       });
-    } else {
+      showLoading();
+      // Planning
+      const planning: Planning = new Planning();
+      planning.name = this.title;
+      planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
+      planning.admin = this.userService.user;
+      planning.parsePeriod(this.secondFormGroup.value);
+      planning.participants = this.participantsSelected;
       planning.rooms = this.classroomSelector.getClassroomSelected();
-      this.planningService.createPlanning(planning).subscribe(data => {
-        console.log(data);
-      });
-    }
 
+      // Classroom
+      const classroomToCreate = this.classroomSelector.getClassroomToCreate();
+      if (classroomToCreate.length > 0) {
+        this.classroomService.create(classroomToCreate).subscribe(data => {
+          planning.rooms = planning.rooms.concat(data);
+          this.createPlanning(planning);
+        }, error => {
+          hideLoading();
+          this.swal.update({icon: 'error',
+            text: 'Une erreur est survenue',
+            confirmButtonText: 'Retour',
+            buttonsStyling: false,
+            customClass: {confirmButton: 'btn btn-info'}});
+          console.error(error);
+        });
+      } else {
+        this.createPlanning(planning);
+      }
+    });
+    this.swal.fire();
+  }
+
+  private createPlanning(planning: Planning) {
+    planning.rooms = this.classroomSelector.getClassroomSelected();
+    this.planningService.createPlanning(planning).subscribe(data => {
+      hideLoading();
+      this.swal.update({icon: 'success',
+        text: 'Tout s\'est bien passé',
+        confirmButtonText: 'Retour à la page d\'acceuil',
+        buttonsStyling: false,
+        customClass: {confirmButton: 'btn btn-success to-redirect'}});
+      $('.to-redirect').click(() => this.router.navigate(['/home']));
+    },  error => {
+      hideLoading();
+      this.swal.update({icon: 'error',
+        text: 'Une erreur est survenue',
+        confirmButtonText: 'Retour',
+        buttonsStyling: false,
+        customClass: {confirmButton: 'btn btn-info'}});
+      console.error(error);
+    });
   }
 
   private onFileSelect(event) {
@@ -161,6 +203,10 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private isMobileMenu() {
     return !($(window).width() > 991);
+  }
+
+  private onParticipantChange(data) {
+    this.participantsSelected = this.participants.filter(p => data.find(d => d.email === p.student.email));
   }
 
   private get title() {

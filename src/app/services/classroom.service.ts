@@ -14,8 +14,8 @@ export class ClassroomService {
     return this.httpClient.get<Classroom[]>(environment.apiUrl + '/room/list');
   }
 
-  public create(classroom: Classroom[]): any {
+  public create(classroom: Classroom[]): Observable<Classroom[]> {
     const names: string[] = classroom.map(c => c.name);
-    return this.httpClient.post(environment.apiUrl + '/room/createMany', names);
+    return this.httpClient.post<Classroom[]>(environment.apiUrl + '/room/create', names);
   }
 }

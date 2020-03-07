@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {User} from '../../model/user';
@@ -6,7 +6,7 @@ import {Participant} from '../../model/participant';
 
 
 export interface ParticipantElement {
-  id: number;
+  email: string;
   student: string;
   followingTeacher: string;
   tutorFullName: string;
@@ -26,6 +26,9 @@ export class ParticipantDatatableComponent implements OnInit {
   private title: string;
   @Input()
   private subtitle = '';
+  @Output()
+  private selectionListener = new EventEmitter<ParticipantElement[]>();
+
   private displayedColumns: string[] = ['select', 'student', 'followingTeacher', 'tutorFullName', 'company'];
   private dataSource: MatTableDataSource<ParticipantElement>;
   private selection = new SelectionModel<ParticipantElement>(true, []);
@@ -39,6 +42,9 @@ export class ParticipantDatatableComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.parseData(this.participants);
+    this.selection.changed.asObservable().subscribe(data => {
+     this.selectionListener.emit(this.selection.selected);
+    });
   }
 
   private applyFilter(filterValue: string) {
@@ -64,14 +70,14 @@ export class ParticipantDatatableComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.student + 1}`;
   }
 
   parseData(participants: Participant[]): void {
     this.participantElements = [];
     participants.forEach(p => {
       this.participantElements.push({
-        id: p.id,
+        email: p.student.email,
         student: p.student.firstName + ' ' + p.student.lastName,
         followingTeacher: p.followingTeacher.firstName + ' ' + p.followingTeacher.lastName,
         tutorFullName: p.tutorFullName,
@@ -79,14 +85,6 @@ export class ParticipantDatatableComponent implements OnInit {
       });
     });
     this.dataSource.data = this.participantElements;
-  }
-
-  getPersonSelected(): number[] {
-    const ids: number[] = [];
-    this.selection.selected.forEach(p => {
-      ids.push(p.id);
-    });
-    return ids;
   }
 
 }

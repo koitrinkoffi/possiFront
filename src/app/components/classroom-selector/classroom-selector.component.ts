@@ -93,7 +93,7 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   public getClassroomSelected(): Classroom[] {
-    return this.classrooms;
+    return this.classrooms.filter(c => !this.getClassroomToCreate().includes(c));
   }
 
 }

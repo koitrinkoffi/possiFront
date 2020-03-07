@@ -24,7 +24,7 @@ export class PlanningService {
     return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/public');
   }
 
-  createPlanning(planning: Planning) {
-    return this.httpClient.post(environment.apiUrl + '/planning/create',  planning);
+  createPlanning(planning: Planning): Observable<Planning> {
+    return this.httpClient.post<Planning>(environment.apiUrl + '/planning/create',  planning);
   }
 }
