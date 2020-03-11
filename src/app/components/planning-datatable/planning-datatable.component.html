@@ -41,31 +41,27 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell  *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
-            <div class="row">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngIf="user.user.role == 1 || user.user.role == 2">
-                <button mat-raised-button color="primary" routerLink="/{{element.planning}}/unavailability">Indisponibilités</button>
+            <div class="row d-flex flex-row justify-content-around">
+              <div class="" *ngIf="user.user.role == 1 || user.user.role == 2">
+                <button mat-raised-button color="primary" routerLink="/planning/{{element.planning}}/unavailability">Indisponibilités</button>
               </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngIf="user.user.role == 2">
+              <div class="mr-md-2" *ngIf="user.user.role == 2">
                 <button mat-raised-button color="primary">Gérer le planning</button>
               </div>
-              <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                <div class="row">
-                  <div class="col-sm-3">
-                    <button mat-mini-fab color="primary">
-                      <mat-icon>calendar_today</mat-icon>
-                    </button>
-                  </div>
-                  <div class="col-sm-3" *ngIf="user.user.role == 2">
-                    <button mat-mini-fab color="warn">
-                      <mat-icon>file_copy</mat-icon>
-                    </button>
-                  </div>
-                  <div class="col-sm-3" *ngIf="user.user.role == 2">
-                    <button mat-mini-fab (click)="delete(element.id)">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </div>
+              <div class="mr-md-2">
+                <button mat-mini-fab color="primary">
+                  <mat-icon>calendar_today</mat-icon>
+                </button>
+              </div>
+              <div class="mr-md-2" *ngIf="user.user.role == 2">
+                <button mat-mini-fab color="warn">
+                  <mat-icon>file_copy</mat-icon>
+                </button>
+              </div>
+              <div class="mr-md-2" *ngIf="user.user.role == 2">
+                <button mat-mini-fab (click)="delete(element.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
             </div>
           </td>

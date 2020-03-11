@@ -22,7 +22,7 @@ export class PrivatePlanningComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const plannings: Planning[] = [];
-    this.planningService.getPlanningByUser().subscribe(data => {
+    this.planningService.getPlannings().subscribe(data => {
       this.planningDatatable.parseData(data);
     });
   }
