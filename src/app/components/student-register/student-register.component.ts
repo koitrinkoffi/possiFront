@@ -18,7 +18,7 @@ export class StudentRegisterComponent implements OnInit {
       1,
       'Olivier',
       'BARAIS',
-      'prof',
+      1,
       'bof',
       'ok'
     ));
