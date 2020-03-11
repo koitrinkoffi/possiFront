@@ -12,21 +12,11 @@ import {showNotification} from '../../utils/notify';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-
-  @ViewChild('planningDatatable', {static: false})
-  private planningDatatable: PlanningDatatableComponent;
+export class HomeComponent implements OnInit {
 
   constructor(private userService: UserService, private planningService: PlanningService) {
   }
 
   ngOnInit() {
   }
-
-  ngAfterViewInit(): void {
-    this.planningService.getPlannings().subscribe(data => {
-      this.planningDatatable.parseData(data);
-    });
-  }
-
 }
