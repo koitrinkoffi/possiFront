@@ -4,6 +4,7 @@ import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
 import {User} from '../../model/user';
 import * as moment from 'moment';
+import {UserService} from '../../services/user.service';
 
 export interface PlanningElement {
   id: string|number;
@@ -19,7 +20,6 @@ export interface PlanningElement {
   styleUrls: ['./planning-datatable.component.scss']
 })
 export class PlanningDatatableComponent implements OnInit {
-  private planningService: PlanningService;
   private planningElement: PlanningElement[];
   @Input()
   private title: string;
@@ -30,9 +30,7 @@ export class PlanningDatatableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) private sort: MatSort;
-  constructor(planning: PlanningService) {
-    this.planningService = planning;
-  }
+  constructor(private planningService: PlanningService, private user: UserService) {}
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanningElement>();
@@ -57,7 +55,6 @@ export class PlanningDatatableComponent implements OnInit {
     });
     this.dataSource.data = this.planningElement;
   }
-
   private delete(id: string) {
     this.dataSource.data = this.planningElement.filter(p => p.id !== id);
   }
