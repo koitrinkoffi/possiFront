@@ -3,7 +3,8 @@
     "/person",
     "/room",
     "/planning",
-    "/upload"
+    "/upload",
+    "/unavailability"
   ],
 
     "target": "http://localhost:8080",

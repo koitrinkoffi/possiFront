@@ -7,7 +7,7 @@ import {PrivatePlanningComponent} from '../../components/private-planning/privat
 
 export const AdminLayoutRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: ':planningName/unavailability', component: UnavailabilityComponent },
+  { path: 'planning/:planningName/unavailability', component: UnavailabilityComponent },
   { path: 'create/planning', component: CreatePlanningComponent },
   { path: 'student/register', component: StudentRegisterComponent},
   { path: 'private/planning', component: PrivatePlanningComponent}

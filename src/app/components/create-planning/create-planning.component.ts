@@ -64,9 +64,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     }, {
       validators: [this.validateDateRange('startDate', 'endDate')]
     });
-    this.thirdFormGroup = this.formBuilder.group({
-      file: ['', [Validators.required]]
-    });
   }
 
   ngAfterViewInit(): void {}

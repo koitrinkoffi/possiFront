@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TabHeader} from '../table/table.component';
 import {Unavailability} from '../../model/unavailability';
+import {UnavailabilityService} from '../../services/unavailability.service';
 
 @Component({
   selector: 'app-unavailability',
@@ -21,9 +22,14 @@ export class UnavailabilityComponent implements OnInit {
       icon: 'calendar_today',
       first: false
     }];
-  constructor() { }
+  constructor(private unavailabilityService: UnavailabilityService) { }
 
   ngOnInit() {
+
+    this.unavailabilityService.getAgenda(1, 1).subscribe(data => {
+      console.log(data);
+    });
+
     this.unavailabilities.push(new Unavailability(
       1,
       1,
