@@ -1,7 +1,8 @@
 declare var $: any;
 
-export function showNotification(from: string, align: string, message: string, type = '') {
-
+export function showNotification(message: string, type = '') {
+  const from = 'bottom';
+  const align = 'right';
   $.notify({
     icon: "notifications",
     message

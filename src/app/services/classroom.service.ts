@@ -2,21 +2,20 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Classroom} from '../model/classroom';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassroomService {
-  private httpClient: HttpClient;
-  constructor(httpClient: HttpClient) {
-    this.httpClient = httpClient;
+  constructor(private httpClient: HttpClient) {}
+
+  public getAll(): Observable<Classroom[]> {
+    return this.httpClient.get<Classroom[]>(environment.apiUrl + '/room/list');
   }
 
-  public getAll(): any {
-    return this.httpClient.get(environment.apiUrl + '/room/list');
-  }
-
-  public create(classroom: Classroom[]): any {
-    return this.httpClient.post(environment.apiUrl + '/room/createMany', classroom);
+  public create(classroom: Classroom[]): Observable<Classroom[]> {
+    const names: string[] = classroom.map(c => c.name);
+    return this.httpClient.post<Classroom[]>(environment.apiUrl + '/room/create', names);
   }
 }

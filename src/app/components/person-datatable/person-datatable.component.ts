@@ -65,34 +65,34 @@ export class PersonDatatableComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uid + 1}`;
   }
 
-  parseData(users: User[]): void {
-    this.personElements = [];
-    users.forEach(u => {
-      this.personElements.push({
-        id: u.id,
-        uid: u.uid,
-        firstName: u.firstName,
-        lastName: u.lastName,
-        email: u.email,
-        role: u.role
-      });
-    });
-    this.dataSource.data = this.personElements;
-  }
-
-  getPersonSelected(): User[] {
-    const persons: User[] = [];
-    this.selection.selected.forEach(p => {
-      persons.push(new User(
-        p.id,
-        p.uid,
-        p.firstName,
-        p.lastName,
-        p.email,
-        p.role
-      ));
-    });
-    return persons;
-  }
+  // parseData(users: User[]): void {
+  //   this.personElements = [];
+  //   users.forEach(u => {
+  //     this.personElements.push({
+  //       id: u.id,
+  //       uid: u.uid,
+  //       firstName: u.firstName,
+  //       lastName: u.lastName,
+  //       email: u.email,
+  //       role: u.role
+  //     });
+  //   });
+  //   this.dataSource.data = this.personElements;
+  // }
+  //
+  // getPersonSelected(): User[] {
+  //   const persons: User[] = [];
+  //   this.selection.selected.forEach(p => {
+  //     persons.push(new User(
+  //       p.id,
+  //       p.uid,
+  //       p.firstName,
+  //       p.lastName,
+  //       p.email,
+  //       p.role
+  //     ));
+  //   });
+  //   return persons;
+  // }
 
 }

@@ -19,15 +19,15 @@ export class ClassroomSelectorComponent implements OnInit {
   // private classroomCtrl = new FormControl();
   // private filteredClassroom: Observable<string[]>;
   private suggestedClassroom: Classroom[];
-  private lemon: Classroom = new Classroom( 'Lemon', 1);
+  private lemon: Classroom = new Classroom( 'i50', 1);
   private classrooms: Classroom[] = [];
   @Input()
   private allClassrooms: Classroom[] = [
-    new Classroom('Apple', 2),
+    new Classroom('e210', 2),
     this.lemon,
-    new Classroom('Line', 4),
-    new Classroom('Orange', 5),
-    new Classroom('Strawberry', 6)];
+    new Classroom('i52', 4),
+    new Classroom('i54', 5),
+    new Classroom('i53', 6)];
 
   // @ViewChild('classroomInput', {static: false}) classroomInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
@@ -42,7 +42,7 @@ export class ClassroomSelectorComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    const classroom = this.allClassrooms.find(c => c.label == value);
+    const classroom = this.allClassrooms.find(c => c.name == value);
     if (classroom == undefined) {
       this.addClassroom(new Classroom(value));
     } else {
@@ -57,8 +57,8 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   private addClassroom(classroom: Classroom): void {
-    const label = classroom.label.toLowerCase().trim();
-    if ((this.classrooms.filter(c => c.label.toLowerCase().trim() === label).length === 0)) {
+    const label = classroom.name.toLowerCase().trim();
+    if ((this.classrooms.filter(c => c.name.toLowerCase().trim() === label).length === 0)) {
       this.classrooms.push(classroom);
       this.filterSuggestedClassroom();
     }
@@ -74,7 +74,7 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   private classroomSelected(event: MatAutocompleteSelectedEvent): void {
-    this.classrooms.push(this.allClassrooms.find(c => c.label === event.option.viewValue));
+    this.classrooms.push(this.allClassrooms.find(c => c.name === event.option.viewValue));
     this.filterSuggestedClassroom();
     this.searchInput = '';
   }
@@ -93,7 +93,7 @@ export class ClassroomSelectorComponent implements OnInit {
   }
 
   public getClassroomSelected(): Classroom[] {
-    return this.classrooms;
+    return this.classrooms.filter(c => !this.getClassroomToCreate().includes(c));
   }
 
 }

@@ -4,6 +4,7 @@ import {environment} from '../../environments/environment';
 import {Planning} from '../model/planning';
 import {User} from '../model/user';
 import {Classroom} from '../model/classroom';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,15 @@ export class PlanningService {
     this.httpClient = httpClient;
   }
 
-  getPlanningByUser(): any {
-    return this.httpClient.get(environment.apiUrl + 'planning/list');
+  getPlanningByUser(): Observable<Planning[]> {
+    return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list');
   }
 
-  getPublicPlanning(): any {
-    return this.httpClient.get(environment.apiUrl + '/planning/list/public');
+  getPublicPlanning(): Observable<Planning[]> {
+    return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/public');
   }
 
-  createPlanning(planning: Planning, teachers?, students?) {
-    const formData: FormData = new FormData();
-    formData.append('studentCsv', students);
-    formData.append('teachers', teachers);
-    formData.append('planning', planning.getRequestData());
-    return this.httpClient.post(environment + '/planning/create', { params: formData});
+  createPlanning(planning: Planning): Observable<Planning> {
+    return this.httpClient.post<Planning>(environment.apiUrl + '/planning/create',  planning);
   }
 }

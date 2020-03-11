@@ -1,0 +1,69 @@
+<div class="card">
+  <div class="card-header card-header-danger">
+    <div class="row">
+      <div class="col-md-5 mr-md-auto">
+        <h4 class="card-title ">{{title}}</h4>
+        <p class="card-category">{{subtitle}}</p>
+      </div>
+      <div class="col-md-3 ml-md-auto" [class.search-input]="true">
+        <mat-form-field color="accent" appearance="fill">
+          <mat-label>Recherche</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Recherche">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+<!--    <div class="table-responsive">-->
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id" *ngIf="displayedColumns.includes('id')">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="student" *ngIf="displayedColumns.includes('student')">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Etudiant </th>
+          <td mat-cell *matCellDef="let element"> {{element.student}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="followingTeacher" *ngIf="displayedColumns.includes('followingTeacher')">
+          <th mat-header-cell  *matHeaderCellDef mat-sort-header> Professeur référent </th>
+          <td mat-cell *matCellDef="let element"> {{element.followingTeacher}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tutorFullName" *ngIf="displayedColumns.includes('tutorFullName')">
+          <th mat-header-cell  *matHeaderCellDef mat-sort-header> Tuteur de stage </th>
+          <td mat-cell *matCellDef="let element"> {{element.tutorFullName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="company" *ngIf="displayedColumns.includes('company')">
+          <th mat-header-cell  *matHeaderCellDef mat-sort-header> Entreprise </th>
+          <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+<!--  </div>-->
+</div>

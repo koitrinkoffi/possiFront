@@ -3,6 +3,7 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
 import {User} from '../../model/user';
+import * as moment from 'moment';
 
 export interface PlanningElement {
   id: string|number;
@@ -37,12 +38,6 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource = new MatTableDataSource<PlanningElement>();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    const user: User = new User(1, 'Oclean', 'Master', 'Super codeur', 'ok', 'email');
-    this.parseData([ new Planning('1', 'Test 1', '03/02/2020', '03/02/2020', user),
-      new Planning('2', 'Bof', '03/02/2020', '03/02/2020', user)]);
-    this.planningService.getPlanningByUser().subscribe(data => {
-      console.log(data);
-    });
   }
 
   private applyFilter(filterValue: string) {
@@ -54,14 +49,15 @@ export class PlanningDatatableComponent implements OnInit {
     plannings.forEach(p => {
       this.planningElement.push({
         id: p.id,
-        planning: p.title,
-        creator: p.creator.firstName + ' ' + p.creator.lastName,
-        startDate: p.startDate,
-        endDate: p.endDate
+        planning: p.name,
+        creator: p.admin.firstName + ' ' + p.admin.lastName,
+        startDate: moment(p.period.from).format(Planning.dateFormat()),
+        endDate: moment(p.period.to).format(Planning.dateFormat())
       });
     });
     this.dataSource.data = this.planningElement;
   }
+
   private delete(id: string) {
     this.dataSource.data = this.planningElement.filter(p => p.id !== id);
   }

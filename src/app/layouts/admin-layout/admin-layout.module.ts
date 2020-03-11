@@ -15,7 +15,7 @@ import {
   MatButtonModule,
   MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDividerModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule, MatSelectModule, MatSlideToggleModule,
+  MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -31,27 +31,30 @@ import {PrivatePlanningComponent} from '../../components/private-planning/privat
 import {TableComponent} from '../../components/table/table.component';
 import {CardComponent} from '../../components/card/card.component';
 import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
+import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 
 @NgModule({
-    declarations: [
-        DatatableComponent,
-        MessageBoxComponent,
-        HomeComponent,
-        PlanningDatatableComponent,
-        UnavailabilityComponent,
-        CreatePlanningComponent,
-        ClassroomSelectorComponent,
-        PersonDatatableComponent,
-        ClassroomPipe,
-        StudentRegisterComponent,
-        PrivatePlanningComponent,
-        CalendarComponent,
-        TableComponent,
-        CardComponent,
-        UnavailabilityChooserComponent,
-    ],
+  declarations: [
+    DatatableComponent,
+    MessageBoxComponent,
+    HomeComponent,
+    PlanningDatatableComponent,
+    UnavailabilityComponent,
+    CreatePlanningComponent,
+    ClassroomSelectorComponent,
+    PersonDatatableComponent,
+    ClassroomPipe,
+    StudentRegisterComponent,
+    PrivatePlanningComponent,
+    CalendarComponent,
+    TableComponent,
+    CardComponent,
+    UnavailabilityChooserComponent,
+    ParticipantDatatableComponent,
+  ],
   exports: [
     DatatableComponent,
     MessageBoxComponent,
@@ -64,6 +67,7 @@ import {UnavailabilityChooserComponent} from '../../components/unavailability-ch
     ClassroomPipe
   ],
   imports: [
+    SweetAlert2Module,
     CommonModule,
     MatToolbarModule,
     MatCardModule,
@@ -86,7 +90,8 @@ import {UnavailabilityChooserComponent} from '../../components/unavailability-ch
     MatSelectModule,
     FullCalendarModule,
     MatSlideToggleModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
