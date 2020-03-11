@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import {UserService} from '../../services/user.service';
 import {ClassroomService} from '../../services/classroom.service';
-import {Classroom} from '../../model/classroom';
 import {ClassroomSelectorComponent} from '../classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
 import * as $ from 'jquery';
@@ -12,8 +11,6 @@ import {showNotification} from '../../utils/notify';
 import {ParticipantService} from '../../services/participant.service';
 import {Participant} from '../../model/participant';
 import {ParticipantDatatableComponent} from '../participant-datatable/participant-datatable.component';
-import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {hideLoading, showLoading} from 'sweetalert2';
 import {Router} from '@angular/router';
 
 @Component({
@@ -38,8 +35,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
               private participantService: ParticipantService,
               private router: Router) {}
 
-  @ViewChild('swalComponent', {static: false})
-  private swal: SwalComponent;
   @ViewChild('participantDatatableComponent', {static: false})
   private participantDatatable: ParticipantDatatableComponent;
 
@@ -127,14 +122,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private validate() {
 
-    this.swal.beforeOpen.subscribe(() => {
-      this.swal.update({
-        text: 'Veuillez patienter quelques instants',
-        allowOutsideClick: false,
-        allowEnterKey: false,
-        allowEscapeKey: false,
-      });
-      showLoading();
       // Planning
       const planning: Planning = new Planning();
       planning.name = this.title;
@@ -151,38 +138,17 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
           planning.rooms = planning.rooms.concat(data);
           this.createPlanning(planning);
         }, error => {
-          hideLoading();
-          this.swal.update({icon: 'error',
-            text: 'Une erreur est survenue',
-            confirmButtonText: 'Retour',
-            buttonsStyling: false,
-            customClass: {confirmButton: 'btn btn-info'}});
           console.error(error);
         });
       } else {
         this.createPlanning(planning);
       }
-    });
-    this.swal.fire();
   }
 
   private createPlanning(planning: Planning) {
     planning.rooms = this.classroomSelector.getClassroomSelected();
     this.planningService.createPlanning(planning).subscribe(data => {
-      hideLoading();
-      this.swal.update({icon: 'success',
-        text: 'Tout s\'est bien passé',
-        confirmButtonText: 'Retour à la page d\'acceuil',
-        buttonsStyling: false,
-        customClass: {confirmButton: 'btn btn-success to-redirect'}});
-      $('.to-redirect').click(() => this.router.navigate(['/home']));
     },  error => {
-      hideLoading();
-      this.swal.update({icon: 'error',
-        text: 'Une erreur est survenue',
-        confirmButtonText: 'Retour',
-        buttonsStyling: false,
-        customClass: {confirmButton: 'btn btn-info'}});
       console.error(error);
     });
   }
