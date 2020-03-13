@@ -10,6 +10,8 @@ import {UserService} from './user.service';
 })
 export class PlanningService {
 
+  planningSelected: Planning;
+
   constructor(private httpClient: HttpClient, private userService: UserService) {}
 
   getPlannings(): Observable<Planning[]> {
