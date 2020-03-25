@@ -3,19 +3,17 @@
     <span class="title">{{planningName}}</span><br>
     <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
   </div>
-  <app-table [headers]="tabHeaders">
-    <div class="tab-pane active" [id]="tabHeaders[0].label.trim()">
-      <app-card>
-        <app-unavailability-chooser
-          [unavailabilities]="unavailabilities"
-          (choice)="syncChoice($event)"
-        ></app-unavailability-chooser>
-      </app-card>
+  <app-card>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <th></th>
+          <th *ngFor="let header of headers" >{{header}}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of lines | isBeforeLunchBreak: 'days'" ><td>{{entry.line}}</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="tab-pane" [id]="tabHeaders[1].label.trim()">
-      <app-card>
-        <app-calendar></app-calendar>
-      </app-card>
-    </div>
-  </app-table>
+  </app-card>
 </div>

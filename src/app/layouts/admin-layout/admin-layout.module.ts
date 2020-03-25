@@ -32,6 +32,8 @@ import {TableComponent} from '../../components/table/table.component';
 import {CardComponent} from '../../components/card/card.component';
 import {UnavailabilityChooserComponent} from '../../components/unavailability-chooser/unavailability-chooser.component';
 import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
+import {IsBeforeLunchBreakPipe} from '../../filters/is-before-lunch-break.pipe';
+import {IsAfterLunchBreakPipe} from '../../filters/is-after-lunch-break.pipe';
 
 
 
@@ -53,6 +55,8 @@ import {ParticipantDatatableComponent} from '../../components/participant-datata
     CardComponent,
     UnavailabilityChooserComponent,
     ParticipantDatatableComponent,
+    IsBeforeLunchBreakPipe,
+    IsAfterLunchBreakPipe
   ],
   exports: [
     DatatableComponent,
@@ -65,32 +69,32 @@ import {ParticipantDatatableComponent} from '../../components/participant-datata
     PersonDatatableComponent,
     ClassroomPipe
   ],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    MatInputModule,
-    MatIconModule,
-    MatTabsModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    FullCalendarModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        CommonModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatButtonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        MatInputModule,
+        MatIconModule,
+        MatTabsModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatChipsModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        FullCalendarModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatProgressSpinnerModule
+    ],
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
