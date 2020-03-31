@@ -18,10 +18,9 @@ export class PlanningService {
     return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/' + this.userService.user.uid);
   }
 
-  getPublicPlanning(): Observable<Planning[]> {
-    return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/public');
+  find(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(environment.apiUrl + '/planning/find/' + id);
   }
-
   createPlanning(planning: Planning): Observable<Planning> {
     return this.httpClient.post<Planning>(environment.apiUrl + '/planning/create',  planning);
   }

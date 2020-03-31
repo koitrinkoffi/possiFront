@@ -9,7 +9,7 @@ export class UnavailabilityService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAgenda(planningId: number, userId: number): any {
+  getAgenda(planningId: number, userId: string): any {
     return this.httpClient.get(environment.apiUrl + '/unavailability/agenda/' + planningId + '/' + userId);
   }
 }
