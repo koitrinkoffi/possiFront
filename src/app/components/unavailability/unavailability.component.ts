@@ -5,17 +5,18 @@ import {UnavailabilityService} from '../../services/unavailability.service';
 import * as moment from 'moment';
 import {PlanningService} from '../../services/planning.service';
 import {TimeBox} from '../../model/time-box';
+import {UserService} from '../../services/user.service';
 
 export class UnavailabilityBox {
 
-  constructor(timeBox: TimeBox, checked: boolean, row: number, column: number) {
-    this.timeBox = timeBox;
+  constructor(unavailability: Unavailability, checked: boolean, row: number, column: number) {
+    this.unavailability = unavailability;
     this.checked = checked;
     this.row = row;
     this.column = column;
   }
 
-  timeBox: TimeBox;
+  unavailability: Unavailability;
   checked: boolean;
   row: number;
   column: number;
@@ -32,7 +33,7 @@ export class UnavailabilityComponent implements OnInit {
   private matrix: UnavailabilityBox[][] = [];
   private width: number;
   private height: number;
-  constructor(private unavailabilityService: UnavailabilityService, private planningService: PlanningService) { }
+  constructor(private unavailabilityService: UnavailabilityService, private planningService: PlanningService, private userService: UserService) { }
 
   ngOnInit() {
     this.unavailabilityService.getAgenda(1, 'koikoffi').subscribe(data => {
@@ -53,7 +54,10 @@ export class UnavailabilityComponent implements OnInit {
           this.matrix.push([]);
           while (j < this.width) {
             const timeBox = timeBoxes[this.height * j + i];
-            this.matrix[i].push(new UnavailabilityBox(timeBox, this.findUnavailability(timeBox), i, j));
+            const unavailability = this.unavailabilities.find(u => timeBox.equals(u.period));
+            this.matrix[i].push(unavailability !== undefined ?
+              new UnavailabilityBox(unavailability, true, i, j) :
+              new UnavailabilityBox(new Unavailability(this.userService.user, timeBox), false, i, j));
             j++;
           }
           i++;
@@ -62,10 +66,6 @@ export class UnavailabilityComponent implements OnInit {
       });
     });
 
-  }
-
-  private findUnavailability(timeBox: TimeBox): boolean {
-    return this.unavailabilities.find(u => timeBox.equals(u.period)) !== undefined;
   }
 
   private checkColumns(column: number) {
@@ -82,5 +82,21 @@ export class UnavailabilityComponent implements OnInit {
       this.matrix[row][i].checked = !this.matrix[row][i].checked;
       i++;
     }
+  }
+
+  private validate() {
+    let newUnavailabilities: Unavailability[] = [];
+    let i = 0;
+    while (i < this.height) {
+      newUnavailabilities = newUnavailabilities.concat(this.matrix[i].filter(d => d.checked)
+        .map(value => value.unavailability));
+      i++;
+    }
+    this.unavailabilityService.sendUnavailabilities(1,
+      this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
+      newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(d => {
+      console.log(d);
+    });
+    console.log('Sent');
   }
 }

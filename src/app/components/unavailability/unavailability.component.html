@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="text-center">
-    <span class="title">{{planningName}}</span><br>
+    <span class="title" (click)="validate()">{{planningName}}</span><br>
     <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
   </div>
   <app-card>
@@ -8,14 +8,14 @@
       <table border="1">
         <thead>
         <th></th>
-        <th *ngFor="let head of matrix[0]" (click)="checkColumns(head.column)" >{{head.timeBox.getFromFormat('DD/MM/YYYY')}}</th>
+        <th *ngFor="let head of matrix[0]" (click)="checkColumns(head.column)" >{{head.unavailability.period.getFromFormat('DD/MM/YYYY')}}</th>
         </thead>
         <tbody>
         <tr *ngFor="let lines of matrix">
           <td (click)="checkRows(lines[0].row)">
-            {{lines[0].timeBox.getFromFormat('HH:mm')}} - {{lines[0].timeBox.getToFormat('HH:mm')}}
+            {{lines[0].unavailability.period.getFromFormat('HH:mm')}} - {{lines[0].unavailability.period.getToFormat('HH:mm')}}
           </td>
-          <td *ngFor="let line of lines"><input type="checkbox" [ngModel]="line.checked"></td>
+          <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
         </tr>
         </tbody>
       </table>
