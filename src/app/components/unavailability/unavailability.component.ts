@@ -36,7 +36,7 @@ export class UnavailabilityComponent implements OnInit {
   constructor(private unavailabilityService: UnavailabilityService, private planningService: PlanningService, private userService: UserService) { }
 
   ngOnInit() {
-    this.unavailabilityService.getAgenda(1, 'koikoffi').subscribe(data => {
+    this.unavailabilityService.getAgenda(1, this.userService.user.uid).subscribe(data => {
       this.planningService.find(1).subscribe(p => {
         this.planningService.planningSelected = p;
         const timeBoxes: TimeBox[] = [];

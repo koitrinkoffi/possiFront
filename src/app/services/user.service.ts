@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
-    this._user = new User(1, 'Koitrin', 'KOFFI', 1, 'lesvente', 'koitrin.koffi@etudiant.univ-rennes1.fr');
+    this._user = new User(1, 'Koitrin', 'KOFFI', 1, 'koikoffi', 'koitrin.koffi@etudiant.univ-rennes1.fr');
   }
 
 
