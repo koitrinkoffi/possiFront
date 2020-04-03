@@ -15,6 +15,7 @@ export class UnavailabilityService {
   }
 
   sendUnavailabilities(planningId: number, toRemove: Unavailability[], toAdd: Unavailability[]): any {
+    debugger;
     return this.httpClient.post(environment.apiUrl + '/unavailability/update/' + planningId, {
       toRemove,
       toAdd,

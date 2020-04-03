@@ -95,7 +95,6 @@ export class UnavailabilityComponent implements OnInit {
     this.unavailabilityService.sendUnavailabilities(1,
       this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
       newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(d => {
-      console.log(d);
     });
     console.log('Sent');
   }
