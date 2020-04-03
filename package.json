@@ -26,6 +26,7 @@
     "@fullcalendar/core": "latest",
     "@fullcalendar/daygrid": "latest",
     "@fullcalendar/interaction": "latest",
+    "@fullcalendar/resource-timegrid": "^4.4.0",
     "@fullcalendar/timegrid": "latest",
     "@material/data-table": "^4.0.0",
     "bootstrap": "4.3.1",

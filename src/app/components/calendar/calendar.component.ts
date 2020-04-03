@@ -1,20 +1,16 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import {AfterViewChecked, AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
-import {MatDialog} from '@angular/material/dialog';
-import {EventDialogComponent} from '../event-dialog/event-dialog.component';
-
 import timeGridPlugin from '@fullcalendar/timegrid';
+import resourceTimeGrid from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import {Classroom} from '../../model/classroom';
+import {OralDefense} from '../../model/oral-defense';
+import {Planning} from '../../model/planning';
 
-const removeBackgroundColor = '#ffe6e2';
-const validateBackgroundColor = '#fff9dd';
-const validIcon = '/assets/img/002-check.svg';
-const removeIcon = '/assets/img/001-remove.svg';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -24,92 +20,33 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', {read: undefined, static: false}) calendarComponent: FullCalendarComponent;
 
-  private minTime = '07:00:00';
-  private maxTime = '22:00:00';
-  // private unavailabilities: Unavailability
+  private startTime;
+  private endTime;
   private calendarVisible = true;
   private calendarWeekends = true;
   private edit = true;
   private calendarEvents: EventInput[];
+  private views;
+  private resources: any[] = [];
 
-  private calendarPlugins = [dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin];
+  private calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, resourceTimeGrid];
 
-  constructor(public dialog: MatDialog) {
-    let today = new Date();
-    let y = today.getFullYear();
-    let m = today.getMonth();
-    let d = today.getDate();
-    this.calendarEvents = [
-      {
-        title: 'All Day Event',
-        start: new Date(y, m, 1),
-        className: 'event-default'
-      },
-      {
-        id: 999,
-        title: 'Repeating Event',
-        start: new Date(y, m, d-4, 6, 0),
-        allDay: false,
-        className: 'event-rose'
-      },
-      {
-        id: 999,
-        title: 'Repeating Event',
-        start: new Date(y, m, d+3, 6, 0),
-        allDay: false,
-        className: 'event-rose'
-      },
-      {
-        title: 'Meeting',
-        start: new Date(y, m, d-1, 10, 30),
-        allDay: false,
-        className: 'event-green'
-      },
-      {
-        title: 'Lunch',
-        start: new Date(y, m, d+7, 12, 0),
-        end: new Date(y, m, d+7, 14, 0),
-        allDay: false,
-        className: 'event-red'
-      },
-      {
-        title: 'Md-pro Launch',
-        start: new Date(y, m, d-2, 12, 0),
-        allDay: true,
-        className: 'event-azure'
-      },
-      {
-        title: 'Birthday Party',
-        start: new Date(y, m, d+1, 19, 0),
-        end: new Date(y, m, d+1, 22, 30),
-        allDay: false,
-        className: 'event-azure'
-      },
-      {
-        title: 'Click for Creative Tim',
-        start: new Date(y, m, 21),
-        end: new Date(y, m, 22),
-        url: 'https://www.creative-tim.com/',
-        className: 'event-orange'
-      },
-      {
-        title: 'Click for Google',
-        start: new Date(y, m, 21),
-        end: new Date(y, m, 22),
-        url: 'https://www.creative-tim.com/',
-        className: 'event-orange'
-      }
-    ];
+  constructor() {
+  }
+
+  ngAfterViewInit(): void {
+    this.removeTodayHighLight();
   }
 
   ngOnInit() {
+    this.views = {
+      resourceTimeGridFiveDay: {
+        type: 'resourceTimeGrid',
+        duration: { days: 5 },
+        buttonText: '5 Jours'
+      }
+    };
   }
-
-
-  ngAfterViewInit(): void {
-    $('.fc-today').removeClass('alert alert-info');
-  }
-
 
   private addRemoveBtn(info) {
     const spanElement = document.createElement('span');
@@ -120,32 +57,17 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   }
 
   private render(info) {
+    info.el.setAttribute('data-toggle', 'tooltip');
+    info.el.setAttribute('title', info.event._def.title);
     if (this.edit) {
       this.addRemoveBtn(info);
     }
-    // else {
-    //   info.el.classList.add('calendar-icon-container');
-    //   info.el.innerHTML = '<img src="' +
-    //     (info.event.backgroundColor === removeBackgroundColor ? removeIcon : validIcon)
-    //     + '" alt="icon" class="calendar-icon"/>';
-    // }
   }
 
   private onMouseEnter(info) {
     if (this.edit) {
       const spanElement = info.el.lastChild as HTMLElement;
       spanElement.classList.add('calendar-remove-btn-display');
-    }
-  }
-
-  private onEventClick(info) {
-    if (!this.edit) {
-      if (info.event.backgroundColor === removeBackgroundColor) {
-        this.calendarEvents.find(e => e.id == info.event.id).backgroundColor = validateBackgroundColor;
-      } else {
-        this.calendarEvents.find(e => e.id == info.event.id).backgroundColor = removeBackgroundColor;
-      }
-      this.refreshCalendar();
     }
   }
 
@@ -156,11 +78,18 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private onEventClick(info) {
+    if (!this.edit) {
+    }
+  }
+
   private eventUpdate(eventDropInfo) {
     const event = this.calendarEvents.find(e => e.id == eventDropInfo.event.id);
-    event.start = moment(eventDropInfo.event.start).format();
-    event.end = moment(eventDropInfo.event.end).format();
-    this.refreshCalendar();
+    if (event !== undefined) {
+      event.start = moment(eventDropInfo.event.start).format();
+      event.end = moment(eventDropInfo.event.end).format();
+      this.refreshCalendar();
+    }
   }
 
   private refreshCalendar() {
@@ -168,70 +97,39 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.calendarComponent.getApi().addEventSource(this.calendarEvents);
   }
 
-  private handleDateClick(arg) {
-    if (this.edit) {
-      this.openNewEventDialog(arg, false);
-    }
+  private removeTodayHighLight($event?: any) {
+    $('.fc-today').removeClass('alert alert-info');
   }
 
-  private handleDateSelection(arg) {
-    // Todo supprimer le mode selection
-    this.openNewEventDialog(arg, true);
+  private parseResource(rooms: Classroom[]) {
+    const array: any [] = [];
+    rooms.forEach(r => array.push({id: r.id, title: r.name}));
+    this.resources = array;
   }
 
-  private openNewEventDialog(arg, selection: boolean): void {
-    let date: Date;
-    if (!selection) {
-      date = arg.date;
-      date.setHours(7, 0, 0, 0);
-    }
-    const dialogRef = this.dialog.open(EventDialogComponent, {
-      data: {isSelection: selection, date}
+  private parseEvent(oralDefenses: OralDefense[]) {
+    const array: EventInput[] = [];
+    oralDefenses.forEach(o => {
+    array.push({
+        title: o.composition.student.firstName + ' ' + o.composition.student.lastName + '\n' +
+          o.composition.followingTeacher.firstName + ' ' + o.composition.followingTeacher.lastName + '\n' +
+          o.secondTeacher.firstName + ' ' + o.secondTeacher.lastName + '\n' +
+          o.composition.tutorFullName,
+        start: moment(o.timeBox.from).format(),
+        end: moment(o.timeBox.to).format(),
+        className: 'font-weight-bold',
+        resourceId: o.room.id
+      });
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        if (!result.isSelection) {
-          this.addEvent(date);
-        } else {
-          // Todo supprimer le mode selection
-          // console.log(this.generateDatesFromRange(arg.start, arg.end));
-        }
-      }
-    });
+    this.calendarEvents = array;
+    console.log(this.calendarEvents);
   }
 
-  private addEvent(date) {
-    this.calendarEvents = this.calendarEvents.concat({ // add new event data. must create new array
-      id: this.calendarEvents.length + 1,
-      title: 'Créneau',
-      start: date,
-    });
+  parsePlanning(planning: Planning) {
+    this.calendarComponent.getApi().gotoDate(moment(planning.period.from).format());
+    this.startTime = moment(planning.dayPeriod.from).format('HH:mm:ss');
+    this.endTime = moment(planning.dayPeriod.to).format('HH:mm:ss');
+    this.parseResource(planning.rooms);
+    this.parseEvent(planning.oralDefenses);
   }
-
-  // private generateDatesFromRange(startDate: Date, endDate: Date, startDay: number, endDay: number, startBreak: number, endBreak: number, duration: number): Date[] {
-  //   const diffMonth = startDate.getMonth() !== endDate.getMonth();
-  //   const dateList: Date[] = [];
-  //   const firstMonthDaySelected = +moment(startDate).endOf('month').format('DD') - startDate.getDate();
-  //   let i = 0;
-  //
-  //   if (diffMonth) {
-  //     const firstDayOfSecondMonth = +moment(startDate).startOf('month').format('DD');
-  //     const secondMonthDaySelected = endDate.getDate() - firstDayOfSecondMonth;
-  //     while (i < secondMonthDaySelected) {
-  //       const newDate = new Date();
-  //       newDate.setFullYear(endDate.getFullYear(), endDate.getMonth(), firstDayOfSecondMonth + i);
-  //       newDate.setHours(7, 0, 0, 0);
-  //       dateList.push(newDate);
-  //       i++;
-  //     }
-  //   }
-  //   i = 0;
-  //   while (i <= firstMonthDaySelected) {
-  //     const newDate = new Date();
-  //     newDate.setFullYear(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
-  //     dateList.push(newDate);
-  //     i++;
-  //   }
-  //   return dateList;
-  // }
 }

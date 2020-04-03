@@ -3,6 +3,7 @@ import {Classroom} from './classroom';
 import {TimeBox} from './time-box';
 import * as moment from 'moment';
 import {Participant} from './participant';
+import {OralDefense} from './oral-defense';
 
 export class Planning {
   period: TimeBox;
@@ -11,6 +12,7 @@ export class Planning {
   admin: User;
   oralDefenseDuration: string;
   oralDefenseInterlude = '10';
+  oralDefenses: OralDefense[];
   rooms: Classroom[];
   participants: Participant[];
   lunchBreak: TimeBox;

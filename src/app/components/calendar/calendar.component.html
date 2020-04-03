@@ -2,15 +2,17 @@
   <full-calendar
     #calendar
     themeSystem="bootstrap"
-    [height]="700"
-    [allDaySlot]="false"
-    [minTime]="minTime"
-    [maxTime]="maxTime"
-    [defaultView]="edit ? 'dayGridMonth' : 'timeGridWeek'"
+    datesAboveResources="true"
+    defaultView="resourceTimeGridFiveDay"
     locale="fr"
     weekNumberCalculation="ISO"
+    [resources]="resources"
+    [height]="1000"
+    [allDaySlot]="false"
+    [minTime]="startTime"
+    [maxTime]="endTime"
+    [views]="views"
     [editable]="edit"
-    [selectable]="edit"
     [buttonText]="{
         today: 'aujourd\'hui',
         month: 'mois',
@@ -19,20 +21,19 @@
         list: 'liste'
        }"
     [header]="{
-        left: 'prev,next today',
+        left: 'prev,next',
         center: 'title',
-        right: edit ? 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' : 'timeGridWeek,timeGridDay,listWeek'
+        right: 'resourceTimeGridDay,resourceTimeGridFiveDay'
       }"
     [plugins]="calendarPlugins"
     [weekends]="calendarWeekends"
     [events]="calendarEvents"
+    (datesRender)="removeTodayHighLight($event)"
     (eventRender)="render($event)"
     (eventMouseEnter)="onMouseEnter($event)"
     (eventMouseLeave)="onMouseLeave($event)"
     (eventClick)="onEventClick($event)"
-    (dateClick)="handleDateClick($event)"
     (eventDrop)="eventUpdate($event)"
     (eventResize)="eventUpdate($event)"
-    (select)="handleDateSelection($event)"
   ></full-calendar>
 </div>

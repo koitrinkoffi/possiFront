@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Planning} from '../model/planning';
 import {Observable} from 'rxjs';
@@ -18,11 +18,11 @@ export class PlanningService {
     return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/' + this.userService.user.uid);
   }
 
-  getPublicPlanning(): Observable<Planning[]> {
-    return this.httpClient.get<Planning[]>(environment.apiUrl + '/planning/list/public');
-  }
-
   createPlanning(planning: Planning): Observable<Planning> {
     return this.httpClient.post<Planning>(environment.apiUrl + '/planning/create',  planning);
+  }
+
+  findById(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(environment.apiUrl + '/planning/find/' + id);
   }
 }
