@@ -18,7 +18,7 @@ export class UnavailabilityChooserComponent implements OnInit {
   ngOnInit() { }
 
   private toggleAvailability(unavailability: Unavailability) {
-    unavailability.available = !unavailability.available;
+    // unavailability.available = !unavailability.available;
     this.choice.emit(unavailability);
   }
 }

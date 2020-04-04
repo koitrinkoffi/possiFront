@@ -10,7 +10,8 @@ export class Planning {
   id: number;
   name: string;
   admin: User;
-  oralDefenseDuration: string;
+  oralDefenseDuration: number|string;
+  nbMaxOralDefensePerDay: number;
   oralDefenseInterlude = '10';
   oralDefenses: OralDefense[];
   rooms: Classroom[];
@@ -30,19 +31,19 @@ export class Planning {
     let params = moment(ob.startDate);
     params.hour(moment(ob.startBreak, 'HH:mm').hour());
     params.minute(moment(ob.startBreak, 'HH:mm').minute());
-    this.lunchBreak = new TimeBox(params.format());
+    this.lunchBreak = new TimeBox(params.format('x'));
     params.hour(moment(ob.endBreak, 'HH:mm').hour());
     params.minute(moment(ob.endBreak, 'HH:mm').minute());
-    this.lunchBreak.to = params.format();
+    this.lunchBreak.to = params.format('x');
 
     // dayPeriod
     params = moment(ob.startDate);
     params.hour(moment(ob.startDay, 'HH:mm').hour());
     params.minute(moment(ob.startDay, 'HH:mm').minute());
-    this.dayPeriod = new TimeBox(params.format());
+    this.dayPeriod = new TimeBox(params.format('x'));
     params.hour(moment(ob.endDay, 'HH:mm').hour());
     params.minute(moment(ob.endDay, 'HH:mm').minute());
-    this.dayPeriod.to = params.format();
+    this.dayPeriod.to = params.format('x');
   }
 
 }
