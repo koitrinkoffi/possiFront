@@ -63,6 +63,7 @@ export class UnavailabilityComponent implements OnInit {
           i++;
           j = 0;
         }
+        console.log(this.matrix);
       });
     });
 
@@ -97,5 +98,9 @@ export class UnavailabilityComponent implements OnInit {
       newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(d => {
     });
     console.log('Sent');
+  }
+
+  private formatDate(date: string, format: string) {
+    return moment(date).format(format);
   }
 }

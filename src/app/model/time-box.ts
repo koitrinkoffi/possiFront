@@ -16,12 +16,4 @@ export class TimeBox {
   equals(timeBox: TimeBox): boolean {
     return timeBox.from === this.from && timeBox.to === this.to;
   }
-
-  getFromFormat(format: string) {
-    return moment(this.from).format(format);
-  }
-
-  getToFormat(format: string) {
-    return moment(this.to).format(format);
-  }
 }
