@@ -32,6 +32,8 @@ import {IsBeforeLunchBreakPipe} from '../../filters/is-before-lunch-break.pipe';
 import {IsAfterLunchBreakPipe} from '../../filters/is-after-lunch-break.pipe';
 import {CalendarSideBarComponent} from '../../components/calendar-side-bar/calendar-side-bar.component';
 import {PlanningDisplayComponent} from '../../pages/planning-display/planning-display.component';
+import {OralDefenseUserPipe} from '../../filters/oral-defense-user.pipe';
+import {OralDefenseSearchPipe} from '../../filters/oral-defense-search.pipe';
 
 
 
@@ -51,8 +53,10 @@ import {PlanningDisplayComponent} from '../../pages/planning-display/planning-di
     ParticipantDatatableComponent,
     CalendarSideBarComponent,
     PlanningDisplayComponent,
+    OralDefenseUserPipe,
     IsBeforeLunchBreakPipe,
-    IsAfterLunchBreakPipe
+    IsAfterLunchBreakPipe,
+    OralDefenseSearchPipe
   ],
   exports: [
     HomeComponent,
