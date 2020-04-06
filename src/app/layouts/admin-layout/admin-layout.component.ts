@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Location, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
@@ -32,6 +31,7 @@ export class AdminLayoutComponent implements OnInit {
       document.getElementsByTagName('body')[0].classList.add('perfect-scrollbar-on');
     } else {
       document.getElementsByTagName('body')[0].classList.remove('perfect-scrollbar-off');
+      document.getElementsByTagName('body')[0].classList.add('sidebar-mini')
     }
     const elemMainPanel = document.querySelector('.main-panel') as HTMLElement;
     const elemSidebar = document.querySelector('.sidebar .sidebar-wrapper') as HTMLElement;

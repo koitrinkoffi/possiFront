@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -6,6 +6,7 @@ import resourceTimeGrid from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import * as moment from 'moment';
+import tippy from 'tippy.js';
 import * as $ from 'jquery';
 import {Classroom} from '../../model/classroom';
 import {OralDefense} from '../../model/oral-defense';
@@ -27,7 +28,6 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   private edit = true;
   private calendarEvents: EventInput[];
   private views;
-  private resources: any[] = [];
 
   private calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, resourceTimeGrid];
 
@@ -42,7 +42,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.views = {
       resourceTimeGridFiveDay: {
         type: 'resourceTimeGrid',
-        duration: { days: 5 },
+        duration: { days: 3 },
         buttonText: '5 Jours'
       }
     };
@@ -58,10 +58,24 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   private render(info) {
     info.el.setAttribute('data-toggle', 'tooltip');
-    info.el.setAttribute('title', info.event._def.title);
-    if (this.edit) {
-      this.addRemoveBtn(info);
-    }
+    // info.el.setAttribute('title', info.event._def.extendedProps.description);
+    const tag = info.event._def.extendedProps.tag;
+    tippy(info.el, {
+      content: `<h4 class="font-weight-bolder">Soutenance ${tag.number + 1}</h4>
+                <div class="text-capitalize">${moment(info.event.start).format('dddd, DD MMMM')} | ${moment(info.event.start).format('HH:mm')} - ${moment(info.event.end).format('HH:mm')}</div>
+                <br>
+                <p class="font-weight-bolder">Participants :</p>
+                <ul>
+                <li><span class="text-uppercase">${tag.composition.student.lastName}</span> ${tag.composition.student.firstName} (Etudiant)</li>
+                <li><span class="text-uppercase">${tag.composition.followingTeacher.lastName}</span> ${tag.composition.followingTeacher.firstName} (Enseignant référent)</li>
+                <li><span class="text-uppercase">${tag.secondTeacher.lastName}</span> ${tag.secondTeacher.firstName} (Second enseignant)</li>
+                <li>${tag.composition.tutorFullName} (Tuteur entreprise)</li>
+                </ul>
+                <div class="font-weight-bolder">Salle : ${tag.room.name}</div>`,
+      allowHTML: true,
+      animation: 'shift-away',
+      trigger: 'click',
+    });
   }
 
   private onMouseEnter(info) {
@@ -101,35 +115,24 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     $('.fc-today').removeClass('alert alert-info');
   }
 
-  private parseResource(rooms: Classroom[]) {
-    const array: any [] = [];
-    rooms.forEach(r => array.push({id: r.id, title: r.name}));
-    this.resources = array;
-  }
-
   private parseEvent(oralDefenses: OralDefense[]) {
     const array: EventInput[] = [];
     oralDefenses.forEach(o => {
-    array.push({
-        title: o.composition.student.firstName + ' ' + o.composition.student.lastName + '\n' +
-          o.composition.followingTeacher.firstName + ' ' + o.composition.followingTeacher.lastName + '\n' +
-          o.secondTeacher.firstName + ' ' + o.secondTeacher.lastName + '\n' +
-          o.composition.tutorFullName,
+      array.push({
+        tag: o,
         start: moment(o.timeBox.from).format(),
         end: moment(o.timeBox.to).format(),
         className: 'font-weight-bold',
-        resourceId: o.room.id
+        title: `Soutenance\n ${o.number + 1}`
       });
     });
     this.calendarEvents = array;
-    console.log(this.calendarEvents);
   }
 
   parsePlanning(planning: Planning) {
     this.calendarComponent.getApi().gotoDate(moment(planning.period.from).format());
     this.startTime = moment(planning.dayPeriod.from).format('HH:mm:ss');
     this.endTime = moment(planning.dayPeriod.to).format('HH:mm:ss');
-    this.parseResource(planning.rooms);
     this.parseEvent(planning.oralDefenses);
   }
 }

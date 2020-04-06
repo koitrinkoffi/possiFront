@@ -12,6 +12,7 @@ export interface PlanningElement {
   creator: string;
   startDate: string;
   endDate: string;
+  tag: Planning;
 }
 
 @Component({
@@ -50,12 +51,18 @@ export class PlanningDatatableComponent implements OnInit {
         planning: p.name,
         creator: p.admin.firstName + ' ' + p.admin.lastName,
         startDate: moment(p.period.from).format(Planning.dateFormat()),
-        endDate: moment(p.period.to).format(Planning.dateFormat())
+        endDate: moment(p.period.to).format(Planning.dateFormat()),
+        tag: p
       });
     });
     this.dataSource.data = this.planningElement;
   }
+
   private delete(id: string) {
     this.dataSource.data = this.planningElement.filter(p => p.id !== id);
+  }
+
+  private selectPlanning(planning: Planning) {
+    this.planningService.planningSelected = planning;
   }
 }

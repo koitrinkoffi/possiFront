@@ -9,4 +9,5 @@ export class OralDefense {
   room: Classroom;
   timeBox: TimeBox;
   secondTeacher: User;
+  number: number;
 }

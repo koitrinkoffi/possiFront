@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Planning} from '../../model/planning';
 import * as moment from 'moment';
 import {User} from '../../model/user';
-import {PlanningDatatableComponent} from '../planning-datatable/planning-datatable.component';
+import {PlanningDatatableComponent} from '../../components/planning-datatable/planning-datatable.component';
 import {UserService} from '../../services/user.service';
 import {PlanningService} from '../../services/planning.service';
 

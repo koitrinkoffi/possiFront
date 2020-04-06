@@ -3,14 +3,14 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '
 import * as moment from 'moment';
 import {UserService} from '../../services/user.service';
 import {ClassroomService} from '../../services/classroom.service';
-import {ClassroomSelectorComponent} from '../classroom-selector/classroom-selector.component';
+import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
 import * as $ from 'jquery';
 import {PlanningService} from '../../services/planning.service';
 import {showNotification} from '../../utils/notify';
 import {ParticipantService} from '../../services/participant.service';
 import {Participant} from '../../model/participant';
-import {ParticipantDatatableComponent} from '../participant-datatable/participant-datatable.component';
+import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
 import {Router} from '@angular/router';
 
 @Component({
