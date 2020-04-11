@@ -31,7 +31,7 @@ export class AdminLayoutComponent implements OnInit {
       document.getElementsByTagName('body')[0].classList.add('perfect-scrollbar-on');
     } else {
       document.getElementsByTagName('body')[0].classList.remove('perfect-scrollbar-off');
-      document.getElementsByTagName('body')[0].classList.add('sidebar-mini')
+      document.getElementsByTagName('body')[0].classList.add('sidebar-mini');
     }
     const elemMainPanel = document.querySelector('.main-panel') as HTMLElement;
     const elemSidebar = document.querySelector('.sidebar .sidebar-wrapper') as HTMLElement;
@@ -58,8 +58,8 @@ export class AdminLayoutComponent implements OnInit {
       elemSidebar.scrollTop = 0;
     });
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-      let ps = new PerfectScrollbar(elemMainPanel);
-      ps = new PerfectScrollbar(elemSidebar);
+      // let ps = new PerfectScrollbar(elemMainPanel);
+      let ps = new PerfectScrollbar(elemSidebar);
     }
 
     const window_width = $(window).width();
@@ -148,8 +148,8 @@ export class AdminLayoutComponent implements OnInit {
   runOnRouteChange(): void {
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
       const elemMainPanel = document.querySelector('.main-panel') as HTMLElement;
-      const ps = new PerfectScrollbar(elemMainPanel);
-      ps.update();
+      // const ps = new PerfectScrollbar(elemMainPanel);
+      // ps.update();
     }
   }
   isMac(): boolean {

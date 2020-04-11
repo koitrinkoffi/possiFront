@@ -537,7 +537,7 @@ temporary rendered events).
 	@include shadow-big-color($brand-success);
 	font-weight: normal; /* undo jqui's ui-widget-header bold */
 
-    &.event-azure{
+    &.event-cyan{
         background-color: $brand-info;
 		@include shadow-big-color($brand-info);
     }
@@ -553,7 +553,7 @@ temporary rendered events).
         background-color: $brand-danger;
 		@include shadow-big-color($brand-danger);
     }
-	&.event-rose{
+	&.event-pink{
 		background-color: $brand-rose;
 		@include shadow-big-color($brand-rose);
 	}
@@ -561,6 +561,46 @@ temporary rendered events).
 		background-color: $gray-light;
 		@include shadow-big-color($gray-light);
 	}
+  &.event-purple{
+    background-color: $purple-500;
+    @include shadow-big-color($purple-500);
+  }
+  &.event-deep-purple{
+    background-color: $deep-purple-500;
+    @include shadow-big-color($deep-purple-500);
+  }
+  &.event-indigo{
+    background-color: $indigo-500;
+    @include shadow-big-color($indigo-500);
+  }
+  &.event-blue{
+    background-color: $blue-500;
+    @include shadow-big-color($blue-500);
+  }
+  &.event-teal{
+    background-color: $teal-500;
+    @include shadow-big-color($teal-500);
+  }
+  &.event-lime{
+    background-color: $lime-500;
+    @include shadow-big-color($lime-500);
+  }
+  &.event-yellow{
+    background-color: $yellow-500;
+    @include shadow-big-color($yellow-500);
+  }
+  &.event-amber{
+    background-color: $amber-500;
+    @include shadow-big-color($amber-500);
+  }
+  &.event-brown{
+    background-color: $brown-500;
+    @include shadow-big-color($brown-500);
+  }
+  &.event-grey{
+    background-color: $grey-500;
+    @include shadow-big-color($grey-500);
+  }
 }
 
 .fc-event-dot {

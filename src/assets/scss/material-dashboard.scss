@@ -61,4 +61,8 @@ $darker-app-theme:   mat-dark-theme($darker-app-primary, $darker-app-accent);
   @include mat-form-field-theme($darker-app-theme);
   @include mat-input-theme($darker-app-theme);
 }
+
+ .oral-number {
+  @include mat-expansion-panel-theme($darker-app-theme);
+ }
 //=========================================================

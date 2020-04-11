@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         tag: o,
         start: moment(o.timeBox.from).format(),
         end: moment(o.timeBox.to).format(),
-        className: 'font-weight-bold',
+        className: `font-weight-bold event-${o.color.code}`,
         title: `Soutenance\n ${o.number + 1}`
       });
     });

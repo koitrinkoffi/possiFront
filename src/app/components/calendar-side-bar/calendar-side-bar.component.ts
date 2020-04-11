@@ -21,6 +21,7 @@ export class CalendarSideBarComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
+    const elemoOralWrapper = document.querySelector('.oral-wrapper') as HTMLElement;
   }
   parseOralDefense(oralDefenses: OralDefense[]) {
     oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
@@ -43,4 +44,6 @@ export class CalendarSideBarComponent implements OnInit {
         this.oralDefenseSelected.emit(new OralDefenseSearchPipe().transform(this.oralDefenses, this.search));
     }
   }
+
+
 }
