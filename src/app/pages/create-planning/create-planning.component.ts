@@ -12,6 +12,7 @@ import {ParticipantService} from '../../services/participant.service';
 import {Participant} from '../../model/participant';
 import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
 import {Router} from '@angular/router';
+import {MatHorizontalStepper, MatStepper, MatVerticalStepper} from '@angular/material';
 
 @Component({
   selector: 'app-create-planning',
@@ -40,18 +41,28 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   @ViewChild('classroomSelector', {static: false})
   private classroomSelector: ClassroomSelectorComponent;
+
   @ViewChild('inputFile', {static: false})
   private inputFile: ElementRef;
+
+  @ViewChild('stepperV', {static: false})
+  private stepperV: MatVerticalStepper;
+
+  @ViewChild('stepperH', {static: false})
+  private stepperH: MatHorizontalStepper;
 
   private dateFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
     return day !== 0 && day !== 6;
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
     this.fetchClassroom();
+  }
+
+  ngOnInit() {
     this.firstFormGroup = this.formBuilder.group({
-      title: ['fuck', Validators.required],
+      title: ['', Validators.required],
       oralDefenseDuration: ['60', [Validators.required, Validators.min(0)]]
     });
     this.secondFormGroup = this.formBuilder.group({
@@ -65,8 +76,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       validators: [this.validateDateRange('startDate', 'endDate')]
     });
   }
-
-  ngAfterViewInit(): void {}
 
   private validateDateRange(from: string, to: string): ValidatorFn {
     return (group: FormGroup): { [key: string]: any } => {
@@ -174,5 +183,20 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private get title() {
     return this.firstFormGroup.get('title').value;
+  }
+
+  private validateTitle(event: MouseEvent) {
+    event.stopPropagation();
+    this.planningService.findByName(this.title).subscribe(p => {
+      if (p === null) {
+        if (this.isMobileMenu()) {
+          this.stepperV.next();
+        } else {
+          this.stepperH.next();
+        }
+      } else {
+        this.firstFormGroup.get('title').setErrors({error: 'Ce titre est déjà utilisé'});
+      }
+    });
   }
 }

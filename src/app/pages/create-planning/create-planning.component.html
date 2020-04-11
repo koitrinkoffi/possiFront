@@ -10,7 +10,7 @@
               </h3>
               <h5>{{title}}</h5>
             </div>
-            <mat-horizontal-stepper linear *ngIf="!isMobileMenu()">
+            <mat-horizontal-stepper linear #stepperH *ngIf="!isMobileMenu()">
               <mat-step [stepControl]="firstFormGroup">
                 <div class="card-body">
                   <form [formGroup]="firstFormGroup" class="custom-form">
@@ -20,6 +20,9 @@
                         <mat-form-field appearance="outline">
                           <mat-label>Titre</mat-label>
                           <input matInput placeholder="Titre du planning" formControlName="title" required >
+                          <mat-error>
+                            Ce titre est déjà utilisé
+                          </mat-error>
                         </mat-form-field>
                       </div>
                     </div>
@@ -41,7 +44,7 @@
                     </div>
                     <div class="row">
                       <div class="ml-auto">
-                        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                        <button mat-raised-button color="primary" (click)="validateTitle($event)">Suivant</button>
                       </div>
                     </div>
                   </form>
@@ -139,9 +142,9 @@
                   </div>
                 </div>
               </mat-step>
-              <mat-step [stepControl]="firstFormGroup">
+              <mat-step>
                 <div class="card-body">
-                  <form [formGroup]="thirdFormGroup" class="custom-form">
+                  <form class="custom-form">
                     <ng-template matStepLabel>Soutenances</ng-template>
                     <div class="row">
                       <div class="col-12">
@@ -195,7 +198,7 @@
                 </div>
               </mat-step>
             </mat-horizontal-stepper>
-            <mat-vertical-stepper linear #stepper *ngIf="isMobileMenu()">
+            <mat-vertical-stepper linear #stepperV *ngIf="isMobileMenu()">
                 <mat-step [stepControl]="firstFormGroup">
                   <div class="card-body">
                     <form [formGroup]="firstFormGroup" class="custom-form">
@@ -324,7 +327,7 @@
                     </div>
                   </div>
                 </mat-step>
-                <mat-step [stepControl]="firstFormGroup">
+                <mat-step [stepControl]="thirdFormGroup">
                   <div class="card-body">
                     <form [formGroup]="thirdFormGroup" class="custom-form">
                       <ng-template matStepLabel>Soutenances</ng-template>

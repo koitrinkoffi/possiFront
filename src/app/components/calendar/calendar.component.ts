@@ -71,6 +71,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
                 <li><span class="text-uppercase">${tag.secondTeacher.lastName}</span> ${tag.secondTeacher.firstName} (Second enseignant)</li>
                 <li>${tag.composition.tutorFullName} (Tuteur entreprise)</li>
                 </ul>
+                <div class="font-weight-bolder">Entreprise : ${tag.composition.company}</div>
                 <div class="font-weight-bolder">Salle : ${tag.room.name}</div>`,
       allowHTML: true,
       animation: 'shift-away',
@@ -115,7 +116,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     $('.fc-today').removeClass('alert alert-info');
   }
 
-  private parseEvent(oralDefenses: OralDefense[]) {
+  parseEvent(oralDefenses: OralDefense[]) {
     const array: EventInput[] = [];
     oralDefenses.forEach(o => {
       array.push({
@@ -127,12 +128,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       });
     });
     this.calendarEvents = array;
+    this.refreshCalendar();
   }
 
   parsePlanning(planning: Planning) {
     this.calendarComponent.getApi().gotoDate(moment(planning.period.from).format());
     this.startTime = moment(planning.dayPeriod.from).format('HH:mm:ss');
     this.endTime = moment(planning.dayPeriod.to).format('HH:mm:ss');
-    this.parseEvent(planning.oralDefenses);
   }
 }

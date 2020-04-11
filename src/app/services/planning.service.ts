@@ -23,6 +23,10 @@ export class PlanningService {
   }
 
   findById(id: number): Observable<Planning> {
-    return this.httpClient.get<Planning>(environment.apiUrl + '/planning/find/' + id);
+    return this.httpClient.get<Planning>(environment.apiUrl + '/planning/' + id);
+  }
+
+  findByName(planningName: string): Observable<Planning> {
+    return this.httpClient.get<Planning>(environment.apiUrl + '/planning/find/' + planningName);
   }
 }

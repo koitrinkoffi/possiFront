@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {TabHeader} from '../../components/table/table.component';
 import {Unavailability} from '../../model/unavailability';
 import {UnavailabilityService} from '../../services/unavailability.service';
 import * as moment from 'moment';
