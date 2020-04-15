@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {User} from '../model/user';
-import {TokenStorageService} from './token-storage.service';
+import {StorageService} from './storage.service';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
@@ -20,7 +20,7 @@ export class AuthService {
   user: User;
   private readonly jwt: string;
 
-  constructor(private tokenStorageService: TokenStorageService,
+  constructor(private tokenStorageService: StorageService,
               private httpClient: HttpClient,
               private router: Router) {
     this.jwt = tokenStorageService.getToken();
@@ -59,6 +59,7 @@ export class AuthService {
       return this.httpClient
         .post<AuthenticationResponse>(`${environment.app_url}/authenticate`, formData)
         .subscribe(data => {
+          data.user.role = data.user.role === 'TEACHER' ? 1 : 0;
           this.saveInSession(data);
           setTimeout(() => {
               window.location.reload();

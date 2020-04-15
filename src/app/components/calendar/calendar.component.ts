@@ -8,7 +8,7 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import * as moment from 'moment';
 import tippy from 'tippy.js';
 import * as $ from 'jquery';
-import {Classroom} from '../../model/classroom';
+import {Room} from '../../model/room';
 import {OralDefense} from '../../model/oral-defense';
 import {Planning} from '../../model/planning';
 

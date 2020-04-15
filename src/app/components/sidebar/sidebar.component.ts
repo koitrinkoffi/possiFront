@@ -10,11 +10,8 @@ declare interface RouteInfo {
     droits: number[];
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/home', title: 'Accueil',  icon: 'home', class: '', droits: [0, 1, 2] },
-    { path: '/private/planning', title: 'Mes plannings',  icon: 'calendar_today', class: '', droits: [0, 1, 2]},
-   // { path: '#', title: 'Plannings assignés',  icon: 'assignment', class: '' },
+    { path: '/', title: 'Accueil',  icon: 'home', class: '', droits: [0, 1, 2] },
     { path: '/create/planning', title: 'Nouveau planning',  icon: 'note_add', class: '', droits: [2] },
-    { path: '/student/register', title: 'Informations personnelles',  icon: 'account_circle', class: '', droits: [0] },
     // { path: '/private/planning', title: 'Maps',  icon: 'location_on', class: '' },
     // { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
     // { path: '/upgrade', title: 'Upgrade to PRO',  icon: 'unarchive', class: 'active-pro' },
@@ -31,7 +28,7 @@ export class SidebarComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem.droits.includes(this.authService.user.role));
+    this.menuItems = ROUTES.filter(menuItem => menuItem.droits.includes(this.authService.user.role as number));
   }
   isMobileMenu() {
       return !($(window).width() > 991);

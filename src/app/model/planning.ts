@@ -1,5 +1,5 @@
 import {User} from './user';
-import {Classroom} from './classroom';
+import {Room} from './room';
 import {TimeBox} from './time-box';
 import * as moment from 'moment';
 import {Participant} from './participant';
@@ -14,7 +14,7 @@ export class Planning {
   nbMaxOralDefensePerDay: number;
   oralDefenseInterlude = '10';
   oralDefenses: OralDefense[];
-  rooms: Classroom[];
+  rooms: Room[];
   participants: Participant[];
   lunchBreak: TimeBox;
   dayPeriod: TimeBox;

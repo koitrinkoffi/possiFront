@@ -4,19 +4,17 @@ import {HomeComponent} from './pages/home/home.component';
 import {UnavailabilityComponent} from './pages/unavailability/unavailability.component';
 import {PlanningDisplayComponent} from './pages/planning-display/planning-display.component';
 import {CreatePlanningComponent} from './pages/create-planning/create-planning.component';
-import {StudentRegisterComponent} from './pages/student-register/student-register.component';
-import {PrivatePlanningComponent} from './pages/private-planning/private-planning.component';
 import {AuthGuard} from './guards/auth.guard';
+import {TeacherGuard} from './guards/teacher.guard';
+import {AdminGuard} from './guards/admin.guard';
 
 
 const routes: Routes = [
   { path: '', canActivate: [AuthGuard], children: [
-      { path: '', component: HomeComponent },
-      { path: 'planning/:planningName/unavailability', component: UnavailabilityComponent },
+      { path: '', component: HomeComponent, data: {title: 'Accueil'} },
+      { path: 'planning/:planningName/unavailability', component: UnavailabilityComponent , canActivate: [TeacherGuard]},
       { path: 'planning/:planningName', component: PlanningDisplayComponent },
-      { path: 'create/planning', component: CreatePlanningComponent },
-      { path: 'student/register', component: StudentRegisterComponent},
-      { path: 'private/planning', component: PrivatePlanningComponent},
+      { path: 'create/planning', component: CreatePlanningComponent, canActivate: [AdminGuard] },
     ]},
 ];
 

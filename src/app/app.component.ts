@@ -24,7 +24,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.authService.user);
     const isWindows = navigator.platform.indexOf('Win') > -1;
 
     if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {

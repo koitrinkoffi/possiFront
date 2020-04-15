@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
 import {User} from '../model/user';
+import * as moment from 'moment';
 
 const TOKEN_KEY = 'possi-auth-token';
 const USER_UID = 'possi-auth-uid';
 const USER_KEY = 'possi-auth-user';
+const EXPIRATION_KEY = 'possi-setup-time';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TokenStorageService {
+export class StorageService {
 
-  constructor() { }
+  constructor() {
+    const setupTimeValue = sessionStorage.getItem(EXPIRATION_KEY);
+    if (setupTimeValue !== null) {
+      const now = moment(new Date());
+      const setupTime = moment(setupTimeValue);
+      if (setupTime.isBefore(now)) {
+        this.signOut();
+      }
+    }
+  }
 
   signOut() {
     window.sessionStorage.clear();
@@ -19,6 +30,8 @@ export class TokenStorageService {
   saveToken(token: string) {
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.setItem(TOKEN_KEY, token);
+    const now = moment(new Date()).add('10', 'days');
+    window.sessionStorage.setItem(EXPIRATION_KEY, now.format());
   }
 
   saveUid(uid: string) {
@@ -28,10 +41,6 @@ export class TokenStorageService {
 
   getToken(): string {
     return sessionStorage.getItem(TOKEN_KEY);
-  }
-
-  getUid(): string {
-    return sessionStorage.getItem(USER_UID);
   }
 
   saveUser(user: User) {

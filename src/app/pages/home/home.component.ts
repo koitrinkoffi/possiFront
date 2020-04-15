@@ -1,16 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {PlanningService} from '../../services/planning.service';
+import {PlanningDatatableComponent} from '../../components/planning-datatable/planning-datatable.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements AfterViewInit {
 
-  constructor() {
+  @ViewChild('planningDatatable', {static: false})
+  private planningDatatable: PlanningDatatableComponent;
+
+  constructor(private planningService: PlanningService) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
+    this.planningService.getPlannings().subscribe(data => {
+      this.planningDatatable.parseData(data);
+    });
   }
-
 }

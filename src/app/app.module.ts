@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,6 @@ import {CreatePlanningComponent} from './pages/create-planning/create-planning.c
 import {ClassroomSelectorComponent} from './components/classroom-selector/classroom-selector.component';
 import {ClassroomPipe} from './filters/classroom.pipe';
 import {StudentRegisterComponent} from './pages/student-register/student-register.component';
-import {PrivatePlanningComponent} from './pages/private-planning/private-planning.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {CardComponent} from './components/card/card.component';
 import {UnavailabilityChooserComponent} from './components/unavailability-chooser/unavailability-chooser.component';
@@ -40,6 +39,7 @@ import {
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
+import {AuthInterceptor} from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,6 @@ import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
     ClassroomSelectorComponent,
     ClassroomPipe,
     StudentRegisterComponent,
-    PrivatePlanningComponent,
     CalendarComponent,
     CardComponent,
     UnavailabilityChooserComponent,
@@ -98,6 +97,7 @@ import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
   providers: [
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

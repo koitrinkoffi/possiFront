@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {ClassroomService} from '../../services/classroom.service';
+import {RoomService} from '../../services/room.service';
 import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
 import * as $ from 'jquery';
@@ -31,7 +31,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
-              private classroomService: ClassroomService,
+              private classroomService: RoomService,
               private planningService: PlanningService,
               private participantService: ParticipantService,
               private router: Router) {}
@@ -137,7 +137,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       planning.participants = this.participantsSelected;
       planning.rooms = this.classroomSelector.getClassroomSelected();
 
-      // Classroom
+      // Room
       const classroomToCreate = this.classroomSelector.getClassroomToCreate();
       if (classroomToCreate.length > 0) {
         this.classroomService.create(classroomToCreate).subscribe(data => {

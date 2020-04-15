@@ -7,15 +7,15 @@ import {Unavailability} from '../model/unavailability';
   providedIn: 'root'
 })
 export class UnavailabilityService {
-
+  private readonly baseUrl = environment.app_url + '/unavailabilities';
   constructor(private httpClient: HttpClient) { }
 
   getAgenda(planningId: number, userUid: string): any {
-    return this.httpClient.get(environment.app_url + '/unavailability/agenda/' + planningId + '/' + userUid);
+    return this.httpClient.get(this.baseUrl + '/agenda/' + planningId + '/' + userUid);
   }
 
   sendUnavailabilities(planningId: number, toRemove: Unavailability[], toAdd: Unavailability[]): any {
-    return this.httpClient.post(environment.app_url + '/unavailability/update/' + planningId, {
+    return this.httpClient.post(this.baseUrl + '/update/' + planningId, {
       toRemove,
       toAdd,
     });
