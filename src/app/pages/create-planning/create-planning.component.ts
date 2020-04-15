@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {UserService} from '../../services/user.service';
 import {ClassroomService} from '../../services/classroom.service';
 import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
@@ -13,6 +12,7 @@ import {Participant} from '../../model/participant';
 import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
 import {Router} from '@angular/router';
 import {MatHorizontalStepper, MatStepper, MatVerticalStepper} from '@angular/material';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-planning',
@@ -30,7 +30,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   private onSubmitting = false;
 
   constructor(private formBuilder: FormBuilder,
-              private userService: UserService,
+              private authService: AuthService,
               private classroomService: ClassroomService,
               private planningService: PlanningService,
               private participantService: ParticipantService,
@@ -132,7 +132,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
       const planning: Planning = new Planning();
       planning.name = this.title;
       planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
-      planning.admin = this.userService.user;
+      planning.admin = this.authService.user;
       planning.parsePeriod(this.secondFormGroup.value);
       planning.participants = this.participantsSelected;
       planning.rooms = this.classroomSelector.getClassroomSelected();

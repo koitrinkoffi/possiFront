@@ -42,10 +42,10 @@
           <th mat-header-cell  *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
             <div class="row d-flex flex-row justify-content-around">
-              <div class="" *ngIf="user.user.role == 1 || user.user.role == 2">
+              <div class="" *ngIf="authService.user.role == 1 || authService.user.role == 2">
                 <button mat-raised-button color="primary" routerLink="/planning/{{element.planning}}/unavailability" (click)="selectPlanning(element.tag)">Indisponibilités</button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
                 <button mat-raised-button color="primary" (click)="selectPlanning(element.tag)">Gérer le planning</button>
               </div>
               <div class="mr-md-2">
@@ -53,12 +53,12 @@
                   <mat-icon>calendar_today</mat-icon>
                 </button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
                 <button mat-mini-fab color="warn" (click)="selectPlanning(element.tag)">
                   <mat-icon>file_copy</mat-icon>
                 </button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
                 <button mat-mini-fab (click)="delete(element.id)">
                   <mat-icon>delete</mat-icon>
                 </button>

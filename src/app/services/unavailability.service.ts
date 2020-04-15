@@ -11,11 +11,11 @@ export class UnavailabilityService {
   constructor(private httpClient: HttpClient) { }
 
   getAgenda(planningId: number, userUid: string): any {
-    return this.httpClient.get(environment.apiUrl + '/unavailability/agenda/' + planningId + '/' + userUid);
+    return this.httpClient.get(environment.app_url + '/unavailability/agenda/' + planningId + '/' + userUid);
   }
 
   sendUnavailabilities(planningId: number, toRemove: Unavailability[], toAdd: Unavailability[]): any {
-    return this.httpClient.post(environment.apiUrl + '/unavailability/update/' + planningId, {
+    return this.httpClient.post(environment.app_url + '/unavailability/update/' + planningId, {
       toRemove,
       toAdd,
     });

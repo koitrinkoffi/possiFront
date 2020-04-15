@@ -2,9 +2,8 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
-import {User} from '../../model/user';
 import * as moment from 'moment';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../services/auth.service';
 
 export interface PlanningElement {
   id: string|number;
@@ -31,7 +30,7 @@ export class PlanningDatatableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) private sort: MatSort;
-  constructor(private planningService: PlanningService, private user: UserService) {}
+  constructor(private planningService: PlanningService, private authService: AuthService) {}
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanningElement>();

@@ -4,7 +4,7 @@ import {UnavailabilityService} from '../../services/unavailability.service';
 import * as moment from 'moment';
 import {PlanningService} from '../../services/planning.service';
 import {TimeBox} from '../../model/time-box';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../services/auth.service';
 
 export class UnavailabilityBox {
 
@@ -32,10 +32,11 @@ export class UnavailabilityComponent implements OnInit {
   private matrix: UnavailabilityBox[][] = [];
   private width: number;
   private height: number;
-  constructor(private unavailabilityService: UnavailabilityService, private planningService: PlanningService, private userService: UserService) { }
+  constructor(private unavailabilityService: UnavailabilityService,
+              private planningService: PlanningService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.unavailabilityService.getAgenda(1, this.userService.user.uid).subscribe(data => {
+    this.unavailabilityService.getAgenda(1, this.authService.user.uid).subscribe(data => {
       this.planningService.findById(1).subscribe(p => {
         this.planningService.planningSelected = p;
         const timeBoxes: TimeBox[] = [];
@@ -56,7 +57,7 @@ export class UnavailabilityComponent implements OnInit {
             const unavailability = this.unavailabilities.find(u => timeBox.equals(u.period));
             this.matrix[i].push(unavailability !== undefined ?
               new UnavailabilityBox(unavailability, true, i, j) :
-              new UnavailabilityBox(new Unavailability(this.userService.user, timeBox), false, i, j));
+              new UnavailabilityBox(new Unavailability(this.authService.user, timeBox), false, i, j));
             j++;
           }
           i++;

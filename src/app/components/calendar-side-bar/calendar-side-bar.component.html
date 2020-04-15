@@ -10,7 +10,7 @@
         </mat-checkbox>
         <mat-divider class="mb-3"></mat-divider>
         <mat-accordion multi="true" class="oral-number">
-          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: userService.user.uid : true">
+          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : true">
             <mat-expansion-panel-header>
               <mat-panel-title >
                 Soutenance {{oralDefense.number + 1}}
@@ -48,7 +48,7 @@
         </mat-checkbox>
         <mat-divider class="mb-3"></mat-divider>
         <mat-accordion multi="true" class="oral-number">
-          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: userService.user.uid : false">
+          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : false">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Soutenance {{oralDefense.number + 1}}

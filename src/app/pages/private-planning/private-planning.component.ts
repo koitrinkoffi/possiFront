@@ -1,10 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Planning} from '../../model/planning';
-import * as moment from 'moment';
-import {User} from '../../model/user';
 import {PlanningDatatableComponent} from '../../components/planning-datatable/planning-datatable.component';
-import {UserService} from '../../services/user.service';
 import {PlanningService} from '../../services/planning.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-private-planning',
@@ -15,13 +12,12 @@ export class PrivatePlanningComponent implements OnInit, AfterViewInit {
   @ViewChild('planningDatatable', {static: false})
   private planningDatatable: PlanningDatatableComponent;
 
-  constructor(private userService: UserService, private planningService: PlanningService) { }
+  constructor(private authService: AuthService, private planningService: PlanningService) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    const plannings: Planning[] = [];
     this.planningService.getPlannings().subscribe(data => {
       this.planningDatatable.parseData(data);
     });

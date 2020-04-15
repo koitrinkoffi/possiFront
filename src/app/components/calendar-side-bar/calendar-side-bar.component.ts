@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {OralDefense} from '../../model/oral-defense';
-import {UserService} from '../../services/user.service';
 import {OralDefenseUserPipe} from '../../filters/oral-defense-user.pipe';
 import {OralDefenseSearchPipe} from '../../filters/oral-defense-search.pipe';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-calendar-side-bar',
@@ -18,10 +18,9 @@ export class CalendarSideBarComponent implements OnInit {
   private otherOraDefenses = true;
   @Output()
   private oralDefenseSelected = new EventEmitter<OralDefense[]>();
-  constructor(private userService: UserService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    const elemoOralWrapper = document.querySelector('.oral-wrapper') as HTMLElement;
   }
   parseOralDefense(oralDefenses: OralDefense[]) {
     oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
@@ -34,9 +33,9 @@ export class CalendarSideBarComponent implements OnInit {
       if (this.ownOralDefenses && this.otherOraDefenses) {
         this.oralDefenseSelected.emit(this.oralDefenses);
       } else if (this.ownOralDefenses) {
-        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.userService.user.uid, true));
+        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, true));
       } else if (this.otherOraDefenses) {
-        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.userService.user.uid, false));
+        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, false));
       } else {
         this.oralDefenseSelected.emit([]);
       }

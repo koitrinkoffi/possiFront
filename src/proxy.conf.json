@@ -4,7 +4,8 @@
     "/room",
     "/planning",
     "/upload",
-    "/unavailability"
+    "/unavailability",
+    "/authenticate"
   ],
 
     "target": "http://localhost:8080",

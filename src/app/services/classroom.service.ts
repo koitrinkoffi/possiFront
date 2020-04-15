@@ -11,11 +11,11 @@ export class ClassroomService {
   constructor(private httpClient: HttpClient) {}
 
   public getAll(): Observable<Classroom[]> {
-    return this.httpClient.get<Classroom[]>(environment.apiUrl + '/room/list');
+    return this.httpClient.get<Classroom[]>(environment.app_url + '/room/list');
   }
 
   public create(classroom: Classroom[]): Observable<Classroom[]> {
     const names: string[] = classroom.map(c => c.name);
-    return this.httpClient.post<Classroom[]>(environment.apiUrl + '/room/create', names);
+    return this.httpClient.post<Classroom[]>(environment.app_url + '/room/create', names);
   }
 }
