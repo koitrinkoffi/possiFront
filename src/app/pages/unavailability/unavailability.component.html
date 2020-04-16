@@ -1,18 +1,62 @@
-<div class="main-content">
-  <div class="text-center">
-    <span class="title" (click)="validate()">{{planningName}}</span><br>
-    <span class="subtitle">Créé par Koitrin KOFFI il y a 4 minutes</span>
+<div class="main-content container">
+  <div class="text-center mb-2" *ngIf="isLoaded">
+    <h3 class="font-weight-bolder">{{planning.name}}</h3>
+    <span class="subtitle">Créé par {{planning.admin.firstName}} {{planning.admin.lastName}} il y a 4 minutes</span>
   </div>
-  <app-card>
+  <div class="row">
+    <div class="mx-auto">
+      <button mat-raised-button="" class="btn btn-success btn-round mat-raised-button mat-button-base" (click)="validate()">
+        <span class="mat-button-wrapper font-weight-bolder">
+          Valider
+        </span>
+        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+        <div class="mat-button-focus-overlay"></div>
+      </button>
+    </div>
+  </div>
+  <app-card *ngIf="isLoaded">
     <div class="table-responsive">
-      <table border="1">
+      <table class="table table-hover">
         <thead>
         <th></th>
-        <th *ngFor="let head of matrix[0]" (click)="checkColumns(head.column)" >{{formatDate(head.unavailability.period.from, 'DD/MM/YYYY')}}</th>
+        <th *ngFor="let head of matrix[0]" (click)="checkColumns(head.column, false)" class="clickable-item">{{formatDate(head.unavailability.period.from, 'DD/MM/YYYY')}}</th>
         </thead>
         <tbody>
-        <tr *ngFor="let lines of matrix">
-          <td (click)="checkRows(lines[0].row)">
+        <tr *ngFor="let lines of matrix | lunchBreak: planning : 0 ">
+          <td (click)="checkRows(lines[0].row, false)" class="clickable-item">
+            {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
+          </td>
+          <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
+        </tr>
+        <tr>
+          <td colspan=100>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Heures de pause déjeuner
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                  <th></th>
+                  <th *ngFor="let head of matrix[0]" (click)="checkColumns(head.column, true)" class="clickable-item">{{formatDate(head.unavailability.period.from, 'DD/MM/YYYY')}}</th>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let lines of matrix | lunchBreak: planning : 2 ">
+                    <td (click)="checkRows(lines[0].row, true)" class="clickable-item">
+                      {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
+                    </td>
+                    <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-expansion-panel>
+          </td>
+        </tr>
+        <tr *ngFor="let lines of matrix | lunchBreak: planning : 1 ">
+          <td (click)="checkRows(lines[0].row, false)" class="clickable-item">
             {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
           </td>
           <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>

@@ -15,11 +15,11 @@ export class PlanningService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
-  getPlannings(): Observable<Planning[]> {
+  getAll(): Observable<Planning[]> {
     return this.httpClient.get<Planning[]>( environment.app_url + '/persons/' + this.authService.user.uid + '/plannings');
   }
 
-  createPlanning(planning: Planning): Observable<Planning> {
+  create(planning: Planning): Observable<Planning> {
     return this.httpClient.post<Planning>(this.baseUrl, planning);
   }
 
@@ -29,5 +29,9 @@ export class PlanningService {
 
   findByName(planningName: string): Observable<Planning> {
     return this.httpClient.get<Planning>(this.baseUrl + '/find/' + planningName);
+  }
+
+  delete(id: number) {
+    return this.httpClient.delete<any>(this.baseUrl + '/' + id);
   }
 }

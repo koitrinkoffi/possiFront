@@ -18,7 +18,7 @@ export function showNotification(message: string, type = '') {
       '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
       '<i class="material-icons" data-notify="icon">notifications</i> ' +
       '<span data-notify="title">{1}</span> ' +
-      '<span data-notify="message">{2}</span>' +
+      '<span data-notify="message" class="font-weight-bolder">{2}</span>' +
       '<div class="progress" data-notify="progressbar">' +
       '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
       '</div>' +

@@ -11,9 +11,9 @@ import {AdminGuard} from './guards/admin.guard';
 
 const routes: Routes = [
   { path: '', canActivate: [AuthGuard], children: [
-      { path: '', component: HomeComponent, data: {title: 'Accueil'} },
-      { path: 'planning/:planningName/unavailability', component: UnavailabilityComponent , canActivate: [TeacherGuard]},
-      { path: 'planning/:planningName', component: PlanningDisplayComponent },
+      { path: '', component: HomeComponent},
+      { path: 'planning/:id/unavailability', component: UnavailabilityComponent , canActivate: [TeacherGuard]},
+      { path: 'planning/:id', component: PlanningDisplayComponent },
       { path: 'create/planning', component: CreatePlanningComponent, canActivate: [AdminGuard] },
     ]},
 ];

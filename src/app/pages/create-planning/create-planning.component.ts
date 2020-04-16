@@ -153,7 +153,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private createPlanning(planning: Planning) {
     planning.rooms = this.classroomSelector.getClassroomSelected();
-    this.planningService.createPlanning(planning).subscribe(data => {
+    this.planningService.create(planning).subscribe(data => {
     },  error => {
       console.error(error);
     });

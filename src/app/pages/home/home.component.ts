@@ -16,7 +16,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.planningService.getPlannings().subscribe(data => {
+    this.planningService.getAll().subscribe(data => {
       this.planningDatatable.parseData(data);
     });
   }

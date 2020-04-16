@@ -14,7 +14,6 @@ import {UnavailabilityComponent} from './pages/unavailability/unavailability.com
 import {CreatePlanningComponent} from './pages/create-planning/create-planning.component';
 import {ClassroomSelectorComponent} from './components/classroom-selector/classroom-selector.component';
 import {ClassroomPipe} from './filters/classroom.pipe';
-import {StudentRegisterComponent} from './pages/student-register/student-register.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {CardComponent} from './components/card/card.component';
 import {UnavailabilityChooserComponent} from './components/unavailability-chooser/unavailability-chooser.component';
@@ -22,8 +21,6 @@ import {ParticipantDatatableComponent} from './components/participant-datatable/
 import {CalendarSideBarComponent} from './components/calendar-side-bar/calendar-side-bar.component';
 import {PlanningDisplayComponent} from './pages/planning-display/planning-display.component';
 import {OralDefenseUserPipe} from './filters/oral-defense-user.pipe';
-import {IsBeforeLunchBreakPipe} from './filters/is-before-lunch-break.pipe';
-import {IsAfterLunchBreakPipe} from './filters/is-after-lunch-break.pipe';
 import {OralDefenseSearchPipe} from './filters/oral-defense-search.pipe';
 import {
   MAT_DATE_LOCALE,
@@ -40,6 +37,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
 import {AuthInterceptor} from './services/auth-interceptor.service';
+import { LunchBreakPipe } from './filters/lunch-break.pipe';
 
 @NgModule({
   declarations: [
@@ -53,7 +51,6 @@ import {AuthInterceptor} from './services/auth-interceptor.service';
     CreatePlanningComponent,
     ClassroomSelectorComponent,
     ClassroomPipe,
-    StudentRegisterComponent,
     CalendarComponent,
     CardComponent,
     UnavailabilityChooserComponent,
@@ -61,9 +58,8 @@ import {AuthInterceptor} from './services/auth-interceptor.service';
     CalendarSideBarComponent,
     PlanningDisplayComponent,
     OralDefenseUserPipe,
-    IsBeforeLunchBreakPipe,
-    IsAfterLunchBreakPipe,
-    OralDefenseSearchPipe
+    OralDefenseSearchPipe,
+    LunchBreakPipe
   ],
   imports: [
     HttpClientModule,
@@ -95,6 +91,7 @@ import {AuthInterceptor} from './services/auth-interceptor.service';
     MatExpansionModule,
   ],
   providers: [
+    LunchBreakPipe,
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
