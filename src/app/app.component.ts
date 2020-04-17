@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import { Location, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
@@ -69,7 +69,6 @@ export class AppComponent implements AfterViewInit {
       if (pluginDropdown.hasClass('show-dropdown')) {
         pluginDropdown.addClass('open');
       }
-
     }
   }
 

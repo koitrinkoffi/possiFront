@@ -21,8 +21,7 @@ export class AuthService {
   private readonly jwt: string;
 
   constructor(private tokenStorageService: StorageService,
-              private httpClient: HttpClient,
-              private router: Router) {
+              private httpClient: HttpClient) {
     this.jwt = tokenStorageService.getToken();
     this.user = tokenStorageService.getUser();
   }
@@ -59,7 +58,13 @@ export class AuthService {
       return this.httpClient
         .post<AuthenticationResponse>(`${environment.app_url}/authenticate`, formData)
         .subscribe(data => {
-          data.user.role = data.user.role === 'TEACHER' ? 1 : 0;
+          if (data.user.role === 'TEACHER') {
+            data.user.role = 1;
+          } else if (data.user.role === 'ADMIN') {
+            data.user.role = 2;
+          } else {
+            data.user.role = 0;
+          }
           this.saveInSession(data);
           setTimeout(() => {
               window.location.reload();

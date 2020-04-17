@@ -1,8 +1,7 @@
-<div class="main-content container">
-  <div class="text-center mb-2" *ngIf="isLoaded">
+<div class="main-content container" *ngIf="isLoaded">
+  <div class="text-center mb-2">
     <h3 class="font-weight-bolder">{{planning.name}}</h3>
     <span class="subtitle">Créé par {{planning.admin.firstName}} {{planning.admin.lastName}} il y a 4 minutes</span>
-  </div>
   <div class="row">
     <div class="mx-auto">
       <button mat-raised-button="" class="btn btn-success btn-round mat-raised-button mat-button-base" (click)="validate()">
@@ -14,7 +13,7 @@
       </button>
     </div>
   </div>
-  <app-card *ngIf="isLoaded">
+  <app-card>
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
