@@ -2,9 +2,8 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
-import {User} from '../../model/user';
 import * as moment from 'moment';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../services/auth.service';
 
 export interface PlanningElement {
   id: string|number;
@@ -30,7 +29,7 @@ export class PlanningDatatableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) private sort: MatSort;
-  constructor(private planningService: PlanningService, private user: UserService) {}
+  constructor(private planningService: PlanningService, private authService: AuthService) {}
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanningElement>();
@@ -50,12 +49,16 @@ export class PlanningDatatableComponent implements OnInit {
         planning: p.name,
         creator: p.admin.firstName + ' ' + p.admin.lastName,
         startDate: moment(p.period.from).format(Planning.dateFormat()),
-        endDate: moment(p.period.to).format(Planning.dateFormat())
+        endDate: moment(p.period.to).format(Planning.dateFormat()),
       });
     });
     this.dataSource.data = this.planningElement;
   }
+
   private delete(id: string) {
-    this.dataSource.data = this.planningElement.filter(p => p.id !== id);
+    this.planningService.delete(+id).subscribe( data => {
+      this.planningElement = this.planningElement.filter(p => p.id !== id);
+      this.dataSource.data = this.planningElement;
+    });
   }
 }

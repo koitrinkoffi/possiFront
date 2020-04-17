@@ -1,10 +1,11 @@
 {
   "context": [
-    "/person",
-    "/room",
-    "/planning",
+    "/persons",
+    "/rooms",
+    "/plannings",
     "/upload",
-    "/unavailability"
+    "/unavailabilities",
+    "/authenticate"
   ],
 
     "target": "http://localhost:8080",

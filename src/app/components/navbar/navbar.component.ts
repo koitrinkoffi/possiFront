@@ -1,8 +1,15 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
-import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-import { Router } from '@angular/router';
-import {UserService} from '../../services/user.service';
+import {Location} from '@angular/common';
+import {ActivatedRoute, Route, Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+
+const routesNames = [
+  {path: '/create/planning', name: 'Nouveau planning'},
+  {path: '/planning/:planningName/unavailability', name: 'Indisponibilités'},
+  {path: '/planning/:planningName', name: ''},
+  {path: '/', name: 'Accueil'},
+];
 
 @Component({
   selector: 'app-navbar',
@@ -16,13 +23,13 @@ export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
 
-  constructor(location: Location,  private element: ElementRef, private router: Router, private userService: UserService) {
+  constructor(location: Location,  private element: ElementRef, private router: Router, private authService: AuthService) {
     this.location = location;
     this.sidebarVisible = false;
   }
 
   ngOnInit(){
-    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.listTitles = ROUTES;
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
     this.router.events.subscribe((event) => {
@@ -110,17 +117,22 @@ export class NavbarComponent implements OnInit {
     }
   };
 
-  getTitle(){
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if(titlee.charAt(0) === '#'){
-      titlee = titlee.slice( 1 );
+  getTitle() {
+    let title = this.location.prepareExternalUrl(this.location.path());
+    if (title.charAt(0) === '#') {
+      title = title.slice( 1 );
     }
 
     for(var item = 0; item < this.listTitles.length; item++){
-      if(this.listTitles[item].path === titlee){
+      if(this.listTitles[item].path === title){
         return this.listTitles[item].title;
       }
     }
     return 'Dashboard';
+  }
+
+  disconnect(event: MouseEvent) {
+    event.stopPropagation();
+    this.authService.logout();
   }
 }

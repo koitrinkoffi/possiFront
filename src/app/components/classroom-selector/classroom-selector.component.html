@@ -1,5 +1,5 @@
 <mat-form-field class="full-width" appearance="outline">
-  <mat-chip-list #chipList aria-label="Classroom selection">
+  <mat-chip-list #chipList aria-label="Room selection">
     <mat-chip
       color="success"
       *ngFor="let classroom of classrooms"
@@ -27,7 +27,7 @@
 <app-card
   title="Salles suggérées">
   <p class="">
-    <mat-chip-list aria-label="Classroom selection" [(ngModel)]="classrooms">
+    <mat-chip-list aria-label="Room selection" [(ngModel)]="classrooms">
       <mat-chip
         *ngFor="let classroom of suggestedClassroom"
         [selectable]="selectableChips"

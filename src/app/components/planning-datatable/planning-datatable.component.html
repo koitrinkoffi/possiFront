@@ -1,6 +1,6 @@
 
 <div class="card">
-  <div class="card-header card-header-danger">
+  <div class="card-header card-header-info">
     <div class="row">
       <div class="col-md-5 mr-md-auto">
         <h4 class="card-title ">{{title}}</h4>
@@ -9,7 +9,7 @@
       <div class="col-md-3 ml-md-auto" [class.search-input]="true">
         <mat-form-field color="accent" appearance="fill">
           <mat-label>Recherche</mat-label>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Recherche">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Recherche" autocomplete="off">
         </mat-form-field>
       </div>
     </div>
@@ -42,24 +42,32 @@
           <th mat-header-cell  *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
             <div class="row d-flex flex-row justify-content-around">
-              <div class="" *ngIf="user.user.role == 1 || user.user.role == 2">
-                <button mat-raised-button color="primary" routerLink="/planning/{{element.planning}}/unavailability">Indisponibilités</button>
+              <div class="" *ngIf="authService.user.role == 1 || authService.user.role == 2">
+                <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button routerLink="/planning/{{element.id}}/unavailability">
+                  Indisponibilités
+                  <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                  <div class="mat-button-focus-overlay"></div>
+                </button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
-                <button mat-raised-button color="primary">Gérer le planning</button>
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
+                <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button>
+                  Gérer le planning
+                  <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                  <div class="mat-button-focus-overlay"></div>
+                </button>
               </div>
               <div class="mr-md-2">
-                <button mat-mini-fab color="primary">
+                <button class="btn btn-primary btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab routerLink="/planning/{{element.id}}">
                   <mat-icon>calendar_today</mat-icon>
                 </button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
-                <button mat-mini-fab color="warn">
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
+                <button class="btn btn-warning btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab >
                   <mat-icon>file_copy</mat-icon>
                 </button>
               </div>
-              <div class="mr-md-2" *ngIf="user.user.role == 2">
-                <button mat-mini-fab (click)="delete(element.id)">
+              <div class="mr-md-2" *ngIf="authService.user.role == 2">
+                <button class="btn btn-danger btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab (click)="delete(element.id)">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>

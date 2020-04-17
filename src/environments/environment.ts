@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4200',
+  app_url: 'http://possi2019.univ-rennes1.fr:4200',
+  cas_url: 'https://sso-cas.univ-rennes1.fr',
+  cas_validate_url: 'https://sso-cas.univ-rennes1.fr/serviceValidate'
 };
 
 /*

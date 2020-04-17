@@ -2,12 +2,11 @@
   <full-calendar
     #calendar
     themeSystem="bootstrap"
-    datesAboveResources="true"
-    defaultView="resourceTimeGridFiveDay"
+    defaultView="timeGridWeek"
     locale="fr"
     weekNumberCalculation="ISO"
-    [resources]="resources"
     [height]="1000"
+    contentHeight="auto"
     [allDaySlot]="false"
     [minTime]="startTime"
     [maxTime]="endTime"
@@ -23,7 +22,7 @@
     [header]="{
         left: 'prev,next',
         center: 'title',
-        right: 'resourceTimeGridDay,resourceTimeGridFiveDay'
+        right: edit ? 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' : 'timeGridWeek,timeGridDay,listWeek'
       }"
     [plugins]="calendarPlugins"
     [weekends]="calendarWeekends"
