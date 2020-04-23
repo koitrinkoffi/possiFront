@@ -18,6 +18,8 @@ export class Planning {
   participants: Participant[];
   lunchBreak: TimeBox;
   dayPeriod: TimeBox;
+  createdAt: string;
+  updatedAt: string;
 
 
   static dateFormat(): string {

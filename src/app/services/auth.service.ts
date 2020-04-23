@@ -42,7 +42,8 @@ export class AuthService {
         window.open(environment.cas_url + '/login?locale=fr_FR&service=' + environment.app_url, '_self');
       }
       this.httpClient.get(environment.cas_url + '/serviceValidate?ticket=' + ticket + '&service=' + environment.app_url)
-        .subscribe(data => {},
+        .subscribe(data => {
+          },
           error => {
             const uid = this.extractUid(error.error.text);
             if (uid !== '') {
@@ -53,24 +54,28 @@ export class AuthService {
             }, 1000);
           });
     } else {
-      const formData = new FormData();
-      formData.append('uid', this.tokenStorageService.getUserUid());
-      return this.httpClient
-        .post<AuthenticationResponse>(`${environment.app_url}/authenticate`, formData)
-        .subscribe(data => {
-          if (data.user.role === 'TEACHER') {
-            data.user.role = 1;
-          } else if (data.user.role === 'ADMIN') {
-            data.user.role = 2;
-          } else {
-            data.user.role = 0;
-          }
-          this.saveInSession(data);
-          setTimeout(() => {
-              window.location.reload();
-          }, 1000);
-        });
+      this.authenticateToAPI(this.tokenStorageService.getUserUid());
     }
+  }
+
+  authenticateToAPI(uid: string) {
+    const formData = new FormData();
+    formData.append('uid', uid);
+    return this.httpClient
+      .post<AuthenticationResponse>(`${environment.app_url}/authenticate`, formData)
+      .subscribe(data => {
+        if (data.user.role === 'TEACHER') {
+          data.user.role = 1;
+        } else if (data.user.role === 'ADMIN') {
+          data.user.role = 2;
+        } else {
+          data.user.role = 0;
+        }
+        this.saveInSession(data);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
   }
 
   private saveInSession(data: AuthenticationResponse) {

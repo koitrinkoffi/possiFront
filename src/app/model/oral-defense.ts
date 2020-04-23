@@ -12,4 +12,5 @@ export class OralDefense {
   secondTeacher: User;
   number: number;
   color: Color;
+  unavailabilities: TimeBox[];
 }

@@ -22,7 +22,7 @@ export class PlanningDisplayComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit(): void {
-    this.planningService.findById(1).subscribe(p => {
+    this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.calendarComponent.parsePlanning(p);
       this.calendarSideBarComponent.parseOralDefense(p.oralDefenses);
     });
