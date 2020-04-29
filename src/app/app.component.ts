@@ -18,12 +18,27 @@ export class AppComponent implements AfterViewInit {
   private _router: Subscription;
   private lastPoppedUrl: string;
   private yScrollStack: number[] = [];
+  private logged = false;
 
   constructor( public location: Location, private router: Router, private authService: AuthService) {
     moment.locale('fr');
   }
 
   ngAfterViewInit() {
+    if (!this.authService.isLogged()) {
+      this.authService.loginState.subscribe(b => {
+        this.logged = b;
+        if (this.logged) {
+          this.init();
+        }
+      });
+    } else {
+      this.logged = true;
+      this.init();
+    }
+  }
+
+  private init() {
     const isWindows = navigator.platform.indexOf('Win') > -1;
 
     if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {
@@ -72,13 +87,13 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  isMaps(path) {
+  private isMaps(path) {
     let title = this.location.prepareExternalUrl(this.location.path());
     title = title.slice( 1 );
     return path !== title;
   }
 
-  isMac(): boolean {
+  private isMac(): boolean {
     let bool = false;
     if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
       bool = true;

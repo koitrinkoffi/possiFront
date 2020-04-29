@@ -30,7 +30,7 @@ export class StorageService {
   saveToken(token: string) {
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.setItem(TOKEN_KEY, token);
-    const now = moment(new Date()).add('10', 'days');
+    const now = moment(new Date()).add('9', 'days');
     window.sessionStorage.setItem(EXPIRATION_KEY, now.format());
   }
 

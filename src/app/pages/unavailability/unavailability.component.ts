@@ -48,7 +48,7 @@ export class UnavailabilityComponent implements OnInit {
   ngOnInit() {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.planning = p;
-      this.unavailabilityService.getAgenda(p.id, this.authService.user.uid).subscribe(data => {
+      this.unavailabilityService.getAgenda(this.planning.id, this.authService.user.uid).subscribe(data => {
         const timeBoxes: TimeBox[] = [];
         data.timeBoxes.forEach(t => {
           timeBoxes.push(new TimeBox(t.from, t.to));
@@ -88,40 +88,38 @@ export class UnavailabilityComponent implements OnInit {
     }
   }
 
-  private checkRows(row: number, lunchBreak: boolean) {
-    const m = this.getTimeBoxesWithoutLunchBreak(lunchBreak);
-    const size = m.length;
+  private checkRows(row: number) {
     let i = 0;
     while (i < this.width) {
-      m[row % size][i].checked = !m[row % size][i].checked;
+      this.matrix[row][i].checked = !this.matrix[row][i].checked;
       i++;
     }
   }
 
   private getTimeBoxesWithoutLunchBreak(lunchBreak: boolean): UnavailabilityBox[][] {
-    if (lunchBreak) {
-      return this.lunchBreakPipe.transform(this.matrix, this.planning, 2);
+      if (lunchBreak) {
+        return this.lunchBreakPipe.transform(this.matrix, this.planning, 2);
+      }
+      const customMatrix: UnavailabilityBox[][] = this.lunchBreakPipe.transform(this.matrix, this.planning, 0);
+      return customMatrix.concat(this.lunchBreakPipe.transform(this.matrix, this.planning, 1));
     }
-    const customMatrix: UnavailabilityBox[][] = this.lunchBreakPipe.transform(this.matrix, this.planning, 0);
-    return customMatrix.concat(this.lunchBreakPipe.transform(this.matrix, this.planning, 1));
-  }
 
   private validate() {
-    let newUnavailabilities: Unavailability[] = [];
-    let i = 0;
-    while (i < this.height) {
-      newUnavailabilities = newUnavailabilities.concat(this.matrix[i].filter(d => d.checked)
-        .map(value => value.unavailability));
-      i++;
-    }
-    this.unavailabilityService.sendUnavailabilities(1,
-      this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
-      newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(
+      let newUnavailabilities: Unavailability[] = [];
+      let i = 0;
+      while (i < this.height) {
+        newUnavailabilities = newUnavailabilities.concat(this.matrix[i].filter(d => d.checked)
+          .map(value => value.unavailability));
+        i++;
+      }
+      this.unavailabilityService.sendUnavailabilities(this.planning.id,
+        this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
+        newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(
         d => showNotification('Vos modifications ont été prises en compte.', 'success'),
-      e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
-  }
+        e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+    }
 
   private formatDate(date: string, format: string) {
-    return moment(date).format(format);
+      return moment(date).format(format);
+    }
   }
-}

@@ -1,4 +1,4 @@
-<div class="wrapper" *ngIf="authService.isLogged()">
+<div class="wrapper" *ngIf="logged">
   <div class="sidebar" data-color="azure" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
     <app-sidebar></app-sidebar>
     <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
@@ -11,7 +11,7 @@
     </div>
   </div>
 </div>
-<div class="container h-100" *ngIf="!authService.isLogged()">
+<div class="container h-100" *ngIf="!logged">
   <div class="row h-100 justify-content-center align-items-center">
     <mat-spinner></mat-spinner>
   </div>

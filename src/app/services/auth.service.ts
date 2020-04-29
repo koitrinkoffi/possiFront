@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 import * as converter from 'xml-js';
+import {BehaviorSubject} from 'rxjs';
 
 export class AuthenticationResponse {
   user: User;
@@ -18,11 +19,13 @@ export class AuthenticationResponse {
 export class AuthService {
 
   user: User;
-  private readonly jwt: string;
+  private _loginState = new BehaviorSubject<boolean>(false);
+  loginState = this._loginState.asObservable();
+
 
   constructor(private tokenStorageService: StorageService,
-              private httpClient: HttpClient) {
-    this.jwt = tokenStorageService.getToken();
+              private httpClient: HttpClient,
+              private router: Router) {
     this.user = tokenStorageService.getUser();
   }
 
@@ -48,10 +51,15 @@ export class AuthService {
             const uid = this.extractUid(error.error.text);
             if (uid !== '') {
               this.tokenStorageService.saveUid(uid);
+              setTimeout(() => {
+                console.log('je navigue');
+                this.authenticateToAPI(this.tokenStorageService.getUserUid());
+              }, 1000);
+            } else {
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
             }
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
           });
     } else {
       this.authenticateToAPI(this.tokenStorageService.getUserUid());
@@ -72,9 +80,9 @@ export class AuthService {
           data.user.role = 0;
         }
         this.saveInSession(data);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        this.user = this.tokenStorageService.getUser();
+        this._loginState.next(true);
+        this.router.navigate(['']);
       });
   }
 
