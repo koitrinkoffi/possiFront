@@ -1,9 +1,7 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {FormControl, Validators} from '@angular/forms';
 import {MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {map, startWith} from 'rxjs/operators';
 import {Room} from '../../model/room';
 
 @Component({
@@ -12,24 +10,15 @@ import {Room} from '../../model/room';
   styleUrls: ['./classroom-selector.component.scss']
 })
 export class ClassroomSelectorComponent implements OnInit {
-  private searchInput = '';
   private selectableChips = true;
   private removableChips = true;
   private separatorKeysCodes: number[] = [ENTER, COMMA];
-  // private classroomCtrl = new FormControl();
-  // private filteredClassroom: Observable<string[]>;
   private suggestedClassroom: Room[];
-  private lemon: Room = new Room( 'i50', 1);
+  private searchInput = '';
   private classrooms: Room[] = [];
   @Input()
-  private allClassrooms: Room[] = [
-    new Room('e210', 2),
-    this.lemon,
-    new Room('i52', 4),
-    new Room('i54', 5),
-    new Room('i53', 6)];
+  private allClassrooms: Room[] = [];
 
-  // @ViewChild('classroomInput', {static: false}) classroomInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
   constructor() {}
@@ -41,19 +30,19 @@ export class ClassroomSelectorComponent implements OnInit {
   private addClassroomByInput(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
-    const classroom = this.allClassrooms.find(c => c.name == value);
-    if (classroom == undefined) {
-      this.addClassroom(new Room(value));
-    } else {
-      this.addClassroom(classroom);
+    if (value.trim() !== '') {
+      const classroom = this.allClassrooms.find(c => c.name === value);
+      if (classroom === undefined) {
+        this.addClassroom(new Room(value));
+      } else {
+        this.addClassroom(classroom);
+      }
     }
 
     if (input) {
       input.value = '';
     }
     this.searchInput = '';
-    // this.classroomCtrl.setValue('');
   }
 
   private addClassroom(classroom: Room): void {
@@ -95,5 +84,4 @@ export class ClassroomSelectorComponent implements OnInit {
   public getClassroomSelected(): Room[] {
     return this.classrooms.filter(c => !this.getClassroomToCreate().includes(c));
   }
-
 }

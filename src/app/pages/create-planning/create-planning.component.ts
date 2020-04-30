@@ -7,12 +7,11 @@ import {Planning} from '../../model/planning';
 import * as $ from 'jquery';
 import {PlanningService} from '../../services/planning.service';
 import {showNotification} from '../../utils/notify';
-import {ParticipantService} from '../../services/participant.service';
-import {Participant} from '../../model/participant';
 import {ParticipantDatatableComponent} from '../../components/participant-datatable/participant-datatable.component';
 import {Router} from '@angular/router';
-import {MatHorizontalStepper, MatStepper, MatVerticalStepper} from '@angular/material';
+import {MatHorizontalStepper, MatStep, MatVerticalStepper} from '@angular/material';
 import {AuthService} from '../../services/auth.service';
+import {OralDefense} from '../../model/oral-defense';
 
 @Component({
   selector: 'app-create-planning',
@@ -23,9 +22,8 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   private firstFormGroup: FormGroup;
   private secondFormGroup: FormGroup;
-  private thirdFormGroup: FormGroup;
-  private participants: Participant[] = [];
-  private participantsSelected: Participant[] = [];
+  private participants: OralDefense[] = [];
+  private participantsSelected: OralDefense[] = [];
   private onLoading = false;
   private onSubmitting = false;
 
@@ -33,7 +31,6 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
               private authService: AuthService,
               private classroomService: RoomService,
               private planningService: PlanningService,
-              private participantService: ParticipantService,
               private router: Router) {}
 
   @ViewChild('participantDatatableComponent', {static: false})
@@ -44,6 +41,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   @ViewChild('inputFile', {static: false})
   private inputFile: ElementRef;
+
+  @ViewChild('roomStep', {static: false})
+  private roomStep: MatStep;
 
   @ViewChild('stepperV', {static: false})
   private stepperV: MatVerticalStepper;
@@ -58,6 +58,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.fetchClassroom();
+    this.roomStep.completed = false;
   }
 
   ngOnInit() {
@@ -96,6 +97,21 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     };
   }
 
+  private validateRooms(event: MouseEvent) {
+    event.stopPropagation();
+    if (this.classroomSelector.getClassroomSelected().length === 0) {
+      showNotification('Vous devez selectionner au moins une salle', 'danger');
+      this.roomStep.completed = false;
+    } else {
+      this.roomStep.completed = true;
+      if (this.isMobileMenu()) {
+        this.stepperV.next();
+      } else {
+        this.stepperH.next();
+      }
+    }
+  }
+
   private isValidDate(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       return !moment(control.value).isValid() ? {invalidDate: {value: control.value}} : null;
@@ -127,35 +143,36 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   private validate() {
+    showNotification('veuillez patienter un moment...', 'primary');
+    // Planning
+    const planning: Planning = new Planning();
+    planning.name = this.title;
+    planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
+    planning.admin = this.authService.user;
+    planning.parsePeriod(this.secondFormGroup.value);
+    planning.oralDefenses = this.participantsSelected;
+    planning.rooms = this.classroomSelector.getClassroomSelected();
 
-      // Planning
-      const planning: Planning = new Planning();
-      planning.name = this.title;
-      planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
-      planning.admin = this.authService.user;
-      planning.parsePeriod(this.secondFormGroup.value);
-      planning.participants = this.participantsSelected;
-      planning.rooms = this.classroomSelector.getClassroomSelected();
-
-      // Room
-      const classroomToCreate = this.classroomSelector.getClassroomToCreate();
-      if (classroomToCreate.length > 0) {
-        this.classroomService.create(classroomToCreate).subscribe(data => {
-          planning.rooms = planning.rooms.concat(data);
-          this.createPlanning(planning);
-        }, error => {
-          console.error(error);
-        });
-      } else {
+    // Room
+    const classroomToCreate = this.classroomSelector.getClassroomToCreate();
+    if (classroomToCreate.length > 0) {
+      this.classroomService.create(classroomToCreate).subscribe(data => {
+        planning.rooms = planning.rooms.concat(data);
         this.createPlanning(planning);
-      }
+      }, error => {
+        showNotification('Une erreur s\'est produite. Veuillez réessayer plus tard', 'danger');
+      });
+    } else {
+      this.createPlanning(planning);
+    }
   }
 
   private createPlanning(planning: Planning) {
     planning.rooms = this.classroomSelector.getClassroomSelected();
     this.planningService.create(planning).subscribe(data => {
+      showNotification('Votre planning a été créé avec succès', 'success');
     },  error => {
-      console.error(error);
+        showNotification('Une erreur s\'est produite', 'danger');
     });
   }
 
@@ -163,7 +180,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.onLoading = true;
-      this.participantService.uploadFile(file).subscribe(response => {
+      this.planningService.uploadFile(file).subscribe(response => {
         this.participants = response.data;
         response.errors.forEach(e => {
           showNotification(e.typeError, 'danger');
@@ -189,6 +206,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     this.planningService.findByName(this.title).subscribe(p => {
       if (p === null) {
+        this.firstFormGroup.get('title').setErrors(null);
         if (this.isMobileMenu()) {
           this.stepperV.next();
         } else {

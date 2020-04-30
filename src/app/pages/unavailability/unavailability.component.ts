@@ -97,29 +97,33 @@ export class UnavailabilityComponent implements OnInit {
   }
 
   private getTimeBoxesWithoutLunchBreak(lunchBreak: boolean): UnavailabilityBox[][] {
-      if (lunchBreak) {
-        return this.lunchBreakPipe.transform(this.matrix, this.planning, 2);
-      }
-      const customMatrix: UnavailabilityBox[][] = this.lunchBreakPipe.transform(this.matrix, this.planning, 0);
-      return customMatrix.concat(this.lunchBreakPipe.transform(this.matrix, this.planning, 1));
+    if (lunchBreak) {
+      return this.lunchBreakPipe.transform(this.matrix, this.planning, 2);
     }
+    const customMatrix: UnavailabilityBox[][] = this.lunchBreakPipe.transform(this.matrix, this.planning, 0);
+    return customMatrix.concat(this.lunchBreakPipe.transform(this.matrix, this.planning, 1));
+  }
 
   private validate() {
-      let newUnavailabilities: Unavailability[] = [];
-      let i = 0;
-      while (i < this.height) {
-        newUnavailabilities = newUnavailabilities.concat(this.matrix[i].filter(d => d.checked)
-          .map(value => value.unavailability));
-        i++;
-      }
-      this.unavailabilityService.sendUnavailabilities(this.planning.id,
-        this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
-        newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(
-        d => showNotification('Vos modifications ont été prises en compte.', 'success'),
-        e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+    let newUnavailabilities: Unavailability[] = [];
+    let i = 0;
+    while (i < this.height) {
+      newUnavailabilities = newUnavailabilities.concat(this.matrix[i].filter(d => d.checked)
+        .map(value => value.unavailability));
+      i++;
     }
+    this.unavailabilityService.sendUnavailabilities(this.planning.id,
+      this.unavailabilities.filter(d => !newUnavailabilities.includes(d)),
+      newUnavailabilities.filter(d => !this.unavailabilities.includes(d))).subscribe(
+      d => showNotification('Vos modifications ont été prises en compte.', 'success'),
+      e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+  }
 
   private formatDate(date: string, format: string) {
-      return moment(date).format(format);
-    }
+    return moment(date).format(format);
   }
+
+  fromNow(date: string): string {
+    return moment(date).fromNow();
+  }
+}

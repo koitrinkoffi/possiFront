@@ -16,8 +16,6 @@ import {ClassroomSelectorComponent} from './components/classroom-selector/classr
 import {ClassroomPipe} from './filters/classroom.pipe';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {CardComponent} from './components/card/card.component';
-import {UnavailabilityChooserComponent} from './components/unavailability-chooser/unavailability-chooser.component';
-import {ParticipantDatatableComponent} from './components/participant-datatable/participant-datatable.component';
 import {CalendarSideBarComponent} from './components/calendar-side-bar/calendar-side-bar.component';
 import {PlanningDisplayComponent} from './pages/planning-display/planning-display.component';
 import {OralDefenseUserPipe} from './filters/oral-defense-user.pipe';
@@ -31,13 +29,14 @@ import {
   MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule,
   MatSortModule, MatStepperModule,
   MatTableModule, MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
 import {AuthInterceptor} from './services/auth-interceptor.service';
 import { LunchBreakPipe } from './filters/lunch-break.pipe';
+import {ParticipantDatatableComponent} from './components/participant-datatable/participant-datatable.component';
 
 @NgModule({
   declarations: [
@@ -53,13 +52,12 @@ import { LunchBreakPipe } from './filters/lunch-break.pipe';
     ClassroomPipe,
     CalendarComponent,
     CardComponent,
-    UnavailabilityChooserComponent,
-    ParticipantDatatableComponent,
     CalendarSideBarComponent,
     PlanningDisplayComponent,
     OralDefenseUserPipe,
     OralDefenseSearchPipe,
-    LunchBreakPipe
+    LunchBreakPipe,
+    ParticipantDatatableComponent
   ],
   imports: [
     HttpClientModule,
@@ -89,6 +87,7 @@ import { LunchBreakPipe } from './filters/lunch-break.pipe';
     MatDividerModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [
     LunchBreakPipe,

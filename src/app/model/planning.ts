@@ -2,7 +2,6 @@ import {User} from './user';
 import {Room} from './room';
 import {TimeBox} from './time-box';
 import * as moment from 'moment';
-import {Participant} from './participant';
 import {OralDefense} from './oral-defense';
 
 export class Planning {
@@ -12,10 +11,9 @@ export class Planning {
   admin: User;
   oralDefenseDuration: number|string;
   nbMaxOralDefensePerDay: number;
-  oralDefenseInterlude = '10';
+  oralDefenseInterlude = 0;
   oralDefenses: OralDefense[];
   rooms: Room[];
-  participants: Participant[];
   lunchBreak: TimeBox;
   dayPeriod: TimeBox;
   createdAt: string;

@@ -1,17 +1,19 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CalendarComponent} from '../../components/calendar/calendar.component';
 import {PlanningService} from '../../services/planning.service';
 import {CalendarSideBarComponent} from '../../components/calendar-side-bar/calendar-side-bar.component';
 import {OralDefense} from '../../model/oral-defense';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {Planning} from '../../model/planning';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-planning-display',
   templateUrl: './planning-display.component.html',
   styleUrls: ['./planning-display.component.scss']
 })
-export class PlanningDisplayComponent implements OnInit, AfterViewInit {
+export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('calendarComponent', {read: undefined, static: false})
   private calendarComponent: CalendarComponent;
@@ -19,10 +21,13 @@ export class PlanningDisplayComponent implements OnInit, AfterViewInit {
   private calendarSideBarComponent: CalendarSideBarComponent;
   constructor(private authService: AuthService, private planningService: PlanningService, private route: ActivatedRoute) {
   }
-  ngOnInit() {}
+  ngOnDestroy() {
+    this.planningService.setPlanningSelected(null);
+  }
 
   ngAfterViewInit(): void {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
+      this.planningService.setPlanningSelected(p);
       this.calendarComponent.parsePlanning(p);
       this.calendarSideBarComponent.parseOralDefense(p.oralDefenses);
     });
@@ -32,5 +37,9 @@ export class PlanningDisplayComponent implements OnInit, AfterViewInit {
     if (this.calendarComponent !== undefined) {
       this.calendarComponent.parseEvent(oralDefenses);
     }
+  }
+
+  fromNow(date: string): string {
+    return moment(date).fromNow();
   }
 }

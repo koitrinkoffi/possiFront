@@ -52,9 +52,12 @@
 @import '~@angular/material/theming';
 // Define the theme.
 @include mat-core();
-$darker-app-primary: mat-palette($mat-purple);
-$darker-app-accent:  mat-palette($mat-red, 50, A100, A400);
-$darker-app-theme:   mat-dark-theme($darker-app-primary, $darker-app-accent);
+$app-primary: mat-palette($mat-cyan);
+$app-accent:  mat-palette($mat-purple);
+$app-accent-datatable:  mat-palette($mat-cyan, 50, A100, A400);
+$darker-app-theme:  mat-dark-theme($app-primary, $app-accent-datatable);
+$light-app-theme:  mat-light-theme($app-primary, $app-accent);
+ @include angular-material-theme($light-app-theme);
   // Include the theme styles for only specified components.
 .search-input {
   @include mat-form-field-theme($darker-app-theme);

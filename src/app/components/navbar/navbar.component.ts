@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import {Component, OnInit, ElementRef, AfterViewInit, DoCheck} from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Route, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {PlanningService} from '../../services/planning.service';
 
 const routesNames = [
   {path: '/create/planning', name: 'Nouveau planning'},
@@ -22,8 +23,9 @@ export class NavbarComponent implements OnInit {
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
+  private title = '';
 
-  constructor(location: Location,  private element: ElementRef, private router: Router, private authService: AuthService) {
+  constructor(location: Location,  private element: ElementRef, private router: Router, private authService: AuthService, private planningService: PlanningService) {
     this.location = location;
     this.sidebarVisible = false;
   }
@@ -40,7 +42,16 @@ export class NavbarComponent implements OnInit {
         this.mobile_menu_visible = 0;
       }
     });
+
+    this.planningService.getPlanningSelected().subscribe(p => {
+      if (p) {
+        this.title = p.name;
+      } else {
+        this.title = '';
+      }
+    });
   }
+
 
   sidebarOpen() {
     const toggleButton = this.toggleButton;
@@ -128,7 +139,7 @@ export class NavbarComponent implements OnInit {
         return this.listTitles[item].title;
       }
     }
-    return 'Dashboard';
+    return '';
   }
 
   disconnect(event: MouseEvent) {

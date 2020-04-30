@@ -9,8 +9,8 @@ export class OralDefenseUserPipe implements PipeTransform {
   transform(value: OralDefense[], uid: string, own: boolean): any {
     if (value !== undefined) {
       return own ?
-        value.filter(o => o.composition.student.uid === uid || o.composition.followingTeacher.uid === uid || o.secondTeacher.uid === uid) :
-        value.filter(o => o.composition.student.uid !== uid && o.composition.followingTeacher.uid !== uid && o.secondTeacher.uid !== uid);
+        value.filter(o => o.student.uid === uid || o.followingTeacher.uid === uid || o.secondTeacher.uid === uid) :
+        value.filter(o => o.student.uid !== uid && o.followingTeacher.uid !== uid && o.secondTeacher.uid !== uid);
     }
     return [];
   }

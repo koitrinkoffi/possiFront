@@ -1,7 +1,8 @@
 <mat-form-field class="full-width" appearance="outline">
   <mat-chip-list #chipList aria-label="Room selection">
     <mat-chip
-      color="success"
+      color="accent"
+      selected
       *ngFor="let classroom of classrooms"
       [selectable]="selectableChips"
       [removable]="removableChips"
@@ -12,7 +13,6 @@
     <input
       placeholder="Nouvelle salle..."
       [(ngModel)]="searchInput"
-      #classroomInput
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"

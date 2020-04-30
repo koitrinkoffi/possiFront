@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
-import {User} from '../../model/user';
-import {Participant} from '../../model/participant';
+import {OralDefense} from '../../model/oral-defense';
 
 
 export interface ParticipantElement {
@@ -21,7 +20,7 @@ export class ParticipantDatatableComponent implements OnInit {
 
   private participantElements: ParticipantElement[];
   @Input()
-  private participants: Participant[] = [];
+  private participants: OralDefense[] = [];
   @Input()
   private title: string;
   @Input()
@@ -73,7 +72,7 @@ export class ParticipantDatatableComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.student + 1}`;
   }
 
-  parseData(participants: Participant[]): void {
+  parseData(participants: OralDefense[]): void {
     this.participantElements = [];
     participants.forEach(p => {
       this.participantElements.push({

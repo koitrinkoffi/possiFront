@@ -8,7 +8,7 @@
               <h3 class="wizard-title">
                 Création d'un planning
               </h3>
-              <h5>{{title}}</h5>
+              <h4 class="font-weight-bolder">{{title}}</h4>
             </div>
             <mat-horizontal-stepper linear #stepperH *ngIf="!isMobileMenu()">
               <mat-step [stepControl]="firstFormGroup">
@@ -20,8 +20,8 @@
                         <mat-form-field appearance="outline">
                           <mat-label>Titre</mat-label>
                           <input matInput placeholder="Titre du planning" formControlName="title" required >
-                          <mat-error>
-                            Ce titre est déjà utilisé
+                          <mat-error *ngIf="title != ''">
+                            Ce titre est peut être déjà utilisé
                           </mat-error>
                         </mat-form-field>
                       </div>
@@ -44,7 +44,11 @@
                     </div>
                     <div class="row">
                       <div class="ml-auto">
-                        <button mat-raised-button color="primary" (click)="validateTitle($event)">Suivant</button>
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button (click)="validateTitle($event)">
+                          Suivant
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
                       </div>
                     </div>
                   </form>
@@ -117,16 +121,24 @@
                     </div>
                     <div class="row">
                       <div class="mr-auto">
-                        <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                          Retour
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
                       </div>
                       <div class="ml-auto">
-                        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperNext>
+                          Suivant
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
                       </div>
                     </div>
                   </form>
                 </div>
               </mat-step>
-              <mat-step>
+              <mat-step #roomStep>
                 <div class="card-body">
                   <ng-template matStepLabel>Salles</ng-template>
                   <div class="row">
@@ -134,10 +146,18 @@
                   </div>
                   <div class="row mt-md-4">
                     <div class="mr-auto">
-                      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                        Retour
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
                     </div>
                     <div class="ml-auto">
-                      <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button (click)="validateRooms($event)">
+                        Suivant
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -161,7 +181,9 @@
                       </div>
                       <div class="row">
                         <div class="mx-auto">
-                          <button mat-raised-button color="primary" (click)="this.inputFile.click()">
+                          <button class="btn btn-info btn-round btn-fab mat-raised-button mat-button-base"
+                                  [disabled]="onLoading"
+                                  mat-mini-fab  (click)="this.inputFile.click()">
                             <mat-icon>attachment</mat-icon>
                           </button>
                         </div>
@@ -187,15 +209,22 @@
                   </form>
                   <div class="row">
                     <div class="mr-auto">
-                      <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
-                    </div>
-                    <div class="ml-auto">
-                      <button mat-raised-button color="primary" [disabled]="participantsSelected.length == 0" class="item-left-spacing" (click)="validate()">
-                        Créer
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                        Retour
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
                       </button>
                     </div>
+                    <div class="ml-auto">
+                      <button class="btn btn-info mat-raised-button mat-button-base item-left-spacing"
+                              mat-raised-button [disabled]="participantsSelected.length == 0" (click)="validate()">
+                        Créer
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
+                    </div>
+                    </div>
                   </div>
-                </div>
               </mat-step>
             </mat-horizontal-stepper>
             <mat-vertical-stepper linear #stepperV *ngIf="isMobileMenu()">
@@ -327,9 +356,9 @@
                     </div>
                   </div>
                 </mat-step>
-                <mat-step [stepControl]="thirdFormGroup">
+                <mat-step>
                   <div class="card-body">
-                    <form [formGroup]="thirdFormGroup" class="custom-form">
+                    <form class="custom-form">
                       <ng-template matStepLabel>Soutenances</ng-template>
                       <div class="row">
                         <div class="col-12">

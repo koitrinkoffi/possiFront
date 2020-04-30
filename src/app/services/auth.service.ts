@@ -52,7 +52,6 @@ export class AuthService {
             if (uid !== '') {
               this.tokenStorageService.saveUid(uid);
               setTimeout(() => {
-                console.log('je navigue');
                 this.authenticateToAPI(this.tokenStorageService.getUserUid());
               }, 1000);
             } else {

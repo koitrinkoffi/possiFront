@@ -65,12 +65,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
                 <br>
                 <p class="font-weight-bolder">Participants :</p>
                 <ul>
-                <li><span class="text-uppercase">${tag.composition.student.lastName}</span> ${tag.composition.student.firstName} (Etudiant)</li>
-                <li><span class="text-uppercase">${tag.composition.followingTeacher.lastName}</span> ${tag.composition.followingTeacher.firstName} (Enseignant référent)</li>
+                <li><span class="text-uppercase">${tag.student.lastName}</span> ${tag.student.firstName} (Etudiant)</li>
+                <li><span class="text-uppercase">${tag.followingTeacher.lastName}</span> ${tag.followingTeacher.firstName} (Enseignant référent)</li>
                 <li><span class="text-uppercase">${tag.secondTeacher.lastName}</span> ${tag.secondTeacher.firstName} (Second enseignant)</li>
-                <li>${tag.composition.tutorFullName} (Tuteur entreprise)</li>
+                <li>${tag.tutorFullName} (Tuteur entreprise)</li>
                 </ul>
-                <div class="font-weight-bolder">Entreprise : ${tag.composition.company}</div>
+                <div class="font-weight-bolder">Entreprise : ${tag.company}</div>
                 <div class="font-weight-bolder">Salle : ${tag.room.name}</div>`,
         allowHTML: true,
         animation: 'shift-away',
