@@ -16,10 +16,16 @@ import * as moment from 'moment';
 export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('calendarComponent', {read: undefined, static: false})
-  private calendarComponent: CalendarComponent;
+  calendarComponent: CalendarComponent;
   @ViewChild('calendarSideBarComponent', {read: undefined, static: false})
-  private calendarSideBarComponent: CalendarSideBarComponent;
-  constructor(private authService: AuthService, private planningService: PlanningService, private route: ActivatedRoute) {
+  calendarSideBarComponent: CalendarSideBarComponent;
+  authService: AuthService;
+  planningService: PlanningService;
+  route: ActivatedRoute;
+  constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute) {
+    this.authService = authService;
+    this.planningService = planningService;
+    this.route = route;
   }
   ngOnDestroy() {
     this.planningService.setPlanningSelected(null);
@@ -33,7 +39,7 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private loadOralDefense(oralDefenses: OralDefense[]) {
+  loadOralDefense(oralDefenses: OralDefense[]) {
     if (this.calendarComponent !== undefined) {
       this.calendarComponent.parseEvent(oralDefenses);
     }

@@ -10,14 +10,14 @@ import {Room} from '../../model/room';
   styleUrls: ['./classroom-selector.component.scss']
 })
 export class ClassroomSelectorComponent implements OnInit {
-  private selectableChips = true;
-  private removableChips = true;
-  private separatorKeysCodes: number[] = [ENTER, COMMA];
-  private suggestedClassroom: Room[];
-  private searchInput = '';
-  private classrooms: Room[] = [];
+  selectableChips = true;
+  removableChips = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  suggestedClassroom: Room[];
+  searchInput = '';
+  classrooms: Room[] = [];
   @Input()
-  private allClassrooms: Room[] = [];
+  allClassrooms: Room[] = [];
 
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
@@ -27,7 +27,7 @@ export class ClassroomSelectorComponent implements OnInit {
     this.filterSuggestedClassroom();
   }
 
-  private addClassroomByInput(event: MatChipInputEvent): void {
+  addClassroomByInput(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
     if (value.trim() !== '') {
@@ -45,7 +45,7 @@ export class ClassroomSelectorComponent implements OnInit {
     this.searchInput = '';
   }
 
-  private addClassroom(classroom: Room): void {
+  addClassroom(classroom: Room): void {
     const label = classroom.name.toLowerCase().trim();
     if ((this.classrooms.filter(c => c.name.toLowerCase().trim() === label).length === 0)) {
       this.classrooms.push(classroom);
@@ -53,7 +53,7 @@ export class ClassroomSelectorComponent implements OnInit {
     }
   }
 
-  private removeClassroom(classroom: Room): void {
+  removeClassroom(classroom: Room): void {
     const index = this.classrooms.indexOf(classroom);
 
     if (index >= 0) {
@@ -62,26 +62,26 @@ export class ClassroomSelectorComponent implements OnInit {
     }
   }
 
-  private classroomSelected(event: MatAutocompleteSelectedEvent): void {
+  classroomSelected(event: MatAutocompleteSelectedEvent): void {
     this.classrooms.push(this.allClassrooms.find(c => c.name === event.option.viewValue));
     this.filterSuggestedClassroom();
     this.searchInput = '';
   }
 
-  private filterSuggestedClassroom() {
+  filterSuggestedClassroom() {
     this.suggestedClassroom = this.allClassrooms.filter(c => !this.classrooms.includes(c));
   }
 
-  public parseData(classrooms: Room[]) {
+  parseData(classrooms: Room[]) {
     this.allClassrooms = classrooms;
     this.filterSuggestedClassroom();
   }
 
-  public getClassroomToCreate(): Room[] {
+  getClassroomToCreate(): Room[] {
     return this.classrooms.filter(c => !this.allClassrooms.includes(c));
   }
 
-  public getClassroomSelected(): Room[] {
+  getClassroomSelected(): Room[] {
     return this.classrooms.filter(c => !this.getClassroomToCreate().includes(c));
   }
 }

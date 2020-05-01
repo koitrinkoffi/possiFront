@@ -10,7 +10,7 @@ import {PlanningDatatableComponent} from '../../components/planning-datatable/pl
 export class HomeComponent implements AfterViewInit {
 
   @ViewChild('planningDatatable', {static: false})
-  private planningDatatable: PlanningDatatableComponent;
+  planningDatatable: PlanningDatatableComponent;
 
   constructor(private planningService: PlanningService) {
   }

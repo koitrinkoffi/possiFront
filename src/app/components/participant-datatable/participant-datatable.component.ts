@@ -18,22 +18,22 @@ export interface ParticipantElement {
 })
 export class ParticipantDatatableComponent implements OnInit {
 
-  private participantElements: ParticipantElement[];
+  participantElements: ParticipantElement[];
   @Input()
-  private participants: OralDefense[] = [];
+  participants: OralDefense[] = [];
   @Input()
-  private title: string;
+  title: string;
   @Input()
-  private subtitle = '';
+  subtitle = '';
   @Output()
-  private selectionListener = new EventEmitter<ParticipantElement[]>();
+  selectionListener = new EventEmitter<ParticipantElement[]>();
 
-  private displayedColumns: string[] = ['select', 'student', 'followingTeacher', 'tutorFullName', 'company'];
-  private dataSource: MatTableDataSource<ParticipantElement>;
-  private selection = new SelectionModel<ParticipantElement>(true, []);
+  displayedColumns: string[] = ['select', 'student', 'followingTeacher', 'tutorFullName', 'company'];
+  dataSource: MatTableDataSource<ParticipantElement>;
+  selection = new SelectionModel<ParticipantElement>(true, []);
 
-  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) private sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor() { }
 
   ngOnInit() {
@@ -46,26 +46,26 @@ export class ParticipantDatatableComponent implements OnInit {
     });
   }
 
-  private applyFilter(filterValue: string) {
+  applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
-  private isAllSelected() {
+  isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  private masterToggle() {
+  masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
-  private checkboxLabel(row?: ParticipantElement): string {
+  checkboxLabel(row?: ParticipantElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }

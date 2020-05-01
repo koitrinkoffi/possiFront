@@ -18,15 +18,23 @@ const routesNames = [
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  private listTitles: any[];
+  listTitles: any[];
   location: Location;
   mobile_menu_visible: any = 0;
-  private toggleButton: any;
-  private sidebarVisible: boolean;
-  private title = '';
+  toggleButton: any;
+  sidebarVisible: boolean;
+  title = '';
+  element: ElementRef;
+  router: Router;
+  authService: AuthService;
+  planningService: PlanningService;
 
-  constructor(location: Location,  private element: ElementRef, private router: Router, private authService: AuthService, private planningService: PlanningService) {
+  constructor(location: Location,  element: ElementRef, router: Router, authService: AuthService, planningService: PlanningService) {
     this.location = location;
+    this.element = element;
+    this.router = router;
+    this.authService = authService;
+    this.planningService = planningService;
     this.sidebarVisible = false;
   }
 

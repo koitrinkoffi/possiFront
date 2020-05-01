@@ -12,16 +12,19 @@ import {AuthService} from '../../services/auth.service';
 export class CalendarSideBarComponent implements OnInit {
 
   panelOpenState = false;
-  private oralDefenses: OralDefense[];
-  private search: string;
-  private ownOralDefenses = true;
-  private nbOwnOralDefenses = 0;
-  private otherOraDefenses = true;
-  private nbOtherOraDefenses = 0;
+  oralDefenses: OralDefense[];
+  search: string;
+  ownOralDefenses = true;
+  nbOwnOralDefenses = 0;
+  otherOraDefenses = true;
+  nbOtherOraDefenses = 0;
   @Output()
-  private oralDefenseSelected = new EventEmitter<OralDefense[]>();
-  private nbSearch = 0;
-  constructor(private authService: AuthService) { }
+  oralDefenseSelected = new EventEmitter<OralDefense[]>();
+  nbSearch = 0;
+  authService: AuthService;
+  constructor(authService: AuthService) {
+    this.authService = authService;
+  }
 
   ngOnInit() {
   }
@@ -31,7 +34,7 @@ export class CalendarSideBarComponent implements OnInit {
     this.updateOralDefenseToShow();
   }
 
-  private updateOralDefenseToShow() {
+  updateOralDefenseToShow() {
     if (this.search === undefined || this.search === '') {
       const own = new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, true);
       const other = new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, false);

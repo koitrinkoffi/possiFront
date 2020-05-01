@@ -19,17 +19,22 @@ export interface PlanningElement {
   styleUrls: ['./planning-datatable.component.scss']
 })
 export class PlanningDatatableComponent implements OnInit {
-  private planningElement: PlanningElement[];
+  planningElement: PlanningElement[];
   @Input()
-  private title: string;
+  title: string;
   @Input()
-  private subtitle = '';
-  private displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
-  private dataSource: MatTableDataSource<PlanningElement>;
+  subtitle = '';
+  displayedColumns: string[] = ['planning', 'creator', 'start', 'end', 'actions'];
+  dataSource: MatTableDataSource<PlanningElement>;
 
-  @ViewChild(MatPaginator, {static: true}) private paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) private sort: MatSort;
-  constructor(private planningService: PlanningService, private authService: AuthService) {}
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  planningService: PlanningService;
+  authService: AuthService;
+  constructor(planningService: PlanningService, authService: AuthService) {
+    this.planningService = planningService;
+    this.authService = authService;
+  }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanningElement>();
@@ -37,7 +42,7 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  private applyFilter(filterValue: string) {
+  applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -55,7 +60,7 @@ export class PlanningDatatableComponent implements OnInit {
     this.dataSource.data = this.planningElement;
   }
 
-  private delete(id: string) {
+  delete(id: string) {
     this.planningService.delete(+id).subscribe( data => {
       this.planningElement = this.planningElement.filter(p => p.id !== id);
       this.dataSource.data = this.planningElement;

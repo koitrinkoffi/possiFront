@@ -15,12 +15,12 @@ import {AuthService} from './services/auth.service';
 })
 export class AppComponent implements AfterViewInit {
   // tslint:disable-next-line:variable-name
-  private _router: Subscription;
-  private lastPoppedUrl: string;
-  private yScrollStack: number[] = [];
-  private logged = false;
+  _router: Subscription;
+  lastPoppedUrl: string;
+  yScrollStack: number[] = [];
+  logged = false;
 
-  constructor( public location: Location, private router: Router, private authService: AuthService) {
+  constructor( public location: Location, public router: Router, public authService: AuthService) {
     moment.locale('fr');
   }
 
@@ -38,7 +38,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  private init() {
+  init() {
     const isWindows = navigator.platform.indexOf('Win') > -1;
 
     if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {
@@ -87,7 +87,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  private isMaps(path) {
+  isMaps(path) {
     let title = this.location.prepareExternalUrl(this.location.path());
     title = title.slice( 1 );
     return path !== title;

@@ -20,12 +20,12 @@ import {OralDefense} from '../../model/oral-defense';
 })
 export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
-  private firstFormGroup: FormGroup;
-  private secondFormGroup: FormGroup;
-  private participants: OralDefense[] = [];
-  private participantsSelected: OralDefense[] = [];
-  private onLoading = false;
-  private onSubmitting = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  participants: OralDefense[] = [];
+  participantsSelected: OralDefense[] = [];
+  onLoading = false;
+  onSubmitting = false;
 
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
@@ -34,24 +34,24 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
               private router: Router) {}
 
   @ViewChild('participantDatatableComponent', {static: false})
-  private participantDatatable: ParticipantDatatableComponent;
+  participantDatatable: ParticipantDatatableComponent;
 
   @ViewChild('classroomSelector', {static: false})
-  private classroomSelector: ClassroomSelectorComponent;
+  classroomSelector: ClassroomSelectorComponent;
 
   @ViewChild('inputFile', {static: false})
-  private inputFile: ElementRef;
+  inputFile: ElementRef;
 
   @ViewChild('roomStep', {static: false})
-  private roomStep: MatStep;
+  roomStep: MatStep;
 
   @ViewChild('stepperV', {static: false})
-  private stepperV: MatVerticalStepper;
+  stepperV: MatVerticalStepper;
 
   @ViewChild('stepperH', {static: false})
-  private stepperH: MatHorizontalStepper;
+  stepperH: MatHorizontalStepper;
 
-  private dateFilter = (d: Date | null): boolean => {
+  dateFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
     return day !== 0 && day !== 6;
   }
@@ -78,7 +78,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private validateDateRange(from: string, to: string): ValidatorFn {
+  validateDateRange(from: string, to: string): ValidatorFn {
     return (group: FormGroup): { [key: string]: any } => {
       const toInput = group.controls[to];
 
@@ -97,7 +97,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private validateRooms(event: MouseEvent) {
+  validateRooms(event: MouseEvent) {
     event.stopPropagation();
     if (this.classroomSelector.getClassroomSelected().length === 0) {
       showNotification('Vous devez selectionner au moins une salle', 'danger');
@@ -112,7 +112,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private isValidDate(): ValidatorFn {
+  isValidDate(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       return !moment(control.value).isValid() ? {invalidDate: {value: control.value}} : null;
     };
@@ -120,7 +120,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   // Todo Ajouter une fonction pour verifier horaire
 
-  private isValidHour(): ValidatorFn {
+  isValidHour(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       // Todo verifier la validation pour le format H:mm et H:m
       return !moment(control.value, 'H:m').isValid() ? {invalidHour: {value: control.value}} : null;
@@ -128,21 +128,21 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   }
 
-  private fetchClassroom() {
+  fetchClassroom() {
     this.classroomService.getAll().subscribe(data => {
       this.classroomSelector.parseData(data);
     });
   }
 
-  private get startDate() {
+  get startDate() {
     return this.secondFormGroup.get('startDate');
   }
 
-  private get endDate() {
+  get endDate() {
     return this.secondFormGroup.get('endDate');
   }
 
-  private validate() {
+  validate() {
     showNotification('veuillez patienter un moment...', 'primary');
     // Planning
     const planning: Planning = new Planning();
@@ -167,7 +167,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private createPlanning(planning: Planning) {
+  createPlanning(planning: Planning) {
     planning.rooms = this.classroomSelector.getClassroomSelected();
     this.planningService.create(planning).subscribe(data => {
       showNotification('Votre planning a été créé avec succès', 'success');
@@ -176,7 +176,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private onFileSelect(event) {
+  onFileSelect(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.onLoading = true;
@@ -190,19 +190,19 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private isMobileMenu() {
+  isMobileMenu() {
     return !($(window).width() > 991);
   }
 
-  private onParticipantChange(data) {
+  onParticipantChange(data) {
     this.participantsSelected = this.participants.filter(p => data.find(d => d.email === p.student.email));
   }
 
-  private get title() {
+  get title() {
     return this.firstFormGroup.get('title').value;
   }
 
-  private validateTitle(event: MouseEvent) {
+  validateTitle(event: MouseEvent) {
     event.stopPropagation();
     this.planningService.findByName(this.title).subscribe(p => {
       if (p === null) {

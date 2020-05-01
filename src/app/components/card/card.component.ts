@@ -8,16 +8,16 @@ import {Component, Input, OnInit} from '@angular/core';
 export class CardComponent implements OnInit {
 
   @Input()
-  private title: string;
+  title: string;
 
   @Input()
-  private subtitle: string;
+  subtitle: string;
 
   @Input()
-  private icon: string;
+  icon: string;
 
   @Input()
-  private color: string;
+  color: string;
 
   constructor() {}
 

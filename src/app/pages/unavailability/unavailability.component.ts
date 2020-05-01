@@ -33,12 +33,12 @@ export class UnavailabilityComponent implements OnInit {
 
   // Todo verifier la date de creation pour dire depuis combien temps le planning a été créer
 
-  private planning: Planning;
-  private unavailabilities: Unavailability[] = [];
-  private matrix: UnavailabilityBox[][] = [];
-  private width: number;
-  private height: number;
-  private isLoaded = false;
+  planning: Planning;
+  unavailabilities: Unavailability[] = [];
+  matrix: UnavailabilityBox[][] = [];
+  width: number;
+  height: number;
+  isLoaded = false;
   constructor(private unavailabilityService: UnavailabilityService,
               private planningService: PlanningService,
               private route: ActivatedRoute,
@@ -79,7 +79,7 @@ export class UnavailabilityComponent implements OnInit {
 
   }
 
-  private checkColumns(column: number, lunchBreak: boolean) {
+  checkColumns(column: number, lunchBreak: boolean) {
     const m = this.getTimeBoxesWithoutLunchBreak(lunchBreak);
     let i = 0;
     while (i < m.length) {
@@ -88,7 +88,7 @@ export class UnavailabilityComponent implements OnInit {
     }
   }
 
-  private checkRows(row: number) {
+  checkRows(row: number) {
     let i = 0;
     while (i < this.width) {
       this.matrix[row][i].checked = !this.matrix[row][i].checked;
@@ -96,7 +96,7 @@ export class UnavailabilityComponent implements OnInit {
     }
   }
 
-  private getTimeBoxesWithoutLunchBreak(lunchBreak: boolean): UnavailabilityBox[][] {
+  getTimeBoxesWithoutLunchBreak(lunchBreak: boolean): UnavailabilityBox[][] {
     if (lunchBreak) {
       return this.lunchBreakPipe.transform(this.matrix, this.planning, 2);
     }
@@ -104,7 +104,7 @@ export class UnavailabilityComponent implements OnInit {
     return customMatrix.concat(this.lunchBreakPipe.transform(this.matrix, this.planning, 1));
   }
 
-  private validate() {
+  validate() {
     showNotification('veuillez patienter un moment...', 'primary');
     let newUnavailabilities: Unavailability[] = [];
     let i = 0;
@@ -120,7 +120,7 @@ export class UnavailabilityComponent implements OnInit {
       e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
   }
 
-  private formatDate(date: string, format: string) {
+  formatDate(date: string, format: string) {
     return moment(date).format(format);
   }
 

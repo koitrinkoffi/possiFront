@@ -20,18 +20,18 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', {read: undefined, static: false}) calendarComponent: FullCalendarComponent;
 
-  private startTime;
-  private endTime;
-  private slotDuration;
-  private controlDrop;
-  private calendarVisible = true;
-  private calendarWeekends = true;
+  startTime;
+  endTime;
+  slotDuration;
+  controlDrop;
+  calendarVisible = true;
+  calendarWeekends = true;
   @Input()
-  private edit = false;
-  private calendarEvents: EventInput[];
-  private views;
+  edit = false;
+  calendarEvents: EventInput[];
+  views;
 
-  private calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, dayGridPlugin];
+  calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, dayGridPlugin];
 
   constructor() {
     this.controlDrop = (dropInfo, draggedEvent) => {
@@ -56,7 +56,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private render(info) {
+  render(info) {
     const tag = info.event._def.extendedProps.tag;
     if (tag !== undefined) {
       let content = `<h4 class="font-weight-bolder">Soutenance ${tag.number + 1}</h4>
@@ -82,7 +82,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private eventUpdate(eventDropInfo) {
+  eventUpdate(eventDropInfo) {
     // tslint:disable-next-line:triple-equals
     const event = this.calendarEvents.find(e => e.id == eventDropInfo.event.id);
     if (event !== undefined) {
@@ -92,12 +92,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private refreshCalendar() {
+  refreshCalendar() {
     this.calendarComponent.getApi().removeAllEventSources();
     this.calendarComponent.getApi().addEventSource(this.calendarEvents);
   }
 
-  private removeTodayHighLight($event?: any) {
+  removeTodayHighLight($event?: any) {
     $('.fc-today').removeClass('alert alert-info');
   }
 
@@ -126,7 +126,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.slotDuration = duration.format('HH:mm:ss');
   }
 
-  private controlDragAndDrop(info, onDrag: boolean) {
+  controlDragAndDrop(info, onDrag: boolean) {
     //   // tslint:disable-next-line:triple-equals
     if (onDrag) {
       const oralDefense = this.calendarEvents.find(e => e.id == info.event.id).tag as OralDefense;
