@@ -105,6 +105,7 @@ export class UnavailabilityComponent implements OnInit {
   }
 
   private validate() {
+    showNotification('veuillez patienter un moment...', 'primary');
     let newUnavailabilities: Unavailability[] = [];
     let i = 0;
     while (i < this.height) {

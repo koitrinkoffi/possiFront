@@ -15,9 +15,12 @@ export class CalendarSideBarComponent implements OnInit {
   private oralDefenses: OralDefense[];
   private search: string;
   private ownOralDefenses = true;
+  private nbOwnOralDefenses = 0;
   private otherOraDefenses = true;
+  private nbOtherOraDefenses = 0;
   @Output()
   private oralDefenseSelected = new EventEmitter<OralDefense[]>();
+  private nbSearch = 0;
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -30,17 +33,23 @@ export class CalendarSideBarComponent implements OnInit {
 
   private updateOralDefenseToShow() {
     if (this.search === undefined || this.search === '') {
+      const own = new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, true);
+      const other = new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, false);
+      this.nbOwnOralDefenses = own.length;
+      this.nbOtherOraDefenses = other.length;
       if (this.ownOralDefenses && this.otherOraDefenses) {
         this.oralDefenseSelected.emit(this.oralDefenses);
       } else if (this.ownOralDefenses) {
-        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, true));
+        this.oralDefenseSelected.emit(own);
       } else if (this.otherOraDefenses) {
-        this.oralDefenseSelected.emit(new OralDefenseUserPipe().transform(this.oralDefenses, this.authService.user.uid, false));
+        this.oralDefenseSelected.emit(other);
       } else {
         this.oralDefenseSelected.emit([]);
       }
     } else {
-        this.oralDefenseSelected.emit(new OralDefenseSearchPipe().transform(this.oralDefenses, this.search));
+      const search = new OralDefenseSearchPipe().transform(this.oralDefenses, this.search);
+      this.nbSearch = search.length;
+        this.oralDefenseSelected.emit(search);
     }
   }
 
