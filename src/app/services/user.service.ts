@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import {User} from '../model/user';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private _user: User;
-  constructor() {
-    this._user = new User('Koitrin', 'KOFFI', 'professeur');
+  private httpClient: HttpClient;
+
+  constructor(httpClient: HttpClient) {
+    this.httpClient = httpClient;
   }
 
-
-  get user(): User {
-    return this._user;
-  }
 }

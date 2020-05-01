@@ -1,0 +1,70 @@
+
+ @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+ @import "core/variables";
+ @import "core/mixins";
+ @import "~bootstrap/scss/bootstrap";
+
+
+ // Core Components
+ @import "core/buttons";
+ @import "core/checkboxes";
+ @import "core/radios";
+ @import "core/forms";
+ @import "core/input-group";
+ @import "core/images";
+ @import "core/navbar";
+ @import "core/alerts";
+ @import "core/type";
+ @import "core/tabs";
+ @import "core/tooltip";
+ @import "core/popover";
+ @import "core/dropdown";
+ @import "core/togglebutton";
+ @import "core/ripples";
+ @import "core/footers";
+ @import "core/sidebar-and-main-panel";
+ @import "core/fixed-plugin";
+ @import "core/tables";
+ @import "core/misc";
+ @import "core/pills";
+
+@import "core/cards";
+@import "core/cards/card-stats";
+@import "core/cards/card-profile";
+@import "core/cards/card-plain";
+
+ //plugin scss
+ @import "core/plugins/animate";
+ @import "core/plugins/perfect-scrollbar";
+ @import "core/plugins/fullcalendar";
+
+ @import "core/responsive";
+
+@import "core/angular-modal.scss";
+
+ //Todo doit etre dans le style du calendar
+//@import "core/plugins/fullcalendar";
+
+
+ //Todo doit etre dans le style du app-planning-datatable
+//=========================================================
+@import '~@angular/material/theming';
+// Define the theme.
+@include mat-core();
+$app-primary: mat-palette($mat-cyan);
+$app-accent:  mat-palette($mat-purple);
+$app-accent-datatable:  mat-palette($mat-cyan, 50, A100, A400);
+$darker-app-theme:  mat-dark-theme($app-primary, $app-accent-datatable);
+$light-app-theme:  mat-light-theme($app-primary, $app-accent);
+ @include angular-material-theme($light-app-theme);
+  // Include the theme styles for only specified components.
+.search-input {
+  @include mat-form-field-theme($darker-app-theme);
+  @include mat-input-theme($darker-app-theme);
+}
+
+ .oral-number {
+  @include mat-expansion-panel-theme($darker-app-theme);
+ }
+//=========================================================

@@ -1,0 +1,40 @@
+<div class='app-calendar' *ngIf="calendarVisible">
+  <full-calendar
+    #calendar
+    themeSystem="bootstrap"
+    defaultView="timeGridWeek"
+    locale="fr"
+    weekNumberCalculation="ISO"
+    contentHeight="auto"
+    slotLabelInterval="0:30:00"
+    [height]="1000"
+    [allDaySlot]="false"
+    [minTime]="startTime"
+    [maxTime]="endTime"
+    [slotDuration]="slotDuration"
+    [views]="views"
+    [editable]="edit"
+    [buttonText]="{
+        today: 'aujourd\'hui',
+        month: 'mois',
+        week: 'semaine',
+        day: 'jour',
+        list: 'liste'
+       }"
+    [header]="{
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+    [plugins]="calendarPlugins"
+    [weekends]="calendarWeekends"
+    [eventAllow]="controlDrop"
+    [events]="calendarEvents"
+    (datesRender)="removeTodayHighLight($event)"
+    (eventRender)="render($event)"
+    (eventDragStart)="controlDragAndDrop($event, true)"
+    (eventDragStop)="controlDragAndDrop($event, false)"
+    (eventDrop)="eventUpdate($event)"
+    (eventResize)="eventUpdate($event)"
+  ></full-calendar>
+</div>

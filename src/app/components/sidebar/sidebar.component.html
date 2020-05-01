@@ -1,0 +1,18 @@
+<div class="logo">
+    <a routerLinkActive="/" class="simple-text">
+        <div class="logo-img">
+            <img src="/assets/img/possi_logo.png"/>
+        </div>
+      <a class="logo-normal">Possi</a>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p class="font-weight-bolder">{{menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
+</div>

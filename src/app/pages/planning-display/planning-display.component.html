@@ -1,0 +1,12 @@
+<div class="main-content">
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <app-calendar-side-bar #calendarSideBarComponent (oralDefenseSelected)="loadOralDefense($event)"></app-calendar-side-bar>
+    </div>
+    <div class="col-10">
+  <app-calendar #calendarComponent [edit]="authService.user.role == 2"></app-calendar>
+    </div>
+  </div>
+</div>
+</div>

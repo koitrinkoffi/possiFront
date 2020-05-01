@@ -1,0 +1,420 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-9 mr-auto ml-auto">
+        <div class="wizard-container mat-elevation-z8">
+          <div class="card wizard-card">
+            <div class="wizard-header text-center">
+              <h3 class="wizard-title">
+                Création d'un planning
+              </h3>
+              <h4 class="font-weight-bolder">{{title}}</h4>
+            </div>
+            <mat-horizontal-stepper linear #stepperH *ngIf="!isMobileMenu()">
+              <mat-step [stepControl]="firstFormGroup">
+                <div class="card-body">
+                  <form [formGroup]="firstFormGroup" class="custom-form">
+                    <ng-template matStepLabel>Informations</ng-template>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Titre</mat-label>
+                          <input matInput placeholder="Titre du planning" formControlName="title" required >
+                          <mat-error *ngIf="title != ''">
+                            Ce titre est peut être déjà utilisé
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Note</mat-label>
+                          <textarea matInput placeholder="Informations complémentaires"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Durée des soutenances (Minutes)</mat-label>
+                          <input type="number" matInput placeholder="60 minutes" formControlName="oralDefenseDuration" required>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="ml-auto">
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button (click)="validateTitle($event)">
+                          Suivant
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </mat-step>
+              <mat-step [stepControl]="secondFormGroup">
+                <div class="card-body">
+                  <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Périodes</ng-template>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Choisir le début de période</mat-label>
+                          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="jj/mm/aaa" formControlName="startDate">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Choisir la fin de période</mat-label>
+                          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker2" placeholder="jj/mm/aaa" formControlName="endDate" required >
+                          <mat-error *ngIf="endDate.errors !== null && endDate.errors.dateRange">
+                            Choisissez une date postérieure à la date de début
+                          </mat-error>
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Heure de début de journée</mat-label>
+                          <input matInput placeholder="08:00" formControlName="startDay" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Heure de fin de journée</mat-label>
+                          <input matInput placeholder="18:00" formControlName="endDay" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Heure de début de pause</mat-label>
+                          <input matInput placeholder="12:00" formControlName="startBreak" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Heure de fin de pause</mat-label>
+                          <input matInput placeholder="14:00" formControlName="endBreak" required>
+                          <mat-error>
+                            Vérifier bien que vous respectez le schema "HH:mm"
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="mr-auto">
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                          Retour
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
+                      </div>
+                      <div class="ml-auto">
+                        <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperNext>
+                          Suivant
+                          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                          <div class="mat-button-focus-overlay"></div>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </mat-step>
+              <mat-step #roomStep>
+                <div class="card-body">
+                  <ng-template matStepLabel>Salles</ng-template>
+                  <div class="row">
+                    <app-classroom-selector #classroomSelector class="col-md-12"></app-classroom-selector>
+                  </div>
+                  <div class="row mt-md-4">
+                    <div class="mr-auto">
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                        Retour
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
+                    </div>
+                    <div class="ml-auto">
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button (click)="validateRooms($event)">
+                        Suivant
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step>
+                <div class="card-body">
+                  <form class="custom-form">
+                    <ng-template matStepLabel>Soutenances</ng-template>
+                    <div class="row">
+                      <div class="col-12">
+                        <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des soutenances</h3>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <input type="file" accept="text/csv" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
+                      <div class="row">
+                        <div class="mx-auto">
+                          <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>
+                          <p *ngIf="inputFile.value == ''">Aucun fichier selectionné</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="mx-auto">
+                          <button class="btn btn-info btn-round btn-fab mat-raised-button mat-button-base"
+                                  [disabled]="onLoading"
+                                  mat-mini-fab  (click)="this.inputFile.click()">
+                            <mat-icon>attachment</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="row mt-4" *ngIf="onLoading">
+                        <div class="mx-auto">
+                          <mat-progress-spinner
+                            color="primary"
+                            mode="indeterminate">
+                          </mat-progress-spinner>
+                        </div>
+                      </div>
+                      <div class="row mt-4" *ngIf="participants.length != 0 && !onLoading">
+                        <div class="col-md-12 text-left">
+                          <app-participant-datatable #participantDatatableComponent
+                                                     title="Liste des soutenances"
+                                                     (selectionListener)="onParticipantChange($event)"
+                                                     [participants]="participants">
+                          </app-participant-datatable>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="row">
+                    <div class="mr-auto">
+                      <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button matStepperPrevious>
+                        Retour
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
+                    </div>
+                    <div class="ml-auto">
+                      <button class="btn btn-info mat-raised-button mat-button-base item-left-spacing"
+                              mat-raised-button [disabled]="participantsSelected.length == 0" (click)="validate()">
+                        Créer
+                        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                        <div class="mat-button-focus-overlay"></div>
+                      </button>
+                    </div>
+                    </div>
+                  </div>
+              </mat-step>
+            </mat-horizontal-stepper>
+            <mat-vertical-stepper linear #stepperV *ngIf="isMobileMenu()">
+                <mat-step [stepControl]="firstFormGroup">
+                  <div class="card-body">
+                    <form [formGroup]="firstFormGroup" class="custom-form">
+                      <ng-template matStepLabel>Informations</ng-template>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Titre</mat-label>
+                            <input matInput placeholder="Titre du planning" formControlName="title" required >
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Note</mat-label>
+                            <textarea matInput placeholder="Informations complémentaires"></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Durée des soutenances (Minutes)</mat-label>
+                            <input type="number" matInput placeholder="60 minutes" formControlName="oralDefenseDuration" required>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="ml-auto">
+                          <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                  <div class="card-body">
+                    <form [formGroup]="secondFormGroup">
+                      <ng-template matStepLabel>Périodes</ng-template>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Choisir le début de période</mat-label>
+                            <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="jj/mm/aaa" formControlName="startDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Choisir la fin de période</mat-label>
+                            <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker2" placeholder="jj/mm/aaa" formControlName="endDate" required >
+                            <mat-error *ngIf="endDate.errors !== null && endDate.errors.dateRange">
+                              Choisissez une date postérieure à la date de début
+                            </mat-error>
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Heure de début de journée</mat-label>
+                            <input matInput placeholder="08:00" formControlName="startDay" required>
+                            <mat-error>
+                              Vérifier bien que vous respectez le schema "HH:mm"
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Heure de fin de journée</mat-label>
+                            <input matInput placeholder="18:00" formControlName="endDay" required>
+                            <mat-error>
+                              Vérifier bien que vous respectez le schema "HH:mm"
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Heure de début de pause</mat-label>
+                            <input matInput placeholder="12:00" formControlName="startBreak" required>
+                            <mat-error>
+                              Vérifier bien que vous respectez le schema "HH:mm"
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Heure de fin de pause</mat-label>
+                            <input matInput placeholder="14:00" formControlName="endBreak" required>
+                            <mat-error>
+                              Vérifier bien que vous respectez le schema "HH:mm"
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="mr-auto">
+                          <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                        </div>
+                        <div class="ml-auto">
+                          <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <div class="card-body">
+                    <ng-template matStepLabel>Salles</ng-template>
+                    <div class="row">
+                      <app-classroom-selector #classroomSelector class="col-md-12"></app-classroom-selector>
+                    </div>
+                    <div class="row mt-md-4">
+                      <div class="mr-auto">
+                        <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                      </div>
+                      <div class="ml-auto">
+                        <button mat-raised-button color="primary" matStepperNext>Suivant</button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <div class="card-body">
+                    <form class="custom-form">
+                      <ng-template matStepLabel>Soutenances</ng-template>
+                      <div class="row">
+                        <div class="col-12">
+                          <h3 class="text-center mb-md-3">Vous pouvez importer un csv de la liste des soutenances</h3>
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <input type="file" accept="text/csv" formControlName="file" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
+                        <div class="row">
+                          <div class="mx-auto">
+                            <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>
+                            <p *ngIf="inputFile.value == ''">Aucun fichier selectionné</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="mx-auto">
+                            <button mat-raised-button color="primary" (click)="this.inputFile.click()">
+                              <mat-icon>attachment</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row mt-4" *ngIf="onLoading">
+                          <div class="mx-auto">
+                            <mat-progress-spinner
+                              color="primary"
+                              mode="indeterminate">
+                            </mat-progress-spinner>
+                          </div>
+                        </div>
+                        <div class="row mt-4" *ngIf="participants.length != 0 && !onLoading">
+                          <div class="col-md-12 text-left">
+                            <app-participant-datatable #participantDatatableComponent
+                                                       title="Liste des soutenances"
+                                                       (selectionListener)="onParticipantChange($event)"
+                                                       [participants]="participants">
+                            </app-participant-datatable>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="row">
+                      <div class="mr-auto">
+                        <button mat-raised-button color="primary" matStepperPrevious>Retour</button>
+                      </div>
+                      <div class="ml-auto">
+                        <button mat-raised-button color="primary" [disabled]="participantsSelected.length == 0" class="item-left-spacing" (click)="validate()">
+                          Créer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-step>
+            </mat-vertical-stepper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

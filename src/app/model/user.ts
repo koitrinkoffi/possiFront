@@ -1,36 +1,17 @@
 export class User {
-  private _firstName: string;
-  private _lastName: string;
-  private _role: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+  role: number | string;
+  uid: string;
+  email: string;
 
-  constructor(firstName: string, lastName: string, role: string) {
-    this._firstName = firstName;
-    this._lastName = lastName;
-    this._role = role;
-  }
-
-  get firstName(): string {
-    return this._firstName;
-  }
-
-  set firstName(value: string) {
-    this._firstName = value;
-  }
-
-  get lastName(): string {
-    return this._lastName;
-  }
-
-  set lastName(value: string) {
-    this._lastName = value;
-  }
-
-
-  get role(): string {
-    return this._role;
-  }
-
-  set role(value: string) {
-    this._role = value;
+  constructor(id: number, firstName: string, lastName: string, role: number, uid: string, email: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.role = role;
+    this.uid = uid;
+    this.email = email;
   }
 }

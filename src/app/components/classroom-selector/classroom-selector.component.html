@@ -1,0 +1,39 @@
+<mat-form-field class="full-width" appearance="outline">
+  <mat-chip-list #chipList aria-label="Room selection">
+    <mat-chip
+      color="accent"
+      selected
+      *ngFor="let classroom of classrooms"
+      [selectable]="selectableChips"
+      [removable]="removableChips"
+      (removed)="removeClassroom(classroom)">
+      {{classroom.name}}
+      <mat-icon matChipRemove *ngIf="removableChips">cancel</mat-icon>
+    </mat-chip>
+    <input
+      placeholder="Nouvelle salle..."
+      [(ngModel)]="searchInput"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="addClassroomByInput($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="classroomSelected($event)">
+    <mat-option *ngFor="let classroom of suggestedClassroom | classroom: 'name' :searchInput" [value]="classroom.id">
+      {{classroom.name}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<app-card
+  title="Salles suggérées">
+  <p class="">
+    <mat-chip-list aria-label="Room selection" [(ngModel)]="classrooms">
+      <mat-chip
+        *ngFor="let classroom of suggestedClassroom"
+        [selectable]="selectableChips"
+        (click)="addClassroom(classroom)">
+        {{classroom.name}}
+      </mat-chip>
+    </mat-chip-list>
+  </p>
+</app-card>

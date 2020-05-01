@@ -1,59 +1,50 @@
 import {User} from './user';
+import {Room} from './room';
+import {TimeBox} from './time-box';
+import * as moment from 'moment';
+import {OralDefense} from './oral-defense';
 
 export class Planning {
-  private _title: string;
-  private _admin: User;
-  private _startDate: string;
-  private _endDate: string;
-  private _id: string;
+  period: TimeBox;
+  id: number;
+  name: string;
+  admin: User;
+  oralDefenseDuration: number|string;
+  nbMaxOralDefensePerDay: number;
+  oralDefenseInterlude = 0;
+  oralDefenses: OralDefense[];
+  rooms: Room[];
+  lunchBreak: TimeBox;
+  dayPeriod: TimeBox;
+  createdAt: string;
+  updatedAt: string;
 
 
-  constructor(id: string, title: string, admin: User, startDate: string, endDate: string) {
-    this._title = title;
-    this._admin = admin;
-    this._startDate = startDate;
-    this._endDate = endDate;
-    this._id = id;
+  static dateFormat(): string {
+    return 'DD/MM/YYYY';
   }
 
-  get title(): string {
-    return this._title;
+  parsePeriod(ob) {
+    this.period = new TimeBox(moment(ob.startDate).format(), moment(ob.endDate).format());
+
+    // lunchBreak
+    let params = moment(ob.startDate);
+    params.hour(moment(ob.startBreak, 'HH:mm').hour());
+    params.minute(moment(ob.startBreak, 'HH:mm').minute());
+    this.lunchBreak = new TimeBox(params.format('x'));
+    params.hour(moment(ob.endBreak, 'HH:mm').hour());
+    params.minute(moment(ob.endBreak, 'HH:mm').minute());
+    this.lunchBreak.to = params.format('x');
+
+    // dayPeriod
+    params = moment(ob.startDate);
+    params.hour(moment(ob.startDay, 'HH:mm').hour());
+    params.minute(moment(ob.startDay, 'HH:mm').minute());
+    this.dayPeriod = new TimeBox(params.format('x'));
+    params.hour(moment(ob.endDay, 'HH:mm').hour());
+    params.minute(moment(ob.endDay, 'HH:mm').minute());
+    this.dayPeriod.to = params.format('x');
   }
 
-  set title(value: string) {
-    this._title = value;
-  }
-
-  get admin(): User {
-    return this._admin;
-  }
-
-  set admin(value: User) {
-    this._admin = value;
-  }
-
-  get startDate(): string {
-    return this._startDate;
-  }
-
-  set startDate(value: string) {
-    this._startDate = value;
-  }
-
-  get endDate(): string {
-    return this._endDate;
-  }
-
-  set endDate(value: string) {
-    this._endDate = value;
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  set id(value: string) {
-    this._id = value;
-  }
 }
 

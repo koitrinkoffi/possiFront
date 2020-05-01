@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  app_url: 'http://possi2019.univ-rennes1.fr:4200',
+  cas_url: 'https://sso-cas.univ-rennes1.fr',
+  cas_validate_url: 'https://sso-cas.univ-rennes1.fr/serviceValidate'
 };
 
 /*
