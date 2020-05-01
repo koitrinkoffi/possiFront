@@ -6,11 +6,23 @@ import {OralDefense} from '../model/oral-defense';
 })
 export class OralDefenseUserPipe implements PipeTransform {
 
-  transform(value: OralDefense[], uid: string, own: boolean): any {
+  transform(value: OralDefense[], uid: string, own: boolean): OralDefense[] {
     if (value !== undefined) {
       return own ?
-        value.filter(o => o.student.uid === uid || o.followingTeacher.uid === uid || o.secondTeacher.uid === uid) :
-        value.filter(o => o.student.uid !== uid && o.followingTeacher.uid !== uid && o.secondTeacher.uid !== uid);
+        value.filter(o => {
+          if (o.secondTeacher) {
+            return o.student.uid === uid || o.followingTeacher.uid === uid || o.secondTeacher.uid === uid;
+          } else {
+            return o.student.uid === uid || o.followingTeacher.uid === uid;
+          }
+        }) :
+        value.filter(o => {
+          if (o.secondTeacher) {
+            return o.student.uid !== uid && o.followingTeacher.uid !== uid && o.secondTeacher.uid !== uid;
+          } else {
+            return o.student.uid !== uid && o.followingTeacher.uid !== uid;
+          }
+        });
     }
     return [];
   }

@@ -59,19 +59,22 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   private render(info) {
     const tag = info.event._def.extendedProps.tag;
     if (tag !== undefined) {
-      tippy(info.el, {
-        content: `<h4 class="font-weight-bolder">Soutenance ${tag.number + 1}</h4>
+      let content = `<h4 class="font-weight-bolder">Soutenance ${tag.number + 1}</h4>
                 <div class="text-capitalize">${moment(info.event.start).format('dddd, DD MMMM')} | ${moment(info.event.start).format('HH:mm')} - ${moment(info.event.end).format('HH:mm')}</div>
                 <br>
                 <p class="font-weight-bolder">Participants :</p>
                 <ul>
                 <li><span class="text-uppercase">${tag.student.lastName}</span> ${tag.student.firstName} (Etudiant)</li>
-                <li><span class="text-uppercase">${tag.followingTeacher.lastName}</span> ${tag.followingTeacher.firstName} (Enseignant référent)</li>
-                <li><span class="text-uppercase">${tag.secondTeacher.lastName}</span> ${tag.secondTeacher.firstName} (Second enseignant)</li>
-                <li>${tag.tutorFullName} (Tuteur entreprise)</li>
+                <li><span class="text-uppercase">${tag.followingTeacher.lastName}</span> ${tag.followingTeacher.firstName} (Enseignant référent)</li>`;
+      if (tag.secondTeacher) {
+        content = content + `<li><span class="text-uppercase">${tag.secondTeacher.lastName}</span> ${tag.secondTeacher.firstName} (Second enseignant)</li>`;
+      }
+      content = content + `<li>${tag.tutorFullName} (Tuteur entreprise)</li>
                 </ul>
                 <div class="font-weight-bolder">Entreprise : ${tag.company}</div>
-                <div class="font-weight-bolder">Salle : ${tag.room.name}</div>`,
+                <div class="font-weight-bolder">Salle : ${tag.room.name}</div>`;
+      tippy(info.el, {
+        content,
         allowHTML: true,
         animation: 'shift-away',
         trigger: 'click',

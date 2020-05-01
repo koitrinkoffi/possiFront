@@ -1,122 +1,128 @@
 <app-card>
-    <mat-form-field appearance="outline">
-      <mat-label>Rechercher</mat-label>
-      <input matInput placeholder="Nom, Prénom, Entreprise" [(ngModel)]="search" type="text" (keyup)="updateOralDefenseToShow()" autocomplete="off">
-    </mat-form-field>
-    <div class="oral-wrapper" *ngIf="search == undefined || search == ''">
-      <div class="mb-4">
-        <mat-checkbox (change)="updateOralDefenseToShow()" [(ngModel)]="ownOralDefenses">
-          <span class="oral-title font-weight-bold">Vos soutenances</span>
-        </mat-checkbox>
-        <mat-divider class="mb-3"></mat-divider>
-        <mat-accordion multi="true" class="oral-number">
-          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : true">
-            <mat-expansion-panel-header>
-              <mat-panel-title >
-                Soutenance {{oralDefense.number + 1}}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="font-weight-bolder">Participants :</p>
-            <ul>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
-                <br>
-                <span class="oral-subtitle">Etudiant</span>
-              </li>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
-                <br>
-                <span >Enseignant référent</span>
-              </li>
+  <mat-form-field appearance="outline">
+    <mat-label>Rechercher</mat-label>
+    <input matInput placeholder="Nom, Prénom, Entreprise" [(ngModel)]="search" type="text" (keyup)="updateOralDefenseToShow()" autocomplete="off">
+  </mat-form-field>
+  <div class="oral-wrapper" *ngIf="search == undefined || search == ''">
+    <div class="mb-4">
+      <mat-checkbox (change)="updateOralDefenseToShow()" [(ngModel)]="ownOralDefenses">
+        <span class="oral-title font-weight-bold">Vos soutenances ({{nbOwnOralDefenses}})</span>
+      </mat-checkbox>
+      <mat-divider class="mb-3"></mat-divider>
+      <mat-accordion multi="true" class="oral-number">
+        <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : true">
+          <mat-expansion-panel-header>
+            <mat-panel-title >
+              Soutenance {{oralDefense.number + 1}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="font-weight-bolder">Participants :</p>
+          <ul>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
+              <br>
+              <span class="oral-subtitle">Etudiant</span>
+            </li>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
+              <br>
+              <span >Enseignant référent</span>
+            </li>
+            <div *ngIf="oralDefense.secondTeacher != null">
               <li class="mt-2"><span class="text-uppercase">{{oralDefense.secondTeacher.lastName}}</span> {{oralDefense.secondTeacher.firstName}}
                 <br>
                 <span >Second enseignant</span>
               </li>
-              <li class="mt-2">{{oralDefense.tutorFullName}}
-                <br>
-                <span >Tuteur entreprise</span>
-              </li>
-            </ul>
-            <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
-            <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
-      <div>
-        <mat-checkbox (change)="updateOralDefenseToShow()" [(ngModel)]="otherOraDefenses">
-          <span class="oral-title font-weight-bold">Autres soutenances</span>
-        </mat-checkbox>
-        <mat-divider class="mb-3"></mat-divider>
-        <mat-accordion multi="true" class="oral-number">
-          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Soutenance {{oralDefense.number + 1}}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="font-weight-bolder">Participants :</p>
-            <ul>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
-                <br>
-                <span >Etudiant</span>
-              </li>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
-                <br>
-                <span >Enseignant référent</span>
-              </li>
-              <li class="mt-2"><span class="text-uppercase">{{oralDefense.secondTeacher.lastName}}</span> {{oralDefense.secondTeacher.firstName}}
-                <br>
-                <span >Second enseignant</span>
-              </li>
-              <li class="mt-2">{{oralDefense.tutorFullName}}
-                <br>
-                <span >Tuteur entreprise</span>
-              </li>
-            </ul>
-            <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
-            <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
+            </div>
+            <li class="mt-2">{{oralDefense.tutorFullName}}
+              <br>
+              <span >Tuteur entreprise</span>
+            </li>
+          </ul>
+          <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
+          <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
-    <div class="oral-wrapper" *ngIf="search != undefined && search != ''">
-      <div class="mb-4">
-        <span class="oral-title font-weight-bold text-secondary">Résultats</span>
-        <mat-divider class="mb-3"></mat-divider>
-        <mat-accordion multi="true" class="oral-number">
-          <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseSearch: search">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Soutenance {{oralDefense.number + 1}}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="font-weight-bolder">Participants :</p>
-            <ul>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
-                <br>
-                <span >Etudiant</span>
-              </li>
-              <li class="mt-2">
-                <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
-                <br>
-                <span >Enseignant référent</span>
-              </li>
+    <div>
+      <mat-checkbox (change)="updateOralDefenseToShow()" [(ngModel)]="otherOraDefenses">
+        <span class="oral-title font-weight-bold">Autres ({{nbOtherOraDefenses}})</span>
+      </mat-checkbox>
+      <mat-divider class="mb-3"></mat-divider>
+      <mat-accordion multi="true" class="oral-number">
+        <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseUser: authService.user.uid : false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Soutenance {{oralDefense.number + 1}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="font-weight-bolder">Participants :</p>
+          <ul>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
+              <br>
+              <span >Etudiant</span>
+            </li>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
+              <br>
+              <span >Enseignant référent</span>
+            </li>
+            <div *ngIf="oralDefense.secondTeacher != null">
               <li class="mt-2"><span class="text-uppercase">{{oralDefense.secondTeacher.lastName}}</span> {{oralDefense.secondTeacher.firstName}}
                 <br>
                 <span >Second enseignant</span>
               </li>
-              <li class="mt-2">{{oralDefense.tutorFullName}}
-                <br>
-                <span >Tuteur entreprise</span>
-              </li>
-            </ul>
-            <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
-            <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
+            </div>
+            <li class="mt-2">{{oralDefense.tutorFullName}}
+              <br>
+              <span >Tuteur entreprise</span>
+            </li>
+          </ul>
+          <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
+          <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
+  </div>
+  <div class="oral-wrapper" *ngIf="search != undefined && search != ''">
+    <div class="mb-4">
+      <span class="oral-title font-weight-bold text-secondary">Résultats ({{nbSearch}})</span>
+      <mat-divider class="mb-3"></mat-divider>
+      <mat-accordion multi="true" class="oral-number">
+        <mat-expansion-panel [className]="'fc-oral oral-' + oralDefense.color.code" *ngFor="let oralDefense of oralDefenses | oralDefenseSearch: search">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Soutenance {{oralDefense.number + 1}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="font-weight-bolder">Participants :</p>
+          <ul>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.student.lastName}}</span> {{oralDefense.student.firstName}}
+              <br>
+              <span >Etudiant</span>
+            </li>
+            <li class="mt-2">
+              <span class="text-uppercase">{{oralDefense.followingTeacher.lastName}}</span> {{oralDefense.followingTeacher.firstName}}
+              <br>
+              <span >Enseignant référent</span>
+            </li>
+            <div *ngIf="oralDefense.secondTeacher != null">
+              <li class="mt-2"><span class="text-uppercase">{{oralDefense.secondTeacher.lastName}}</span> {{oralDefense.secondTeacher.firstName}}
+                <br>
+                <span >Second enseignant</span>
+              </li>
+            </div>
+            <li class="mt-2">{{oralDefense.tutorFullName}}
+              <br>
+              <span >Tuteur entreprise</span>
+            </li>
+          </ul>
+          <div><span class="font-weight-bolder">Entreprise :</span> {{oralDefense.company}}</div>
+          <div><span class="font-weight-bolder">Salle :</span> {{oralDefense.room.name}}</div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
 </app-card>
