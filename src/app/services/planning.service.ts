@@ -108,7 +108,6 @@ export class PlanningService {
       rows.push(line);
     });
 
-
     doc.autoTable(col, rows);
     doc.save(planning.name + '.pdf');
   }
