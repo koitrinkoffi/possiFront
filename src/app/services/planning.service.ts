@@ -5,6 +5,11 @@ import {Planning} from '../model/planning';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import {OralDefense} from '../model/oral-defense';
+import * as moment from 'moment';
+import { saveAs } from 'file-saver';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 export class FileResponse {
   data: OralDefense[];
@@ -28,6 +33,14 @@ export class PlanningService {
 
   create(planning: Planning): Observable<Planning> {
     return this.httpClient.post<Planning>(this.baseUrl, planning);
+  }
+
+  update(planning: Planning): Observable<Planning> {
+    return this.httpClient.put<Planning>(this.baseUrl, planning);
+  }
+
+  updateOralDefenses(id: number, oralDefenses: OralDefense[]) {
+    return this.httpClient.put(this.baseUrl + '/' + id + '/oraldefenses', oralDefenses);
   }
 
   findById(id: number): Observable<Planning> {
@@ -54,5 +67,49 @@ export class PlanningService {
 
   setPlanningSelected(planning: Planning) {
     this.mPlanningSelected.next(planning);
+  }
+
+  exportToCsv(planning: Planning) {
+    let csv = 'etudiant;email_etudiant;enseignant_referent;email_enseignant_referent;enseignant_second;email_enseignant_second;tuteur_entreprise;entreprise;date;heure_debut;heure_fin\n';
+    planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
+    planning.oralDefenses.forEach(o => {
+      const line = `${o.student.firstName} ${o.student.lastName.toUpperCase()};${o.student.email};` +
+        `${o.followingTeacher.firstName} ${o.followingTeacher.lastName.toUpperCase()};${o.followingTeacher.email};` +
+        `${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()};${o.secondTeacher.email};` +
+        `${o.tutorFullName};` +
+        `${o.company};` +
+        `${moment(o.timeBox.from).format('DD/MM/YYYY')};` +
+        `${moment(o.timeBox.from).format('HH:mm')};` +
+        `${moment(o.timeBox.to).format('HH:mm')}\n`;
+      csv = csv.concat(line);
+    });
+    const blob = new Blob([csv], {type: 'text/csv'});
+    saveAs(blob, planning.name + '.csv');
+  }
+
+  exportToPdf(planning: Planning) {
+    const doc = new jsPDF();
+    const col = ['N°','Etudiant', 'Enseignant Référent', 'Enseignant en second', 'Tuteur entreprise', 'Entreprise', 'Date', 'Heure début', 'Heure fin'];
+    const rows = [];
+
+    planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
+
+    planning.oralDefenses.forEach(o => {
+      const line = [];
+      line.push(o.number + 1);
+      line.push(`${o.student.firstName} ${o.student.lastName.toUpperCase()}`);
+      line.push(`${o.followingTeacher.firstName} ${o.followingTeacher.lastName.toUpperCase()}`);
+      line.push(`${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()}`);
+      line.push(`${o.tutorFullName}`);
+      line.push(`${o.company}`);
+      line.push(`${moment(o.timeBox.from).format('DD/MM/YYYY')}`);
+      line.push(`${moment(o.timeBox.from).format('HH:mm')}`);
+      line.push(`${moment(o.timeBox.to).format('HH:mm')}`);
+      rows.push(line);
+    });
+
+
+    doc.autoTable(col, rows);
+    doc.save(planning.name + '.pdf');
   }
 }

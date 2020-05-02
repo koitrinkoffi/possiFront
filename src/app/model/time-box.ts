@@ -12,8 +12,4 @@ export class TimeBox {
       this.to = to;
     }
   }
-
-  equals(timeBox: TimeBox): boolean {
-    return timeBox.from === this.from && timeBox.to === this.to;
-  }
 }

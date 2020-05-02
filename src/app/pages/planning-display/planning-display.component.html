@@ -1,12 +1,24 @@
 <div class="main-content">
   <div class="container-fluid">
-  <div class="row">
-    <div class="col-2">
-      <app-calendar-side-bar #calendarSideBarComponent (oralDefenseSelected)="loadOralDefense($event)"></app-calendar-side-bar>
-    </div>
-    <div class="col-10">
-  <app-calendar #calendarComponent [edit]="authService.user.role == 2"></app-calendar>
+    <div class="row">
+      <div class="col-2">
+        <app-calendar-side-bar #calendarSideBarComponent (oralDefenseSelected)="loadOralDefense($event)"></app-calendar-side-bar>
+      </div>
+      <div class="col-10">
+        <app-calendar #calendarComponent
+                      (changed)="canValidate($event)"
+                      [edit]="authService.user.role == 2"></app-calendar>
+      </div>
     </div>
   </div>
 </div>
+<div class="fab" *ngIf="updated">
+  <button mat-raised-button class="btn btn-success btn-round mat-raised-button mat-button-base clickable-item" (click)="validate()" [disabled]="!updated">
+    <span class="mat-button-wrapper font-weight-bolder">
+    <mat-icon>save</mat-icon>
+          Valider
+    </span>
+    <div matripple="" class="mat-ripple mat-button-ripple"></div>
+    <div class="mat-button-focus-overlay"></div>
+  </button>
 </div>

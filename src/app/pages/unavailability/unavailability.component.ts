@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, DoCheck, IterableDiffer, IterableDiffers, OnInit} from '@angular/core';
 import {Unavailability} from '../../model/unavailability';
 import {UnavailabilityService} from '../../services/unavailability.service';
 import * as moment from 'moment';
@@ -64,7 +64,7 @@ export class UnavailabilityComponent implements OnInit {
           this.matrix.push([]);
           while (j < this.width) {
             const timeBox = timeBoxes[this.height * j + i];
-            const unavailability = this.unavailabilities.find(u => timeBox.equals(u.period));
+            const unavailability = this.unavailabilities.find(u => timeBox.from === u.period.from && timeBox.to === u.period.to);
             this.matrix[i].push(unavailability !== undefined ?
               new UnavailabilityBox(unavailability, true, i, j) :
               new UnavailabilityBox(new Unavailability(this.authService.user, timeBox), false, i, j));
@@ -76,7 +76,6 @@ export class UnavailabilityComponent implements OnInit {
         this.isLoaded = true;
       });
     });
-
   }
 
   checkColumns(column: number, lunchBreak: boolean) {

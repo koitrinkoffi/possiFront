@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, EventEmitter, Input, KeyValueDiffers, OnInit, Output, ViewChild} from '@angular/core';
 import {EventInput} from '@fullcalendar/core';
 import {FullCalendarComponent} from '@fullcalendar/angular';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import * as moment from 'moment';
@@ -16,7 +16,7 @@ import {Planning} from '../../model/planning';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit, AfterViewInit {
+export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
 
   @ViewChild('calendar', {read: undefined, static: false}) calendarComponent: FullCalendarComponent;
 
@@ -30,16 +30,34 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   edit = false;
   calendarEvents: EventInput[];
   views;
+  private oralDefenses = new Map<number, OralDefense>();
+  oralDefensesUpdated = new Map<number, OralDefense>();
 
   calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, dayGridPlugin];
+  @Output()
+  changed = new EventEmitter<boolean>();
 
   constructor() {
     this.controlDrop = (dropInfo, draggedEvent) => {
       const oralDefense = draggedEvent._def.extendedProps.tag as OralDefense;
-      return oralDefense.unavailabilities.filter(u =>
+
+      const isPresent = oralDefense.unavailabilities.filter(u =>
         moment(u.from).isSame(moment(dropInfo.start)) &&  moment(u.to).isSame(moment(dropInfo.end))
       ).length === 0;
+      const oralDefenseFound = [];
+      this.oralDefenses.forEach(o => {
+        if ( o.id !== oralDefense.id && moment(o.timeBox.from).isSame(moment(dropInfo.start)) &&  moment(o.timeBox.to).isSame(moment(dropInfo.end))) {
+          oralDefenseFound.push(o);
+        }
+      });
+      const isFree = oralDefenseFound.filter(o => o.room.id === oralDefense.room.id).length === 0;
+
+      return isPresent && isFree;
     };
+  }
+
+  ngDoCheck(): void {
+    this.changed.emit(this.oralDefensesUpdated.size > 0);
   }
 
   ngAfterViewInit(): void {
@@ -88,6 +106,15 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     if (event !== undefined) {
       event.start = moment(eventDropInfo.event.start).format();
       event.end = moment(eventDropInfo.event.end).format();
+      const oralDefense = new OralDefense(event.tag as OralDefense);
+      oralDefense.timeBox.from = event.start;
+      oralDefense.timeBox.to = event.end;
+      const old = this.oralDefenses.get(oralDefense.id);
+      if (oralDefense.timeBox.from === moment(old.timeBox.from).format() &&  oralDefense.timeBox.to === moment(old.timeBox.to).format()) {
+        this.oralDefensesUpdated.delete(oralDefense.id);
+      } else {
+        this.oralDefensesUpdated.set(oralDefense.id, oralDefense);
+      }
       this.refreshCalendar();
     }
   }
@@ -104,6 +131,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   parseEvent(oralDefenses: OralDefense[]) {
     const array: EventInput[] = [];
     oralDefenses.forEach(o => {
+      this.oralDefenses.set(o.id, o);
       array.push({
         id: o.id,
         tag: o,
@@ -113,6 +141,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         title: `Soutenance\n ${o.number + 1}`
       });
     });
+
     this.calendarEvents = array;
     this.refreshCalendar();
   }
