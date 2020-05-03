@@ -68,3 +68,9 @@ $light-app-theme:  mat-light-theme($app-primary, $app-accent);
   @include mat-expansion-panel-theme($darker-app-theme);
  }
 //=========================================================
+ .fab {
+   position: fixed;
+   right: 5vw;
+   bottom: 7vh;
+   z-index: 1000;
+ }

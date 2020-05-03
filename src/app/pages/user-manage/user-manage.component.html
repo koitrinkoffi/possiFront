@@ -1,0 +1,18 @@
+<div class="main-content container">
+  <div class="table-spacing">
+    <app-person-datatable
+      #personDatatableComponent
+      title="Liste des utilisateurs"
+      (changeListener)="canValidate($event)"></app-person-datatable>
+  </div>
+  <div class="fab" *ngIf="updated">
+    <button mat-raised-button class="btn btn-success btn-round mat-raised-button mat-button-base clickable-item" (click)="validate()" [disabled]="!updated">
+    <span class="mat-button-wrapper font-weight-bolder">
+    <mat-icon>save</mat-icon>
+          Valider
+    </span>
+      <div matripple="" class="mat-ripple mat-button-ripple"></div>
+      <div class="mat-button-focus-overlay"></div>
+    </button>
+  </div>
+</div>

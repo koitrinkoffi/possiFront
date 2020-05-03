@@ -37,6 +37,8 @@ import {getFrenchPaginatorIntl} from './utils/frenchPaginatorintl';
 import {AuthInterceptor} from './services/auth-interceptor.service';
 import { LunchBreakPipe } from './filters/lunch-break.pipe';
 import {ParticipantDatatableComponent} from './components/participant-datatable/participant-datatable.component';
+import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
+import { UserManageComponent } from './pages/user-manage/user-manage.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import {ParticipantDatatableComponent} from './components/participant-datatable/
     OralDefenseUserPipe,
     OralDefenseSearchPipe,
     LunchBreakPipe,
-    ParticipantDatatableComponent
+    ParticipantDatatableComponent,
+    PersonDatatableComponent,
+    UserManageComponent
   ],
   imports: [
     HttpClientModule,
