@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {User} from '../model/user';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
@@ -6,10 +9,15 @@ import {HttpClient} from '@angular/common/http';
 })
 export class UserService {
 
-  private httpClient: HttpClient;
+  private readonly baseUrl = environment.app_url + '/persons';
 
-  constructor(httpClient: HttpClient) {
-    this.httpClient = httpClient;
+  constructor(private httpClient: HttpClient) { }
+
+  getAll(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.baseUrl);
   }
 
+  update(user: User[]): Observable<User[]> {
+    return this.httpClient.put<User[]>(this.baseUrl, user);
+  }
 }

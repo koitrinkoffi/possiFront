@@ -7,6 +7,7 @@ import {CreatePlanningComponent} from './pages/create-planning/create-planning.c
 import {AuthGuard} from './guards/auth.guard';
 import {TeacherGuard} from './guards/teacher.guard';
 import {AdminGuard} from './guards/admin.guard';
+import {UserManageComponent} from './pages/user-manage/user-manage.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'planning/:id/unavailability', component: UnavailabilityComponent , canActivate: [TeacherGuard]},
       { path: 'planning/:id', component: PlanningDisplayComponent },
       { path: 'create/planning', component: CreatePlanningComponent, canActivate: [AdminGuard] },
+      { path: 'admin/users', component: UserManageComponent, canActivate: [AdminGuard] },
     ]},
 ];
 

@@ -6,12 +6,12 @@ export class User {
   uid: string;
   email: string;
 
-  constructor(id: number, firstName: string, lastName: string, role: number, uid: string, email: string) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.role = role;
-    this.uid = uid;
-    this.email = email;
+  constructor(user?: User) {
+    this.id = user.id;
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.role = user.role;
+    this.uid = user.uid;
+    this.email = user.email;
   }
 }
