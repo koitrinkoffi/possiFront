@@ -22,6 +22,7 @@ export class UserManageComponent implements OnInit {
     this.userService.update(this.personDatatableComponent.usersUpdated).subscribe(d => {
         showNotification('Vos modifications ont été prises en compte', 'success');
         this.updated = false;
+        this.personDatatableComponent.resfresh();
       },
       e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
   }
