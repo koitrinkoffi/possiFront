@@ -1,4 +1,12 @@
 <app-card>
+  <mat-form-field appearance="fill" *ngIf="planning != undefined">
+    <mat-label>Version du planning</mat-label>
+    <mat-select [(ngModel)]="revisionSelectedId" (selectionChange)="changeRevision()">
+      <mat-option *ngFor="let revision of revisions; index as i" [value]="revision.id">
+        {{i}} - Date: {{formatedDate(revision.createdAt, 'DD/MM/YYYY')}} Heure: {{formatedDate(revision.createdAt, 'HH:mm')}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Rechercher</mat-label>
     <input matInput placeholder="Nom, Prénom, Entreprise" [(ngModel)]="search" type="text" (keyup)="updateOralDefenseToShow()" autocomplete="off">

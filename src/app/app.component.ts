@@ -7,6 +7,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import * as $ from 'jquery';
 import * as moment from 'moment';
 import {AuthService} from './services/auth.service';
+import {PlanningService} from './services/planning.service';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,9 @@ export class AppComponent implements AfterViewInit {
   lastPoppedUrl: string;
   yScrollStack: number[] = [];
   logged = false;
+  planningIsSelected = false
 
-  constructor( public location: Location, public router: Router, public authService: AuthService) {
+  constructor( public location: Location, public router: Router, public authService: AuthService, public planningService: PlanningService) {
     moment.locale('fr');
   }
 
@@ -34,11 +36,15 @@ export class AppComponent implements AfterViewInit {
       });
     } else {
       this.logged = true;
+      this.planningService.getRevisionSelected().subscribe(p => this.planningIsSelected = p !== null);
       this.init();
     }
   }
 
   init() {
+    let $sidebar_responsive = $('body > .navbar-collapse');
+    let $sidebar = $('.sidebar');
+    let $sidebar_img_container = $sidebar.find('.sidebar-background');
     const isWindows = navigator.platform.indexOf('Win') > -1;
 
     if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {
@@ -78,6 +84,72 @@ export class AppComponent implements AfterViewInit {
     }
 
     const windowWidth = $(window).width();
+
+    if(windowWidth > 767){
+      if($('.fixed-plugin .dropdown').hasClass('show-dropdown')){
+        $('.fixed-plugin .dropdown').addClass('open');
+      }
+
+    }
+
+    $('.fixed-plugin a').click(function(event){
+      // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+      if($(this).hasClass('switch-trigger')){
+        if(event.stopPropagation){
+          event.stopPropagation();
+        }
+        else if(window.event){
+          window.event.cancelBubble = true;
+        }
+      }
+    });
+
+    $('.fixed-plugin .badge').click(function(){
+      let $full_page_background = $('.full-page-background');
+
+
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
+
+      var new_color = $(this).data('color');
+
+      if($sidebar.length !== 0){
+        $sidebar.attr('data-color', new_color);
+      }
+
+      if($sidebar_responsive.length != 0){
+        $sidebar_responsive.attr('data-color',new_color);
+      }
+    });
+
+    $('.fixed-plugin .img-holder').click(function(){
+      let $full_page_background = $('.full-page-background');
+
+      $(this).parent('li').siblings().removeClass('active');
+      $(this).parent('li').addClass('active');
+
+
+      var new_image = $(this).find("img").attr('src');
+
+      if($sidebar_img_container.length !=0 ){
+        $sidebar_img_container.fadeOut('fast', function(){
+          $sidebar_img_container.css('background-image','url("' + new_image + '")');
+          $sidebar_img_container.fadeIn('fast');
+        });
+      }
+
+      if($full_page_background.length != 0){
+
+        $full_page_background.fadeOut('fast', function(){
+          $full_page_background.css('background-image','url("' + new_image + '")');
+          $full_page_background.fadeIn('fast');
+        });
+      }
+
+      if($sidebar_responsive.length != 0){
+        $sidebar_responsive.css('background-image','url("' + new_image + '")');
+      }
+    });
 
     if (windowWidth > 767) {
       const pluginDropdown = $('.fixed-plugin .dropdown');

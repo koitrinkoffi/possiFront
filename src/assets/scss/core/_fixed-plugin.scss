@@ -30,7 +30,7 @@
 
 .fixed-plugin{
     position: fixed;
-    top: 115px;
+    top: 22vh;
     right: 0;
     width: 64px;
     background: rgba(0,0,0,.3);
@@ -38,7 +38,7 @@
     border-radius: 8px 0 0 8px;
     text-align: center;
 }
-.fixed-plugin .fa-cog{
+.fixed-plugin .fa-file-download{
     color: #FFFFFF;
     padding: 10px;
     border-radius: 0 0 6px 6px;

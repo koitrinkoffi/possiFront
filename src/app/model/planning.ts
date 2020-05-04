@@ -10,12 +10,14 @@ export class Planning {
   name: string;
   admin: User;
   oralDefenseDuration: number|string;
+  defaultRevision: Planning;
   nbMaxOralDefensePerDay: number;
   oralDefenseInterlude = 0;
   oralDefenses: OralDefense[];
   rooms: Room[];
   lunchBreak: TimeBox;
   dayPeriod: TimeBox;
+  revisions: Planning[];
   createdAt: string;
   updatedAt: string;
 

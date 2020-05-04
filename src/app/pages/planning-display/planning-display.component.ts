@@ -25,11 +25,13 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   planningService: PlanningService;
   route: ActivatedRoute;
   updated = false;
+
   constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute) {
     this.authService = authService;
     this.planningService = planningService;
     this.route = route;
   }
+
   ngOnDestroy() {
     this.planningService.setPlanningSelected(null);
   }
@@ -37,9 +39,9 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.planning = p;
+      this.calendarComponent.parseUnavailabityByOralDefense(p.oralDefenses);
+      this.planningService.setRevisionSelected(p.defaultRevision);
       this.planningService.setPlanningSelected(p);
-      this.calendarComponent.parsePlanning(p);
-      this.calendarSideBarComponent.parseOralDefense(p.oralDefenses);
     });
   }
 
@@ -54,11 +56,14 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   }
 
   validate() {
+    showNotification('veuillez patienter un moment...', 'primary');
     const array: OralDefense[] = [];
     this.calendarComponent.oralDefensesUpdated.forEach(o => array.push(o));
     this.planningService.updateOralDefenses(this.planning.id, array).subscribe(d => {
         showNotification('Vos modifications ont été prises en compte', 'success');
         this.updated = false;
+        this.calendarComponent.oralDefensesUpdated.clear();
+        this.planningService.setPlanningSelected(d);
       },
       e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
   }
