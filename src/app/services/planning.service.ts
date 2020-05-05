@@ -127,10 +127,14 @@ export class PlanningService {
   }
 
   getRevisions(id: number): Observable<Planning[]> {
-    return this.httpClient.get<Planning[]>(this.baseUrl + + '/' + id + '/revisions');
+    return this.httpClient.get<Planning[]>(this.baseUrl + '/' + id + '/revisions');
   }
 
   createRevision(id: number): Observable<Planning> {
     return this.httpClient.get<Planning>(this.baseUrl + '/' + id + '/createrevision');
+  }
+
+  updateDefaultRevision(id: number, revisionSelectedId: number | string): Observable<Planning> {
+    return this.httpClient.put<Planning>(this.baseUrl + '/' + id + '/defaultrevision', revisionSelectedId);
   }
 }

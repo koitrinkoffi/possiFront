@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
+import business from 'moment-business';
 import {RoomService} from '../../services/room.service';
 import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
@@ -52,8 +53,11 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   stepperH: MatHorizontalStepper;
 
   dateFilter = (d: Date | null): boolean => {
+    const date = moment(d);
     const day = (d || new Date()).getDay();
-    return day !== 0 && day !== 6;
+    const today = moment(new Date());
+    today.subtract(1, 'days');
+    return date.isAfter(today) && (day !== 0 && day !== 6);
   }
 
   ngAfterViewInit(): void {
@@ -99,7 +103,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
 
   validateRooms(event: MouseEvent) {
     event.stopPropagation();
-    if (this.classroomSelector.getClassroomSelected().length === 0) {
+    if (this.classroomSelector.getClassroomSelected().length === 0 && this.classroomSelector.getClassroomToCreate().length === 0) {
       showNotification('Vous devez selectionner au moins une salle', 'danger');
       this.roomStep.completed = false;
     } else {
@@ -171,6 +175,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
     planning.rooms = this.classroomSelector.getClassroomSelected();
     this.planningService.create(planning).subscribe(data => {
       showNotification('Votre planning a été créé avec succès', 'success');
+      setTimeout(() => {
+        this.router.navigate(['/planning/' + data.id]);
+      }, 1000);
     },  error => {
         showNotification('Une erreur s\'est produite', 'danger');
     });

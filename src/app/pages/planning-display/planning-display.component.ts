@@ -42,6 +42,7 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.planning = p;
+      this.planningService.setPlanningSelected(this.planning);
       if (!this.planning.generated) {
         const dialogRef = this.dialog.open(DialogComponent, {
           data: {

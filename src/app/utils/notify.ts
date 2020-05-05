@@ -9,7 +9,7 @@ export function showNotification(message: string, type = '') {
 
   },{
     type: type,
-    timer: 4000,
+    timer: 1000,
     placement: {
       from: from,
       align: align

@@ -53,8 +53,8 @@ export class AppComponent implements AfterViewInit {
       document.getElementsByTagName('body')[0].classList.add('perfect-scrollbar-on');
     } else {
       document.getElementsByTagName('body')[0].classList.remove('perfect-scrollbar-off');
-      document.getElementsByTagName('body')[0].classList.add('sidebar-mini');
     }
+    document.getElementsByTagName('body')[0].classList.add('sidebar-mini');
     const elemMainPanel = document.querySelector('.main-panel') as HTMLElement;
     const elemSidebar = document.querySelector('.sidebar .sidebar-wrapper') as HTMLElement;
 
