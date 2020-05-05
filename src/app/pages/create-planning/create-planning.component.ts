@@ -190,6 +190,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
         this.participants = response.data;
         response.errors.forEach(e => {
           showNotification(e.typeError, 'danger');
+        }, (e) => {
+          this.onLoading = false;
+          showNotification('Une erreur est survenue durant l\'importation. Vérifiez bien le fichier que vous importer', 'danger');
         });
         this.onLoading = false;
       });
