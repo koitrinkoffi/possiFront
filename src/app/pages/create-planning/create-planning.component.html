@@ -172,7 +172,7 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <input type="file" accept="text/csv" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
+                      <input type="file" accept=".csv" (change)="onFileSelect($event)" #inputFile class="cdk-visually-hidden"/>
                       <div class="row">
                         <div class="mx-auto">
                           <p *ngIf="inputFile.value != ''">{{inputFile.value}}</p>

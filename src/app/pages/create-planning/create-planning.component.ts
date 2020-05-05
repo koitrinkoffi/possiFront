@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import business from 'moment-business';
 import {RoomService} from '../../services/room.service';
 import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
@@ -191,6 +190,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
         this.participants = response.data;
         response.errors.forEach(e => {
           showNotification(e.typeError, 'danger');
+        }, (e) => {
+          this.onLoading = false;
+          showNotification('Une erreur est survenue durant l\'importation. Vérifiez bien le fichier que vous importer', 'danger');
         });
         this.onLoading = false;
       });
