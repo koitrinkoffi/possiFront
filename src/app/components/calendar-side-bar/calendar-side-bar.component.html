@@ -1,4 +1,40 @@
 <app-card>
+  <div *ngIf="isAdmin" class="mb-3">
+    <div *ngIf="planning != undefined && planning.generated">
+      <mat-form-field appearance="fill">
+        <mat-label>Version du planning</mat-label>
+        <mat-select [(ngModel)]="revisionSelectedId" (selectionChange)="changeRevision()">
+          <mat-option *ngIf="planning.newUnavailabilities" value="updated">
+            <mat-icon>warning</mat-icon> État modifié
+          </mat-option>
+          <mat-option *ngFor="let revision of revisions; index as i" [value]="revision.id">
+            {{i}} - Date: {{formatedDate(revision.createdAt, 'DD/MM/YYYY')}} Heure: {{formatedDate(revision.createdAt, 'HH:mm')}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row" *ngIf="planning.newUnavailabilities">
+        <button class="btn btn-success mat-raised-button mat-button-base mx-auto" mat-raised-button (click)="createRevision()">
+          Créer une version
+          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+          <div class="mat-button-focus-overlay"></div>
+        </button>
+      </div>
+      <div class="row" *ngIf="defaultRevision">
+        <button class="btn btn-warning mat-raised-button mat-button-base mx-auto" mat-raised-button >
+          Version par defaut
+          <div matripple="" class="mat-ripple mat-button-ripple"></div>
+          <div class="mat-button-focus-overlay"></div>
+        </button>
+      </div>
+    </div>
+    <div class="row" *ngIf="!planning.generated">
+      <button class="btn btn-success mat-raised-button mat-button-base mx-auto" mat-raised-button >
+        Générer le planning
+        <div matripple="" class="mat-ripple mat-button-ripple"></div>
+        <div class="mat-button-focus-overlay"></div>
+      </button>
+    </div>
+  </div>
   <mat-form-field appearance="outline">
     <mat-label>Rechercher</mat-label>
     <input matInput placeholder="Nom, Prénom, Entreprise" [(ngModel)]="search" type="text" (keyup)="updateOralDefenseToShow()" autocomplete="off">

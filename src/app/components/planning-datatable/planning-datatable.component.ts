@@ -1,9 +1,10 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
 import * as moment from 'moment';
 import {AuthService} from '../../services/auth.service';
+import {DialogComponent} from '../dialog/dialog.component';
 
 export interface PlanningElement {
   id: string|number;
@@ -11,6 +12,7 @@ export interface PlanningElement {
   creator: string;
   startDate: string;
   endDate: string;
+  tag: Planning;
 }
 
 @Component({
@@ -29,12 +31,7 @@ export class PlanningDatatableComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  planningService: PlanningService;
-  authService: AuthService;
-  constructor(planningService: PlanningService, authService: AuthService) {
-    this.planningService = planningService;
-    this.authService = authService;
-  }
+  constructor(public planningService: PlanningService, public authService: AuthService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanningElement>();
@@ -55,15 +52,30 @@ export class PlanningDatatableComponent implements OnInit {
         creator: p.admin.firstName + ' ' + p.admin.lastName,
         startDate: moment(p.period.from).format(Planning.dateFormat()),
         endDate: moment(p.period.to).format(Planning.dateFormat()),
+        tag: p
       });
     });
     this.dataSource.data = this.planningElement;
   }
 
   delete(id: string) {
-    this.planningService.delete(+id).subscribe( data => {
-      this.planningElement = this.planningElement.filter(p => p.id !== id);
-      this.dataSource.data = this.planningElement;
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Suppression de planning',
+        content: 'Voulez vous vraiment supprimer ce planning',
+        cancelLabel: 'Non',
+        submitLabel: 'Oui',
+        submitClass: 'btn-danger',
+        cancelClass: ''
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.planningService.delete(+id).subscribe( data => {
+          this.planningElement = this.planningElement.filter(p => p.id !== id);
+          this.dataSource.data = this.planningElement;
+        });
+      }
     });
   }
 }

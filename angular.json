@@ -90,7 +90,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "possiFront:build:production"
+              "browserTarget": "possiFront:build:production",
+            "proxyConfig": "src/proxy.conf.json"
             }
           }
         },

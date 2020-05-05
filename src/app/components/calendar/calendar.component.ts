@@ -10,6 +10,9 @@ import tippy from 'tippy.js';
 import * as $ from 'jquery';
 import {OralDefense} from '../../model/oral-defense';
 import {Planning} from '../../model/planning';
+import {PlanningService} from '../../services/planning.service';
+import {UnavailabilityBox} from '../../pages/unavailability/unavailability.component';
+import {TimeBox} from '../../model/time-box';
 
 @Component({
   selector: 'app-calendar',
@@ -32,12 +35,13 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
   views;
   private oralDefenses = new Map<number, OralDefense>();
   oralDefensesUpdated = new Map<number, OralDefense>();
+  private unavailabilities = new Map<number, TimeBox[]>();
 
   calendarPlugins = [interactionPlugin, timeGridPlugin, bootstrapPlugin, dayGridPlugin];
   @Output()
   changed = new EventEmitter<boolean>();
 
-  constructor() {
+  constructor(private planningService: PlanningService) {
     this.controlDrop = (dropInfo, draggedEvent) => {
       const oralDefense = draggedEvent._def.extendedProps.tag as OralDefense;
 
@@ -65,6 +69,11 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   ngOnInit() {
+    this.planningService.getRevisionSelected().subscribe(p => {
+      if (p != null) {
+        this.parsePlanning(p);
+      }
+    });
     this.views = {
       resourceTimeGridFiveDay: {
         type: 'resourceTimeGrid',
@@ -131,6 +140,9 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
   parseEvent(oralDefenses: OralDefense[]) {
     const array: EventInput[] = [];
     oralDefenses.forEach(o => {
+      if (!o.unavailabilities) {
+        o.unavailabilities = this.unavailabilities.get(o.number);
+      }
       this.oralDefenses.set(o.id, o);
       array.push({
         id: o.id,
@@ -153,6 +165,12 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
     const duration = moment('00:00', 'HH:mm');
     duration.add(planning.oralDefenseDuration, 'minutes');
     this.slotDuration = duration.format('HH:mm:ss');
+  }
+
+  parseUnavailabityByOralDefense(oralDefenses: OralDefense[]) {
+    oralDefenses.forEach( o => {
+      this.unavailabilities.set(o.number, o.unavailabilities);
+    });
   }
 
   controlDragAndDrop(info, onDrag: boolean) {

@@ -10,13 +10,17 @@ export class Planning {
   name: string;
   admin: User;
   oralDefenseDuration: number|string;
+  defaultRevision: Planning;
   nbMaxOralDefensePerDay: number;
   oralDefenseInterlude = 0;
   oralDefenses: OralDefense[];
   rooms: Room[];
   lunchBreak: TimeBox;
   dayPeriod: TimeBox;
+  revisions: Planning[];
   createdAt: string;
+  generated: boolean;
+  newUnavailabilities: boolean;
   updatedAt: string;
 
 
@@ -31,19 +35,23 @@ export class Planning {
     let params = moment(ob.startDate);
     params.hour(moment(ob.startBreak, 'HH:mm').hour());
     params.minute(moment(ob.startBreak, 'HH:mm').minute());
-    this.lunchBreak = new TimeBox(params.format('x'));
+    params.set({second: 0, millisecond: 0});
+    this.lunchBreak = new TimeBox(params.format());
     params.hour(moment(ob.endBreak, 'HH:mm').hour());
     params.minute(moment(ob.endBreak, 'HH:mm').minute());
-    this.lunchBreak.to = params.format('x');
+    params.set({second: 0, millisecond: 0});
+    this.lunchBreak.to = params.format();
 
     // dayPeriod
     params = moment(ob.startDate);
     params.hour(moment(ob.startDay, 'HH:mm').hour());
     params.minute(moment(ob.startDay, 'HH:mm').minute());
-    this.dayPeriod = new TimeBox(params.format('x'));
+    params.set({second: 0, millisecond: 0});
+    this.dayPeriod = new TimeBox(params.format());
     params.hour(moment(ob.endDay, 'HH:mm').hour());
     params.minute(moment(ob.endDay, 'HH:mm').minute());
-    this.dayPeriod.to = params.format('x');
+    params.set({second: 0, millisecond: 0});
+    this.dayPeriod.to = params.format();
   }
 
 }

@@ -80,4 +80,12 @@ export class PersonDatatableComponent implements OnInit, DoCheck {
       this.usersUpdated = this.usersUpdated.filter(u => !(u.id === user.id));
     }
   }
+
+  resfresh() {
+    this.usersUpdated.forEach(u => {
+      this.users.find(u1 => u1.id === u.id).role = u.role;
+    });
+    this.usersUpdated = [];
+    this.parseData(this.users);
+  }
 }

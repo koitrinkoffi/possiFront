@@ -24,6 +24,7 @@ export class PlanningService {
   private readonly baseUrl = environment.app_url + '/plannings';
 
   private mPlanningSelected = new BehaviorSubject<Planning>(null);
+  private mRevisionSelected = new BehaviorSubject<Planning>(null);
 
   constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
@@ -39,8 +40,8 @@ export class PlanningService {
     return this.httpClient.put<Planning>(this.baseUrl, planning);
   }
 
-  updateOralDefenses(id: number, oralDefenses: OralDefense[]) {
-    return this.httpClient.put(this.baseUrl + '/' + id + '/oraldefenses', oralDefenses);
+  updateOralDefenses(id: number, oralDefenses: OralDefense[]): Observable<Planning> {
+    return this.httpClient.put<Planning>(this.baseUrl + '/' + id + '/oraldefenses', oralDefenses);
   }
 
   findById(id: number): Observable<Planning> {
@@ -64,12 +65,20 @@ export class PlanningService {
   getPlanningSelected(): Observable<Planning> {
     return this.mPlanningSelected.asObservable();
   }
+  getRevisionSelected(): Observable<Planning> {
+    return this.mRevisionSelected.asObservable();
+  }
 
   setPlanningSelected(planning: Planning) {
     this.mPlanningSelected.next(planning);
   }
 
-  exportToCsv(planning: Planning) {
+  setRevisionSelected(planning: Planning) {
+    this.mRevisionSelected.next(planning);
+  }
+
+  exportToCsv() {
+    const planning = this.mRevisionSelected.value;
     let csv = 'etudiant;email_etudiant;enseignant_referent;email_enseignant_referent;enseignant_second;email_enseignant_second;tuteur_entreprise;entreprise;date;heure_debut;heure_fin\n';
     planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
     planning.oralDefenses.forEach(o => {
@@ -87,7 +96,8 @@ export class PlanningService {
     saveAs(blob, planning.name + '.csv');
   }
 
-  exportToPdf(planning: Planning) {
+  exportToPdf() {
+    const planning = this.mRevisionSelected.value;
     const doc = new jsPDF();
     const col = ['N°','Etudiant', 'Enseignant Référent', 'Enseignant en second', 'Tuteur entreprise', 'Entreprise', 'Date', 'Heure début', 'Heure fin'];
     const rows = [];
@@ -110,5 +120,17 @@ export class PlanningService {
 
     doc.autoTable(col, rows);
     doc.save(planning.name + '.pdf');
+  }
+
+  generate(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(this.baseUrl + '/' + id + '/generate');
+  }
+
+  getRevisions(id: number): Observable<Planning[]> {
+    return this.httpClient.get<Planning[]>(this.baseUrl + + '/' + id + '/revisions');
+  }
+
+  createRevision(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(this.baseUrl + '/' + id + '/createrevision');
   }
 }

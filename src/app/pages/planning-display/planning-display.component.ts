@@ -8,6 +8,8 @@ import {AuthService} from '../../services/auth.service';
 import {Planning} from '../../model/planning';
 import * as moment from 'moment';
 import {showNotification} from '../../utils/notify';
+import {MatDialog} from '@angular/material';
+import {DialogComponent} from '../../components/dialog/dialog.component';
 
 @Component({
   selector: 'app-planning-display',
@@ -25,21 +27,46 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   planningService: PlanningService;
   route: ActivatedRoute;
   updated = false;
-  constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute) {
+
+  constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute, public dialog: MatDialog) {
     this.authService = authService;
     this.planningService = planningService;
     this.route = route;
   }
+
   ngOnDestroy() {
     this.planningService.setPlanningSelected(null);
+    this.planningService.setRevisionSelected(null);
   }
 
   ngAfterViewInit(): void {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.planning = p;
-      this.planningService.setPlanningSelected(p);
-      this.calendarComponent.parsePlanning(p);
-      this.calendarSideBarComponent.parseOralDefense(p.oralDefenses);
+      if (!this.planning.generated) {
+        const dialogRef = this.dialog.open(DialogComponent, {
+          data: {
+            title: 'Génération de planning',
+            content: 'Ce planning n\'a pas encore été généré. Voulez vous que je le fasse pour vous ?',
+            cancelLabel: 'Non',
+            submitLabel: 'Oui',
+            submitClass: 'btn-success',
+            cancelClass: 'btn-danger'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.generate();
+          }
+        });
+      } else {
+        this.calendarComponent.parseUnavailabityByOralDefense(this.planning.oralDefenses);
+        if (!this.planning.newUnavailabilities && this.planning.defaultRevision != null) {
+          this.planningService.setRevisionSelected(this.planning.defaultRevision);
+        } else {
+          this.planningService.setRevisionSelected(this.planning);
+        }
+        this.planningService.setPlanningSelected(this.planning);
+      }
     });
   }
 
@@ -54,16 +81,35 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   }
 
   validate() {
+    showNotification('veuillez patienter un moment...', 'primary');
     const array: OralDefense[] = [];
     this.calendarComponent.oralDefensesUpdated.forEach(o => array.push(o));
     this.planningService.updateOralDefenses(this.planning.id, array).subscribe(d => {
-        showNotification('Vos modifications ont été prises en compte', 'success');
-        this.updated = false;
+        this.planningService.getRevisions(d.id).subscribe(rev => {
+          showNotification('Vos modifications ont été prises en compte', 'success');
+          d.revisions = rev;
+          this.planning = d;
+          this.planningService.setPlanningSelected(this.planning);
+          this.calendarSideBarComponent.revisionSelectedId = rev[rev.length - 1].id;
+          this.updated = false;
+          this.calendarComponent.oralDefensesUpdated.clear();
+        }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
       },
       e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
   }
 
   canValidate(event: boolean) {
     this.updated = event;
+  }
+
+  generate() {
+    showNotification('veuillez patienter un moment...', 'primary');
+    this.planningService.generate(this.planning.id).subscribe(planning => {
+      showNotification('Vos modifications ont été prises en compte', 'success');
+      this.planning = planning;
+      this.calendarComponent.parseUnavailabityByOralDefense(this.planning.oralDefenses);
+      this.planningService.setPlanningSelected(this.planning);
+      this.planningService.setRevisionSelected(this.planning);
+    }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
   }
 }
