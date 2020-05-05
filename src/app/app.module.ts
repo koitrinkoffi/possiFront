@@ -21,15 +21,30 @@ import {PlanningDisplayComponent} from './pages/planning-display/planning-displa
 import {OralDefenseUserPipe} from './filters/oral-defense-user.pipe';
 import {OralDefenseSearchPipe} from './filters/oral-defense-search.pipe';
 import {
-  MAT_DATE_LOCALE,
+  MAT_DATE_LOCALE, MAT_DIALOG_DEFAULT_OPTIONS,
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatIconModule,
-  MatInputModule, MatNativeDateModule, MatPaginatorIntl,
-  MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule,
-  MatSortModule, MatStepperModule,
-  MatTableModule, MatTabsModule,
-  MatToolbarModule, MatTooltipModule
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatIconModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from '@fullcalendar/angular';
@@ -39,6 +54,7 @@ import { LunchBreakPipe } from './filters/lunch-break.pipe';
 import {ParticipantDatatableComponent} from './components/participant-datatable/participant-datatable.component';
 import { PersonDatatableComponent } from './components/person-datatable/person-datatable.component';
 import { UserManageComponent } from './pages/user-manage/user-manage.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,40 +77,46 @@ import { UserManageComponent } from './pages/user-manage/user-manage.component';
     LunchBreakPipe,
     ParticipantDatatableComponent,
     PersonDatatableComponent,
-    UserManageComponent
+    UserManageComponent,
+    DialogComponent
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatInputModule,
-    MatIconModule,
-    MatTabsModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule,
-    FormsModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    FullCalendarModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
-    MatExpansionModule,
-    MatTooltipModule,
+  entryComponents: [
+    DialogComponent
   ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatButtonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatInputModule,
+        MatIconModule,
+        MatTabsModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatChipsModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        FullCalendarModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatProgressSpinnerModule,
+        MatExpansionModule,
+        MatTooltipModule,
+        MatDialogModule,
+    ],
   providers: [
     LunchBreakPipe,
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

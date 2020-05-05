@@ -49,16 +49,18 @@
                   <div class="mat-button-focus-overlay"></div>
                 </button>
               </div>
-              <div class="mr-md-2" *ngIf="authService.user.role == 2">
-                <button class="btn btn-info mat-raised-button mat-button-base" mat-raised-button>
-                  Gérer le planning
+              <div class="mr-md-2" *ngIf="element.tag.defaultRevision != null">
+                <button class="btn btn-primary mat-raised-button mat-button-base" mat-raised-button routerLink="/planning/{{element.id}}">
+                  Consulter le planning
                   <div matripple="" class="mat-ripple mat-button-ripple"></div>
                   <div class="mat-button-focus-overlay"></div>
                 </button>
               </div>
-              <div class="mr-md-2">
-                <button class="btn btn-primary btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab routerLink="/planning/{{element.id}}">
-                  <mat-icon>calendar_today</mat-icon>
+              <div class="mr-md-2" *ngIf="element.tag.defaultRevision == null && authService.user.id == element.tag.admin.id">
+                <button class="btn btn-primary mat-raised-button mat-button-base" mat-raised-button routerLink="/planning/{{element.id}}">
+                  Consulter le planning
+                  <div matripple="" class="mat-ripple mat-button-ripple"></div>
+                  <div class="mat-button-focus-overlay"></div>
                 </button>
               </div>
               <div class="mr-md-2" *ngIf="authService.user.role == 2">

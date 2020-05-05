@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit {
   lastPoppedUrl: string;
   yScrollStack: number[] = [];
   logged = false;
-  planningIsSelected = false
+  planningIsSelected = false;
 
   constructor( public location: Location, public router: Router, public authService: AuthService, public planningService: PlanningService) {
     moment.locale('fr');

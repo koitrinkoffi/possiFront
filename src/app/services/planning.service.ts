@@ -121,4 +121,16 @@ export class PlanningService {
     doc.autoTable(col, rows);
     doc.save(planning.name + '.pdf');
   }
+
+  generate(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(this.baseUrl + '/' + id + '/generate');
+  }
+
+  getRevisions(id: number): Observable<Planning[]> {
+    return this.httpClient.get<Planning[]>(this.baseUrl + + '/' + id + '/revisions');
+  }
+
+  createRevision(id: number): Observable<Planning> {
+    return this.httpClient.get<Planning>(this.baseUrl + '/' + id + '/createrevision');
+  }
 }
