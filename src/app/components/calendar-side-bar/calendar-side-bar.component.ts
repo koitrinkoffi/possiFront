@@ -46,10 +46,12 @@ export class CalendarSideBarComponent implements OnInit {
       if (p != null) {
         this.planning = p;
         this.isAdmin = p.admin.id === this.authService.user.id;
-        this.revisions = this.planning.revisions;
-        if (this.planning.newUnavailabilities) {
-          this.revisionSelectedId = 'updated';
-          this.oralDefenses = this.planning.oralDefenses;
+        if (this.planning.generated) {
+          this.revisions = this.planning.revisions;
+          if (this.planning.newUnavailabilities) {
+            this.revisionSelectedId = 'updated';
+            this.oralDefenses = this.planning.oralDefenses;
+          }
         }
       }
     });
@@ -60,6 +62,8 @@ export class CalendarSideBarComponent implements OnInit {
         this.oralDefenses = p.oralDefenses;
         if (this.planning != null && this.planning.defaultRevision != null) {
           this.defaultRevision = this.planning.defaultRevision.id != this.revisionSelectedId;
+        } else if (this.planning != null && this.revisions.find(r => r.id == this.revisionSelectedId) != undefined) {
+          this.defaultRevision = true;
         } else {
           this.defaultRevision = false;
         }
@@ -112,6 +116,28 @@ export class CalendarSideBarComponent implements OnInit {
     this.onGenerateButton.emit();
   }
 
+  changeDefaultRevision() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Modification de la version par défaut du planning',
+        content: 'Cette version sera affiché à l\'ensemble de vos collaborateurs. Voulez vous vraiment le faire ?',
+        cancelLabel: 'Non',
+        submitLabel: 'Oui',
+        submitClass: 'btn-success',
+        cancelClass: 'btn-danger'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.planningService.updateDefaultRevision(this.planning.id, this.revisionSelectedId).subscribe(p => {
+          showNotification('Vos modifications ont été prises en compte', 'success');
+          this.planningService.setPlanningSelected(p);
+          this.defaultRevision = false;
+        }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+      }
+    });
+  }
+
   createRevision() {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -128,8 +154,9 @@ export class CalendarSideBarComponent implements OnInit {
         showNotification('veuillez patienter un moment...', 'primary');
         this.planningService.createRevision(this.planning.id).subscribe(p => {
           showNotification('Vos modifications ont été prises en compte', 'success');
-          console.log(p.revisions);
           this.revisions = p.revisions;
+          this.revisionSelectedId = this.revisions[this.revisions.length - 1].id;
+          this.defaultRevision = true;
           this.planning = p;
         }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
       }

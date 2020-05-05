@@ -13,6 +13,7 @@ import {Planning} from '../../model/planning';
 import {PlanningService} from '../../services/planning.service';
 import {UnavailabilityBox} from '../../pages/unavailability/unavailability.component';
 import {TimeBox} from '../../model/time-box';
+import {DateRangeInput} from '@fullcalendar/core/datelib/date-range';
 
 @Component({
   selector: 'app-calendar',
@@ -29,6 +30,7 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
   controlDrop;
   calendarVisible = true;
   calendarWeekends = true;
+  dateRange: DateRangeInput;
   @Input()
   edit = false;
   calendarEvents: EventInput[];
@@ -60,11 +62,11 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
     };
   }
 
-  ngDoCheck(): void {
-    this.changed.emit(this.oralDefensesUpdated.size > 0);
+  ngAfterViewInit(): void {
+    this.removeTodayHighLight();
   }
 
-  ngAfterViewInit(): void {
+  ngDoCheck(): void {
     this.removeTodayHighLight();
   }
 
@@ -124,6 +126,7 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
       } else {
         this.oralDefensesUpdated.set(oralDefense.id, oralDefense);
       }
+      this.changed.emit(this.oralDefensesUpdated.size > 0);
       this.refreshCalendar();
     }
   }
@@ -159,7 +162,15 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   parsePlanning(planning: Planning) {
-    this.calendarComponent.getApi().gotoDate(moment(planning.period.from).format());
+    const api = this.calendarComponent.getApi();
+    const from = moment(planning.period.from).format();
+    if (api != null) {
+      api.gotoDate(from);
+    }
+    this.dateRange = {
+      start: from,
+      end: moment(planning.period.to).format()
+    };
     this.startTime = moment(planning.dayPeriod.from).format('HH:mm:ss');
     this.endTime = moment(planning.dayPeriod.to).format('HH:mm:ss');
     const duration = moment('00:00', 'HH:mm');

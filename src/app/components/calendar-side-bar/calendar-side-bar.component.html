@@ -5,7 +5,7 @@
         <mat-label>Version du planning</mat-label>
         <mat-select [(ngModel)]="revisionSelectedId" (selectionChange)="changeRevision()">
           <mat-option *ngIf="planning.newUnavailabilities" value="updated">
-            <mat-icon>warning</mat-icon> État modifié
+            <mat-icon>warning</mat-icon> État non versioné
           </mat-option>
           <mat-option *ngFor="let revision of revisions; index as i" [value]="revision.id">
             {{i}} - Date: {{formatedDate(revision.createdAt, 'DD/MM/YYYY')}} Heure: {{formatedDate(revision.createdAt, 'HH:mm')}}
@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="row" *ngIf="defaultRevision">
-        <button class="btn btn-warning mat-raised-button mat-button-base mx-auto" mat-raised-button >
+        <button class="btn btn-warning mat-raised-button mat-button-base mx-auto" mat-raised-button (click)="changeDefaultRevision()">
           Version par defaut
           <div matripple="" class="mat-ripple mat-button-ripple"></div>
           <div class="mat-button-focus-overlay"></div>
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="row" *ngIf="!planning.generated">
-      <button class="btn btn-success mat-raised-button mat-button-base mx-auto" mat-raised-button >
+      <button class="btn btn-success mat-raised-button mat-button-base mx-auto" mat-raised-button (click)="generate()">
         Générer le planning
         <div matripple="" class="mat-ripple mat-button-ripple"></div>
         <div class="mat-button-focus-overlay"></div>
