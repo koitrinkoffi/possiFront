@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import business from 'moment-business';
 import {RoomService} from '../../services/room.service';
 import {ClassroomSelectorComponent} from '../../components/classroom-selector/classroom-selector.component';
 import {Planning} from '../../model/planning';
