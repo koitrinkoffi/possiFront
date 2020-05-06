@@ -18,7 +18,7 @@ import {DialogComponent} from '../../components/dialog/dialog.component';
 })
 export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
 
-  private planning: Planning;
+  planning: Planning;
   @ViewChild('calendarComponent', {read: undefined, static: false})
   calendarComponent: CalendarComponent;
   @ViewChild('calendarSideBarComponent', {read: undefined, static: false})

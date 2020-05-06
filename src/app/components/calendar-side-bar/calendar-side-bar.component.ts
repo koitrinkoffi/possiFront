@@ -40,7 +40,7 @@ export class CalendarSideBarComponent implements OnInit {
   revisionSelectedId: number|string;
   revisions: Planning[];
   isAdmin = false;
-  constructor(authService: AuthService, private planningService: PlanningService, public dialog: MatDialog) {
+  constructor(authService: AuthService, public planningService: PlanningService, public dialog: MatDialog) {
     this.authService = authService;
   }
 
