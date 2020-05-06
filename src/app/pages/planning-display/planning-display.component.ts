@@ -26,6 +26,8 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   authService: AuthService;
   planningService: PlanningService;
   route: ActivatedRoute;
+  private interval;
+  timeLeft = 60;
   updated = false;
 
   constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute, public dialog: MatDialog) {
@@ -37,12 +39,14 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.planningService.setPlanningSelected(null);
     this.planningService.setRevisionSelected(null);
+    clearInterval(this.interval);
   }
 
   ngAfterViewInit(): void {
     this.planningService.findById(+this.route.snapshot.paramMap.get('id')).subscribe(p => {
       this.planning = p;
       this.planningService.setPlanningSelected(this.planning);
+      this.startTimer();
       if (!this.planning.generated) {
         const dialogRef = this.dialog.open(DialogComponent, {
           data: {
@@ -51,7 +55,8 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
             cancelLabel: 'Non',
             submitLabel: 'Oui',
             submitClass: 'btn-success',
-            cancelClass: 'btn-danger'
+            cancelClass: 'btn-danger',
+            timer: this.timeLeft
           }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -92,6 +97,7 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
           this.planning = d;
           this.planningService.setPlanningSelected(this.planning);
           this.calendarSideBarComponent.revisionSelectedId = rev[rev.length - 1].id;
+          this.calendarSideBarComponent.defaultRevision = false;
           this.updated = false;
           this.calendarComponent.oralDefensesUpdated.clear();
         }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
@@ -107,12 +113,22 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
     showNotification('veuillez patienter un moment...', 'primary');
     setTimeout(() => {
       this.planningService.generate(this.planning.id).subscribe(planning => {
-        showNotification('Vos modifications ont été prises en compte', 'success');
+        showNotification('Vos modifications ont été prises en compte.', 'success');
         this.planning = planning;
         this.calendarComponent.parseUnavailabityByOralDefense(this.planning.oralDefenses);
         this.planningService.setPlanningSelected(this.planning);
         this.planningService.setRevisionSelected(this.planning);
       }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+    }, 1000);
+  }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.timeLeft);
+      }
     }, 1000);
   }
 }

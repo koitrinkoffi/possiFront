@@ -1,20 +1,24 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-2">
+      <div class="row">
         <app-calendar-side-bar #calendarSideBarComponent
                                [updated]="updated"
+                               class="toolbox"
+                               [timer]="timeLeft"
                                (oralDefenseSelected)="loadOralDefense($event)"
                                 (onGenerateButton)="generate()">
 
         </app-calendar-side-bar>
       </div>
-      <div class="col-10">
+    <div class="text-center" *ngIf="planning != undefined">
+      <h3 class="font-weight-bolder">{{planning.name}}</h3>
+    </div>
+      <div class="row mt-3">
         <app-calendar #calendarComponent
+                      class="my-background"
                       (changed)="canValidate($event)"
                       [edit]="authService.user.role == 2"></app-calendar>
       </div>
-    </div>
   </div>
 </div>
 <div class="fab" *ngIf="updated">

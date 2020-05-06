@@ -82,14 +82,19 @@ export class PlanningService {
     let csv = 'etudiant;email_etudiant;enseignant_referent;email_enseignant_referent;enseignant_second;email_enseignant_second;tuteur_entreprise;entreprise;date;heure_debut;heure_fin\n';
     planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
     planning.oralDefenses.forEach(o => {
-      const line = `${o.student.firstName} ${o.student.lastName.toUpperCase()};${o.student.email};` +
-        `${o.followingTeacher.firstName} ${o.followingTeacher.lastName.toUpperCase()};${o.followingTeacher.email};` +
-        `${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()};${o.secondTeacher.email};` +
+      let line = `${o.student.firstName} ${o.student.lastName.toUpperCase()};${o.student.email};` +
+        `${o.followingTeacher.firstName} ${o.followingTeacher.lastName.toUpperCase()};${o.followingTeacher.email};`;
+      if (o.secondTeacher) {
+        line = line.concat(`${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()};${o.secondTeacher.email};`);
+      } else {
+        line = line.concat(';;');
+      }
+      line = line.concat(
         `${o.tutorFullName};` +
         `${o.company};` +
         `${moment(o.timeBox.from).format('DD/MM/YYYY')};` +
         `${moment(o.timeBox.from).format('HH:mm')};` +
-        `${moment(o.timeBox.to).format('HH:mm')}\n`;
+        `${moment(o.timeBox.to).format('HH:mm')}\n`);
       csv = csv.concat(line);
     });
     const blob = new Blob([csv], {type: 'text/csv'});
@@ -109,7 +114,11 @@ export class PlanningService {
       line.push(o.number + 1);
       line.push(`${o.student.firstName} ${o.student.lastName.toUpperCase()}`);
       line.push(`${o.followingTeacher.firstName} ${o.followingTeacher.lastName.toUpperCase()}`);
-      line.push(`${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()}`);
+      if (o.secondTeacher) {
+        line.push(`${o.secondTeacher.firstName} ${o.secondTeacher.lastName.toUpperCase()}`);
+      } else {
+        line.push('Aucun');
+      }
       line.push(`${o.tutorFullName}`);
       line.push(`${o.company}`);
       line.push(`${moment(o.timeBox.from).format('DD/MM/YYYY')}`);

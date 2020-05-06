@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 
 export interface DialogData {
@@ -8,6 +8,7 @@ export interface DialogData {
   content: string;
   cancelLabel: string;
   submitLabel: string;
+  timer?: number;
 }
 
 @Component({
@@ -15,11 +16,32 @@ export interface DialogData {
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent implements OnInit, OnDestroy {
+
+  private interval;
+  timeLeft = 0;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnInit() {
+    if (this.data.timer && this.data.timer > 0) {
+      this.timeLeft = this.data.timer;
+      this.startTimer();
+    }
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
+  }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.timeLeft);
+      }
+    }, 1000);
   }
 
 }

@@ -64,11 +64,6 @@
                 </button>
               </div>
               <div class="mr-md-2" *ngIf="authService.user.role == 2">
-                <button class="btn btn-warning btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab >
-                  <mat-icon>file_copy</mat-icon>
-                </button>
-              </div>
-              <div class="mr-md-2" *ngIf="authService.user.role == 2">
                 <button class="btn btn-danger btn-round btn-fab mat-raised-button mat-button-base" mat-mini-fab (click)="delete(element.id)">
                   <mat-icon>delete</mat-icon>
                 </button>

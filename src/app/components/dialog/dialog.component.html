@@ -1,8 +1,9 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
-  {{data.content}}
+  {{data.content}}<br>
+  <span *ngIf="data.timer != undefined && data.timer > 0">Veuillez patienter quelques instants le temps que nous réglons nos paramètres en interne. {{timeLeft}} seoncdes</span>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close class="{{data.cancelClass}} btn mat-raised-button mat-button-base">{{data.cancelLabel}}</button>
-  <button mat-button [mat-dialog-close]="true" class="{{data.submitClass}} btn mat-raised-button mat-button-base">{{data.submitLabel}}</button>
+  <button mat-button [mat-dialog-close]="true" [disabled]="timeLeft != undefined && timeLeft > 0" class="{{data.submitClass}} btn mat-raised-button mat-button-base">{{data.submitLabel}}</button>
 </div>

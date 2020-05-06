@@ -23,6 +23,9 @@ export class CalendarSideBarComponent implements OnInit {
   search: string;
   @Input()
   updated: boolean;
+  @Input()
+  timer: number;
+  planningIsSelected = false;
   defaultRevision = false;
   ownOralDefenses = true;
   nbOwnOralDefenses = 0;
@@ -59,6 +62,7 @@ export class CalendarSideBarComponent implements OnInit {
       if (p != null) {
         this.parseData(p);
         this.revisionSelectedId = p.id;
+        this.planningIsSelected = true;
         this.oralDefenses = p.oralDefenses;
         if (this.planning != null && this.planning.defaultRevision != null) {
           this.defaultRevision = this.planning.defaultRevision.id != this.revisionSelectedId;
