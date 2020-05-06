@@ -113,6 +113,6 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
         this.planningService.setPlanningSelected(this.planning);
         this.planningService.setRevisionSelected(this.planning);
       }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
-    });
+    }, 1000);
   }
 }
