@@ -29,7 +29,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/tippy.js/dist/tippy.css",
               "node_modules/tippy.js/animations/shift-away.css",
               "src/assets/scss/material-dashboard.scss",
