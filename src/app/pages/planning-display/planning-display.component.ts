@@ -105,12 +105,14 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
 
   generate() {
     showNotification('veuillez patienter un moment...', 'primary');
-    this.planningService.generate(this.planning.id).subscribe(planning => {
-      showNotification('Vos modifications ont été prises en compte', 'success');
-      this.planning = planning;
-      this.calendarComponent.parseUnavailabityByOralDefense(this.planning.oralDefenses);
-      this.planningService.setPlanningSelected(this.planning);
-      this.planningService.setRevisionSelected(this.planning);
-    }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+    setTimeout(() => {
+      this.planningService.generate(this.planning.id).subscribe(planning => {
+        showNotification('Vos modifications ont été prises en compte', 'success');
+        this.planning = planning;
+        this.calendarComponent.parseUnavailabityByOralDefense(this.planning.oralDefenses);
+        this.planningService.setPlanningSelected(this.planning);
+        this.planningService.setRevisionSelected(this.planning);
+      }, e => showNotification('Nous avons rencontré un problème. Veuillez réessayer plus tard.', 'danger'));
+    });
   }
 }
