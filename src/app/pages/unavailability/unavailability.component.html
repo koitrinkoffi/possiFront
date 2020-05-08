@@ -25,7 +25,7 @@
             <td (click)="checkRows(lines[0].row)" class="clickable-item">
               {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
             </td>
-            <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
+            <td *ngFor="let line of lines"><mat-checkbox [(ngModel)]="line.checked"></mat-checkbox></td>
           </tr>
           <tr>
             <td colspan=100>
@@ -46,7 +46,7 @@
                       <td (click)="checkRows(lines[0].row)" class="clickable-item">
                         {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
                       </td>
-                      <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
+                      <td *ngFor="let line of lines"><mat-checkbox [(ngModel)]="line.checked"></mat-checkbox></td>
                     </tr>
                     </tbody>
                   </table>
@@ -58,7 +58,7 @@
             <td (click)="checkRows(lines[0].row)" class="clickable-item">
               {{formatDate(lines[0].unavailability.period.from, 'HH:mm')}} - {{formatDate(lines[0].unavailability.period.to, 'HH:mm')}}
             </td>
-            <td *ngFor="let line of lines"><input type="checkbox" [(ngModel)]="line.checked"></td>
+            <td *ngFor="let line of lines"><mat-checkbox [(ngModel)]="line.checked"></mat-checkbox></td>
           </tr>
           </tbody>
         </table>
