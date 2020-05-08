@@ -27,7 +27,7 @@ export class PlanningDisplayComponent implements AfterViewInit, OnDestroy {
   planningService: PlanningService;
   route: ActivatedRoute;
   private interval;
-  timeLeft = 60;
+  timeLeft = 15;
   updated = false;
 
   constructor(authService: AuthService, planningService: PlanningService, route: ActivatedRoute, public dialog: MatDialog) {
