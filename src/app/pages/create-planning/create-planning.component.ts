@@ -146,7 +146,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    const nbDay = moment(this.secondFormGroup.get('startDate').value).diff(moment(this.secondFormGroup.get('endDate').value), 'days') + 1;
+    const nbDay = moment(this.secondFormGroup.get('endDate').value).diff(moment(this.secondFormGroup.get('startDate').value), 'days') + 1;
     const nbDayNeeded = Math.ceil((2 * this.participantsSelected.length)) / 16;
     if (nbDay >= nbDayNeeded) {
       showNotification('veuillez patienter un moment...', 'primary');
