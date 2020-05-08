@@ -169,7 +169,7 @@ export class CalendarComponent implements OnInit, AfterViewInit, DoCheck {
     }
     this.dateRange = {
       start: from,
-      end: moment(planning.period.to).format()
+      end: moment(planning.period.to).add(1, 'day').format()
     };
     this.startTime = moment(planning.dayPeriod.from).format('HH:mm:ss');
     this.endTime = moment(planning.dayPeriod.to).format('HH:mm:ss');
