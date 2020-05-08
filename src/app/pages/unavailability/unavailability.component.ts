@@ -1,4 +1,4 @@
-import {Component, DoCheck, IterableDiffer, IterableDiffers, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Unavailability} from '../../model/unavailability';
 import {UnavailabilityService} from '../../services/unavailability.service';
 import * as moment from 'moment';

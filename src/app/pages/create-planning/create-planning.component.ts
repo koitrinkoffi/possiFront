@@ -146,27 +146,34 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    showNotification('veuillez patienter un moment...', 'primary');
-    // Planning
-    const planning: Planning = new Planning();
-    planning.name = this.title;
-    planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
-    planning.admin = this.authService.user;
-    planning.parsePeriod(this.secondFormGroup.value);
-    planning.oralDefenses = this.participantsSelected;
-    planning.rooms = this.classroomSelector.getClassroomSelected();
+    const nbMaxPerDay = moment(this.secondFormGroup.get('startDay').value).diff(moment(this.secondFormGroup.get('endDay').value), 'minutes') / (this.firstFormGroup.value.oralDefenseDuration as number);
+    const nbDay = moment(this.secondFormGroup.get('startDate').value).diff(moment(this.secondFormGroup.get('endDate').value), 'days') + 1;
 
-    // Room
-    const classroomToCreate = this.classroomSelector.getClassroomToCreate();
-    if (classroomToCreate.length > 0) {
-      this.classroomService.create(classroomToCreate).subscribe(data => {
-        planning.rooms = planning.rooms.concat(data);
+    if ((nbDay * nbMaxPerDay) > this.participantsSelected.length) {
+      showNotification('veuillez patienter un moment...', 'primary');
+      // Planning
+      const planning: Planning = new Planning();
+      planning.name = this.title;
+      planning.oralDefenseDuration = this.firstFormGroup.value.oralDefenseDuration;
+      planning.admin = this.authService.user;
+      planning.parsePeriod(this.secondFormGroup.value);
+      planning.oralDefenses = this.participantsSelected;
+      planning.rooms = this.classroomSelector.getClassroomSelected();
+
+      // Room
+      const classroomToCreate = this.classroomSelector.getClassroomToCreate();
+      if (classroomToCreate.length > 0) {
+        this.classroomService.create(classroomToCreate).subscribe(data => {
+          planning.rooms = planning.rooms.concat(data);
+          this.createPlanning(planning);
+        }, error => {
+          showNotification('Une erreur s\'est produite. Veuillez réessayer plus tard', 'danger');
+        });
+      } else {
         this.createPlanning(planning);
-      }, error => {
-        showNotification('Une erreur s\'est produite. Veuillez réessayer plus tard', 'danger');
-      });
+      }
     } else {
-      this.createPlanning(planning);
+      showNotification('Vous avez plus de soutenances que de créneaux veuillez allonger la periode des soutenances', 'danger');
     }
   }
 
@@ -178,7 +185,7 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/planning/' + data.id]);
       }, 1000);
     },  error => {
-        showNotification('Une erreur s\'est produite', 'danger');
+      showNotification('Une erreur s\'est produite', 'danger');
     });
   }
 
