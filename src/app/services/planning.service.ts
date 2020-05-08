@@ -79,7 +79,7 @@ export class PlanningService {
 
   exportToCsv() {
     const planning = this.mRevisionSelected.value;
-    let csv = 'etudiant;email_etudiant;enseignant_referent;email_enseignant_referent;enseignant_second;email_enseignant_second;tuteur_entreprise;entreprise;date;heure_debut;heure_fin\n';
+    let csv = 'etudiant;email_etudiant;enseignant_referent;email_enseignant_referent;enseignant_second;email_enseignant_second;tuteur_entreprise;entreprise;date;heure_debut;heure_fin;salle\n';
     planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
     planning.oralDefenses.forEach(o => {
       let line = `${o.student.firstName} ${o.student.lastName.toUpperCase()};${o.student.email};` +
@@ -94,7 +94,8 @@ export class PlanningService {
         `${o.company};` +
         `${moment(o.timeBox.from).format('DD/MM/YYYY')};` +
         `${moment(o.timeBox.from).format('HH:mm')};` +
-        `${moment(o.timeBox.to).format('HH:mm')}\n`);
+        `${moment(o.timeBox.to).format('HH:mm')};` +
+        `${o.room.name}\n`);
       csv = csv.concat(line);
     });
     const blob = new Blob([csv], {type: 'text/csv'});
@@ -104,7 +105,7 @@ export class PlanningService {
   exportToPdf() {
     const planning = this.mRevisionSelected.value;
     const doc = new jsPDF();
-    const col = ['N°','Etudiant', 'Enseignant Référent', 'Enseignant en second', 'Tuteur entreprise', 'Entreprise', 'Date', 'Heure début', 'Heure fin'];
+    const col = ['N°','Etudiant', 'Enseignant Référent', 'Enseignant en second', 'Tuteur entreprise', 'Entreprise', 'Date', 'Heure début', 'Heure fin', 'Salle'];
     const rows = [];
 
     planning.oralDefenses.sort((a, b) => a.number < b.number ? -1 : 1);
@@ -119,11 +120,12 @@ export class PlanningService {
       } else {
         line.push('Aucun');
       }
-      line.push(`${o.tutorFullName}`);
-      line.push(`${o.company}`);
-      line.push(`${moment(o.timeBox.from).format('DD/MM/YYYY')}`);
-      line.push(`${moment(o.timeBox.from).format('HH:mm')}`);
-      line.push(`${moment(o.timeBox.to).format('HH:mm')}`);
+      line.push(o.tutorFullName);
+      line.push(o.company);
+      line.push(moment(o.timeBox.from).format('DD/MM/YYYY'));
+      line.push(moment(o.timeBox.from).format('HH:mm'));
+      line.push(moment(o.timeBox.to).format('HH:mm'));
+      line.push(o.room.name);
       rows.push(line);
     });
 
