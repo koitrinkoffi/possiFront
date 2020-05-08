@@ -146,10 +146,9 @@ export class CreatePlanningComponent implements OnInit, AfterViewInit {
   }
 
   validate() {
-    const nbMaxPerDay = moment(this.secondFormGroup.get('startDay').value).diff(moment(this.secondFormGroup.get('endDay').value), 'minutes') / (this.firstFormGroup.value.oralDefenseDuration as number);
     const nbDay = moment(this.secondFormGroup.get('startDate').value).diff(moment(this.secondFormGroup.get('endDate').value), 'days') + 1;
-
-    if ((nbDay * nbMaxPerDay) > this.participantsSelected.length) {
+    const nbDayNeeded = Math.floor((5 * this.participantsSelected.length)) / 16;
+    if (nbDay >= nbDayNeeded) {
       showNotification('veuillez patienter un moment...', 'primary');
       // Planning
       const planning: Planning = new Planning();
